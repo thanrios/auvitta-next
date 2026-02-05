@@ -373,7 +373,7 @@ export default function StyleguidePage() {
                 </div>
               </div>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-2">Font Family</h3>
               <p className="text-sm">Plus Jakarta Sans</p>
@@ -395,11 +395,11 @@ export default function StyleguidePage() {
             <div className="md:col-span-2">
               <h3 className="font-semibold mb-2">Overall Feel</h3>
               <p className="text-sm text-muted-foreground">
-                A contemporary design system featuring a vibrant purple primary color palette, 
-                generous rounded corners (1.25rem), and the Plus Jakarta Sans typeface. 
-                The design emphasizes clarity and friendliness with well-defined semantic colors 
-                for success (green), warning (yellow/orange), and info (blue) states. 
-                Subtle shadows and smooth transitions create a polished, professional appearance 
+                A contemporary design system featuring a vibrant purple primary color palette,
+                generous rounded corners (1.25rem), and the Plus Jakarta Sans typeface.
+                The design emphasizes clarity and friendliness with well-defined semantic colors
+                for success (green), warning (yellow/orange), and info (blue) states.
+                Subtle shadows and smooth transitions create a polished, professional appearance
                 suitable for modern web applications.
               </p>
             </div>
