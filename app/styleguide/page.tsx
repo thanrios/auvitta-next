@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
+import { CheckCircle2, AlertTriangle, Info, XCircle } from "lucide-react"
 
 export default function StyleguidePage() {
   const { theme, setTheme } = useTheme()
@@ -32,8 +33,6 @@ export default function StyleguidePage() {
     { name: "muted-foreground", var: "--muted-foreground" },
     { name: "accent", var: "--accent" },
     { name: "accent-foreground", var: "--accent-foreground" },
-    { name: "destructive", var: "--destructive" },
-    { name: "destructive-foreground", var: "--destructive-foreground" },
     { name: "border", var: "--border" },
     { name: "input", var: "--input" },
     { name: "ring", var: "--ring" },
@@ -44,6 +43,8 @@ export default function StyleguidePage() {
     { name: "success-foreground", var: "--success-foreground" },
     { name: "warning", var: "--warning" },
     { name: "warning-foreground", var: "--warning-foreground" },
+    { name: "destructive", var: "--destructive" },
+    { name: "destructive-foreground", var: "--destructive-foreground" },
     { name: "info", var: "--info" },
     { name: "info-foreground", var: "--info-foreground" },
   ]
@@ -81,16 +82,18 @@ export default function StyleguidePage() {
       {/* Color Palette */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Color Palette</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {colors.map((color) => (
-            <Card key={color.var} className="p-4">
+            <div key={color.var} className="space-y-2">
               <div
-                className="h-20 rounded-md mb-2 border"
-                style={{ backgroundColor: `hsl(var(${color.var}))` }}
+                className="h-24 rounded-lg border shadow-sm"
+                style={{ backgroundColor: `var(${color.var})` }}
               />
-              <p className="text-sm font-medium">{color.name}</p>
-              <p className="text-xs text-muted-foreground">{color.var}</p>
-            </Card>
+              <div>
+                <p className="text-sm font-semibold">{color.name}</p>
+                <p className="text-xs text-muted-foreground">{color.var}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -98,16 +101,18 @@ export default function StyleguidePage() {
       {/* Semantic Colors */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Semantic Colors</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {semanticColors.map((color) => (
-            <Card key={color.var} className="p-4">
+            <div key={color.var} className="space-y-2">
               <div
-                className="h-20 rounded-md mb-2 border"
-                style={{ backgroundColor: `hsl(var(${color.var}))` }}
+                className="h-24 rounded-lg border shadow-sm"
+                style={{ backgroundColor: `var(${color.var})` }}
               />
-              <p className="text-sm font-medium">{color.name}</p>
-              <p className="text-xs text-muted-foreground">{color.var}</p>
-            </Card>
+              <div>
+                <p className="text-sm font-semibold">{color.name}</p>
+                <p className="text-xs text-muted-foreground">{color.var}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -115,16 +120,18 @@ export default function StyleguidePage() {
       {/* Chart Colors */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Chart Colors</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
           {chartColors.map((color) => (
-            <Card key={color.var} className="p-4">
+            <div key={color.var} className="space-y-2">
               <div
-                className="h-20 rounded-md mb-2 border"
-                style={{ backgroundColor: `hsl(var(${color.var}))` }}
+                className="h-24 rounded-lg border shadow-sm"
+                style={{ backgroundColor: `var(${color.var})` }}
               />
-              <p className="text-sm font-medium">{color.name}</p>
-              <p className="text-xs text-muted-foreground">{color.var}</p>
-            </Card>
+              <div>
+                <p className="text-sm font-semibold">{color.name}</p>
+                <p className="text-xs text-muted-foreground">{color.var}</p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -167,55 +174,69 @@ export default function StyleguidePage() {
       {/* Border Radius */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Border Radius</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="p-4">
-            <div className="h-20 bg-primary rounded-none mb-2" />
-            <p className="text-sm font-medium">None</p>
-            <p className="text-xs text-muted-foreground">rounded-none</p>
-          </Card>
-          <Card className="p-4">
-            <div className="h-20 bg-primary rounded-sm mb-2" />
-            <p className="text-sm font-medium">Small</p>
-            <p className="text-xs text-muted-foreground">rounded-sm</p>
-          </Card>
-          <Card className="p-4">
-            <div className="h-20 bg-primary rounded-md mb-2" />
-            <p className="text-sm font-medium">Medium</p>
-            <p className="text-xs text-muted-foreground">rounded-md</p>
-          </Card>
-          <Card className="p-4">
-            <div className="h-20 bg-primary rounded-lg mb-2" />
-            <p className="text-sm font-medium">Large</p>
-            <p className="text-xs text-muted-foreground">rounded-lg</p>
-          </Card>
-        </div>
+        <Card className="p-6">
+          <div className="flex flex-wrap gap-6 items-center">
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-primary rounded-none border-2 border-border mx-auto" />
+              <p className="text-sm font-medium">None</p>
+              <p className="text-xs text-muted-foreground">0px</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-primary rounded-sm border-2 border-border mx-auto" />
+              <p className="text-sm font-medium">Small</p>
+              <p className="text-xs text-muted-foreground">0.125rem</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-primary rounded-md border-2 border-border mx-auto" />
+              <p className="text-sm font-medium">Medium</p>
+              <p className="text-xs text-muted-foreground">0.375rem</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-primary rounded-lg border-2 border-border mx-auto" />
+              <p className="text-sm font-medium">Large</p>
+              <p className="text-xs text-muted-foreground">1.25rem</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-primary rounded-full border-2 border-border mx-auto" />
+              <p className="text-sm font-medium">Full</p>
+              <p className="text-xs text-muted-foreground">9999px</p>
+            </div>
+          </div>
+        </Card>
       </section>
 
       {/* Shadows */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Shadows</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="p-4">
-            <div className="h-20 bg-card shadow-sm mb-2 border rounded-md" />
-            <p className="text-sm font-medium">Small</p>
-            <p className="text-xs text-muted-foreground">shadow-sm</p>
-          </Card>
-          <Card className="p-4">
-            <div className="h-20 bg-card shadow-md mb-2 border rounded-md" />
-            <p className="text-sm font-medium">Medium</p>
-            <p className="text-xs text-muted-foreground">shadow-md</p>
-          </Card>
-          <Card className="p-4">
-            <div className="h-20 bg-card shadow-lg mb-2 border rounded-md" />
-            <p className="text-sm font-medium">Large</p>
-            <p className="text-xs text-muted-foreground">shadow-lg</p>
-          </Card>
-          <Card className="p-4">
-            <div className="h-20 bg-card shadow-xl mb-2 border rounded-md" />
-            <p className="text-sm font-medium">Extra Large</p>
-            <p className="text-xs text-muted-foreground">shadow-xl</p>
-          </Card>
-        </div>
+        <Card className="p-6">
+          <div className="flex flex-wrap gap-6 items-center">
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-card shadow-sm border rounded-lg mx-auto" />
+              <p className="text-sm font-medium">Small</p>
+              <p className="text-xs text-muted-foreground">shadow-sm</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-card shadow-md border rounded-lg mx-auto" />
+              <p className="text-sm font-medium">Medium</p>
+              <p className="text-xs text-muted-foreground">shadow-md</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-card shadow-lg border rounded-lg mx-auto" />
+              <p className="text-sm font-medium">Large</p>
+              <p className="text-xs text-muted-foreground">shadow-lg</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-card shadow-xl border rounded-lg mx-auto" />
+              <p className="text-sm font-medium">Extra Large</p>
+              <p className="text-xs text-muted-foreground">shadow-xl</p>
+            </div>
+            <div className="text-center space-y-2">
+              <div className="w-24 h-24 bg-card shadow-2xl border rounded-lg mx-auto" />
+              <p className="text-sm font-medium">2X Large</p>
+              <p className="text-xs text-muted-foreground">shadow-2xl</p>
+            </div>
+          </div>
+        </Card>
       </section>
 
       {/* Components */}
@@ -228,6 +249,8 @@ export default function StyleguidePage() {
           <div className="flex flex-wrap gap-3">
             <Button>Primary</Button>
             <Button variant="secondary">Secondary</Button>
+            <Button variant="success">Success</Button>
+            <Button variant="warning">Warning</Button>
             <Button variant="destructive">Destructive</Button>
             <Button variant="outline">Outline</Button>
             <Button variant="ghost">Ghost</Button>
@@ -241,6 +264,8 @@ export default function StyleguidePage() {
           <div className="flex flex-wrap gap-3">
             <Badge>Default</Badge>
             <Badge variant="secondary">Secondary</Badge>
+            <Badge variant="success">Success</Badge>
+            <Badge variant="warning">Warning</Badge>
             <Badge variant="destructive">Destructive</Badge>
             <Badge variant="outline">Outline</Badge>
           </div>
@@ -250,22 +275,22 @@ export default function StyleguidePage() {
         <div className="mb-8">
           <h3 className="text-xl font-semibold mb-3">Cards</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="p-6">
-              <h4 className="font-semibold mb-2">Card Title</h4>
+            <Card className="p-6 border-2">
+              <h4 className="font-semibold mb-2">Default Card</h4>
               <p className="text-sm text-muted-foreground">
-                Card description goes here with some example content.
+                Card with standard border and background styling.
               </p>
             </Card>
-            <Card className="p-6">
-              <h4 className="font-semibold mb-2">Card Title</h4>
+            <Card className="p-6 shadow-lg">
+              <h4 className="font-semibold mb-2">Elevated Card</h4>
               <p className="text-sm text-muted-foreground">
-                Card description goes here with some example content.
+                Card with larger shadow for elevated appearance.
               </p>
             </Card>
-            <Card className="p-6">
-              <h4 className="font-semibold mb-2">Card Title</h4>
+            <Card className="p-6 bg-accent">
+              <h4 className="font-semibold mb-2">Accent Card</h4>
               <p className="text-sm text-muted-foreground">
-                Card description goes here with some example content.
+                Card with accent background color variant.
               </p>
             </Card>
           </div>
@@ -276,10 +301,39 @@ export default function StyleguidePage() {
           <h3 className="text-xl font-semibold mb-3">Alerts</h3>
           <div className="space-y-3">
             <Alert>
-              <p className="text-sm">Default alert message</p>
+              <Info className="h-4 w-4" />
+              <div>
+                <p className="text-sm font-medium">Default Alert</p>
+                <p className="text-sm">This is a default informational message.</p>
+              </div>
+            </Alert>
+            <Alert variant="success">
+              <CheckCircle2 className="h-4 w-4" />
+              <div>
+                <p className="text-sm font-medium">Success</p>
+                <p className="text-sm">Your changes have been saved successfully.</p>
+              </div>
+            </Alert>
+            <Alert variant="warning">
+              <AlertTriangle className="h-4 w-4" />
+              <div>
+                <p className="text-sm font-medium">Warning</p>
+                <p className="text-sm">Please review your information before proceeding.</p>
+              </div>
             </Alert>
             <Alert variant="destructive">
-              <p className="text-sm">Destructive alert message</p>
+              <XCircle className="h-4 w-4" />
+              <div>
+                <p className="text-sm font-medium">Error</p>
+                <p className="text-sm">An error occurred while processing your request.</p>
+              </div>
+            </Alert>
+            <Alert variant="info">
+              <Info className="h-4 w-4" />
+              <div>
+                <p className="text-sm font-medium">Information</p>
+                <p className="text-sm">Here's some helpful information for you.</p>
+              </div>
             </Alert>
           </div>
         </div>
@@ -302,6 +356,55 @@ export default function StyleguidePage() {
             </div>
           </RadioGroup>
         </div>
+      </section>
+
+      {/* Design Summary */}
+      <section>
+        <h2 className="text-2xl font-bold mb-4">Design Summary</h2>
+        <Card className="p-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold mb-2">Primary Color</h3>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-primary border" />
+                <div>
+                  <p className="text-sm font-medium">Purple</p>
+                  <p className="text-xs text-muted-foreground">oklch(0.5854 0.2041 277.1173)</p>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-2">Font Family</h3>
+              <p className="text-sm">Plus Jakarta Sans</p>
+              <p className="text-xs text-muted-foreground">Google Fonts - Sans Serif</p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-2">Border Radius</h3>
+              <p className="text-sm">1.25rem (20px)</p>
+              <p className="text-xs text-muted-foreground">Rounded corners throughout</p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-2">Style</h3>
+              <p className="text-sm">Modern & Friendly</p>
+              <p className="text-xs text-muted-foreground">Clean design with vibrant purple accents</p>
+            </div>
+
+            <div className="md:col-span-2">
+              <h3 className="font-semibold mb-2">Overall Feel</h3>
+              <p className="text-sm text-muted-foreground">
+                A contemporary design system featuring a vibrant purple primary color palette, 
+                generous rounded corners (1.25rem), and the Plus Jakarta Sans typeface. 
+                The design emphasizes clarity and friendliness with well-defined semantic colors 
+                for success (green), warning (yellow/orange), and info (blue) states. 
+                Subtle shadows and smooth transitions create a polished, professional appearance 
+                suitable for modern web applications.
+              </p>
+            </div>
+          </div>
+        </Card>
       </section>
     </div>
   )
