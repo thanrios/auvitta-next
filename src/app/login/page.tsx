@@ -77,7 +77,7 @@ export default function LoginPage() {
                 href="/"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                v. 0.0.1
+                v. {process.env.NEXT_PUBLIC_APP_VERSION || '0.0.1-dev'}
               </Link>
             </div>
           </CardContent>
