@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Alert } from "@/components/ui/alert"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { CheckCircle2, AlertTriangle, Info, XCircle } from "lucide-react"
@@ -339,7 +340,7 @@ export default function StyleguidePage() {
         </div>
 
         {/* Radio Group */}
-        <div>
+        <div className="mb-8">
           <h3 className="text-xl font-semibold mb-3">Radio Group</h3>
           <RadioGroup defaultValue="option-1">
             <div className="flex items-center space-x-2">
@@ -355,6 +356,33 @@ export default function StyleguidePage() {
               <Label htmlFor="option-3">Option 3</Label>
             </div>
           </RadioGroup>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <h3 className="text-xl font-semibold mb-3">Inputs</h3>
+          <div className="space-y-4 max-w-md">
+            <div className="space-y-2">
+              <Label htmlFor="input-default">Default Input</Label>
+              <Input id="input-default" placeholder="Enter text..." />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="input-email">Email Input</Label>
+              <Input id="input-email" type="email" placeholder="email@example.com" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="input-password">Password Input</Label>
+              <Input id="input-password" type="password" placeholder="••••••••" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="input-disabled">Disabled Input</Label>
+              <Input id="input-disabled" placeholder="Disabled" disabled />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="input-with-value">Input with Value</Label>
+              <Input id="input-with-value" defaultValue="Example value" />
+            </div>
+          </div>
         </div>
       </section>
 
