@@ -36,11 +36,11 @@ const patients = [
 export default function PacientesPage() {
   return (
     <>
-      <Topbar 
+      <Topbar
         breadcrumbs={[
           { label: "Início", href: "/dashboard" },
           { label: "Pacientes" },
-        ]} 
+        ]}
         actions={
           <Button>Novo Paciente</Button>
         }
