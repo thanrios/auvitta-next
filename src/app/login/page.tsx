@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Stethoscope } from "lucide-react"
 import Link from "next/link"
 
 export const metadata = {
@@ -12,13 +13,13 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <Card className="w-full max-w-sm shadow-lg">
-      <CardHeader className="space-y-1 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Auvitta</h1>
-        <p className="text-sm text-muted-foreground">
-          Insira suas credenciais para acessar o prontuário.
-        </p>
+      <CardHeader className="mt-3 text-center">
+		<div className="flex justify-center items-center gap-2 z-10">
+			<Stethoscope className="h-8 w-8 text-primary" />
+			<h1 className="text-4xl font-bold text-foreground">Auvitta</h1>
+		</div>
       </CardHeader>
-      <CardContent className="mt-4 space-y-5">
+      <CardContent className="mt-1 space-y-5">
         <div className="space-y-3">
           <Label htmlFor="email">E-mail</Label>
           <Input

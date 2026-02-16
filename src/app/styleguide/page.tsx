@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Alert } from "@/components/ui/alert"
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -303,38 +303,38 @@ export default function StyleguidePage() {
           <div className="space-y-3">
             <Alert>
               <Info className="h-4 w-4" />
-              <div>
-                <p className="text-sm font-medium">Default Alert</p>
-                <p className="text-sm">This is a default informational message.</p>
-              </div>
+              <AlertTitle>Default Alert</AlertTitle>
+              <AlertDescription>
+                This is a default informational message.
+              </AlertDescription>
             </Alert>
             <Alert variant="success">
               <CheckCircle2 className="h-4 w-4" />
-              <div>
-                <p className="text-sm font-medium">Success</p>
-                <p className="text-sm">Your changes have been saved successfully.</p>
-              </div>
+              <AlertTitle>Success</AlertTitle>
+              <AlertDescription>
+                Your changes have been saved successfully.
+              </AlertDescription>
             </Alert>
             <Alert variant="warning">
               <AlertTriangle className="h-4 w-4" />
-              <div>
-                <p className="text-sm font-medium">Warning</p>
-                <p className="text-sm">Please review your information before proceeding.</p>
-              </div>
+              <AlertTitle>Warning</AlertTitle>
+              <AlertDescription>
+                Please review your information before proceeding.
+              </AlertDescription>
             </Alert>
             <Alert variant="destructive">
               <XCircle className="h-4 w-4" />
-              <div>
-                <p className="text-sm font-medium">Error</p>
-                <p className="text-sm">An error occurred while processing your request.</p>
-              </div>
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                An error occurred while processing your request.
+              </AlertDescription>
             </Alert>
             <Alert variant="info">
               <Info className="h-4 w-4" />
-              <div>
-                <p className="text-sm font-medium">Information</p>
-                <p className="text-sm">Here's some helpful information for you.</p>
-              </div>
+              <AlertTitle>Information</AlertTitle>
+              <AlertDescription>
+                Here's some helpful information for you.
+              </AlertDescription>
             </Alert>
           </div>
         </div>
