@@ -7,8 +7,6 @@ import { create } from 'zustand'
 import type { User } from '@/types/auth.types'
 
 // ─── Cookie helpers ──────────────────────────────────────────────────────────
-// O proxy.ts lê cookies, não localStorage. Precisamos manter os dois em sync.
-
 function setCookie(name: string, value: string, days = 7) {
   const expires = new Date(Date.now() + days * 864e5).toUTCString()
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`

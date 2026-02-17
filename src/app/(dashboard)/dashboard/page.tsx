@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import { Topbar } from "@/components/topbar/topbar"
 
 export default function DashboardPage() {
