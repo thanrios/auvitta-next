@@ -12,11 +12,15 @@ import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Alert } from '@/components/ui/alert'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 
 export function LoginForm() {
   const { login, isLoggingIn, loginError } = useAuth()
+
+  // Debug: log error state
+  console.log('LoginForm - loginError:', loginError)
+  console.log('LoginForm - isLoggingIn:', isLoggingIn)
 
   const {
     register,
@@ -38,7 +42,7 @@ export function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {loginError && (
         <Alert variant="destructive">
-          {loginError}
+          <AlertDescription>{loginError}</AlertDescription>
         </Alert>
       )}
 

@@ -183,19 +183,19 @@ export const getErrorMessage = (error: unknown): string => {
 
     // Default error messages
     if (error.response?.status === 404) {
-      return 'Resource not found'
+      return 'Recurso não encontrado'
     }
     if (error.response?.status === 500) {
-      return 'Internal server error'
+      return 'Erro interno do servidor'
     }
     if (error.code === 'ECONNABORTED') {
-      return 'Request timeout'
+      return 'Tempo de requisição esgotado'
     }
     if (error.code === 'ERR_NETWORK') {
-      return 'Network error. Please check your connection.'
+      return 'Erro de conexão. Verifique sua internet.'
     }
 
-    return error.message || 'An unexpected error occurred'
+    return error.message || 'Ocorreu um erro inesperado'
   }
 
   if (error instanceof Error) {

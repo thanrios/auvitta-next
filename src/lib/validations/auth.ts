@@ -12,12 +12,12 @@ import { z } from 'zod'
 export const loginSchema = z.object({
   email: z
     .string()
-    .min(1, 'Email is required')
-    .email('Invalid email format'),
+    .min(1, 'Email é obrigatório')
+    .email('Formato de email inválido'),
   password: z
     .string()
-    .min(1, 'Password is required')
-    .min(6, 'Password must be at least 6 characters'),
+    .min(1, 'Senha é obrigatória')
+    .min(6, 'A senha deve ter no mínimo 6 caracteres'),
 })
 
 export type LoginFormData = z.infer<typeof loginSchema>
@@ -29,8 +29,8 @@ export type LoginFormData = z.infer<typeof loginSchema>
 export const forgotPasswordSchema = z.object({
   email: z
     .string()
-    .min(1, 'Email is required')
-    .email('Invalid email format'),
+    .min(1, 'Email é obrigatório')
+    .email('Formato de email inválido'),
 })
 
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
@@ -40,16 +40,16 @@ export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
 // ============================================================================
 
 export const setPasswordSchema = z.object({
-  token: z.string().min(1, 'Token is required'),
+  token: z.string().min(1, 'Token é obrigatório'),
   new_password: z
     .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number'),
-  new_password_confirm: z.string().min(1, 'Password confirmation is required'),
+    .min(8, 'A senha deve ter no mínimo 8 caracteres')
+    .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
+    .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
+    .regex(/[0-9]/, 'A senha deve conter pelo menos um número'),
+  new_password_confirm: z.string().min(1, 'Confirmação de senha é obrigatória'),
 }).refine((data) => data.new_password === data.new_password_confirm, {
-  message: 'Passwords do not match',
+  message: 'As senhas não coincidem',
   path: ['new_password_confirm'],
 })
 
@@ -60,19 +60,19 @@ export type SetPasswordFormData = z.infer<typeof setPasswordSchema>
 // ============================================================================
 
 export const changePasswordSchema = z.object({
-  old_password: z.string().min(1, 'Current password is required'),
+  old_password: z.string().min(1, 'Senha atual é obrigatória'),
   new_password: z
     .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number'),
-  new_password_confirm: z.string().min(1, 'Password confirmation is required'),
+    .min(8, 'A senha deve ter no mínimo 8 caracteres')
+    .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
+    .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
+    .regex(/[0-9]/, 'A senha deve conter pelo menos um número'),
+  new_password_confirm: z.string().min(1, 'Confirmação de senha é obrigatória'),
 }).refine((data) => data.new_password === data.new_password_confirm, {
-  message: 'Passwords do not match',
+  message: 'As senhas não coincidem',
   path: ['new_password_confirm'],
 }).refine((data) => data.old_password !== data.new_password, {
-  message: 'New password must be different from old password',
+  message: 'A nova senha deve ser diferente da senha atual',
   path: ['new_password'],
 })
 

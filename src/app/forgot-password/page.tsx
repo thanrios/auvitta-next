@@ -1,9 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ForgotPasswordForm } from "@/components/auth/forgot-password-form"
 
 export const metadata = {
   title: 'Esqueci minha senha - Auvitta',
@@ -19,27 +15,8 @@ export default function ForgotPasswordPage() {
           Informe seu e-mail para receber as instruções de recuperação.
         </p>
       </CardHeader>
-      <CardContent className="mt-4 space-y-5">
-        <div className="space-y-3">
-          <Label htmlFor="email">E-mail</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="nome@clinica.com"
-          />
-        </div>
-        <Button className="w-full">
-          Enviar instruções
-        </Button>
-        <div className="text-center">
-          <Link
-            href="/login"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
-          >
-            <ArrowLeft className="h-3 w-3" />
-            Voltar para o login
-          </Link>
-        </div>
+      <CardContent className="mt-4">
+        <ForgotPasswordForm />
       </CardContent>
     </Card>
   )

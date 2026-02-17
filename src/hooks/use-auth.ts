@@ -32,6 +32,7 @@ export function useAuth() {
     mutationFn: async (credentials: LoginRequest) => {
       return api.post<LoginResponse>('/auth/token/', credentials)
     },
+    retry: false, // Don't retry login attempts
     onSuccess: (data) => {
       // Save tokens
       setTokens(data.access, data.refresh)
@@ -57,6 +58,7 @@ export function useAuth() {
     mutationFn: async (data: RegisterRequest) => {
       return api.post<User>('/users/register/', data)
     },
+    retry: false, // Don't retry registration attempts
     onSuccess: () => {
       // Redirect to login after successful registration
       router.push('/login?registered=true')
