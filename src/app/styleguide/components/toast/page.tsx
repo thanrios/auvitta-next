@@ -78,14 +78,14 @@ toast.promise(promise, {
             <Button onClick={() => toast("Event has been created")}>
               Show Default Toast
             </Button>
-            <Button 
+            <Button
               onClick={() => toast("Event has been created", {
                 description: "Monday, January 3rd at 6:00pm",
               })}
             >
               With Description
             </Button>
-            <Button 
+            <Button
               onClick={() => toast("Event has been created", {
                 action: {
                   label: "Undo",
@@ -107,13 +107,13 @@ toast.promise(promise, {
         </p>
         <Card className="p-6">
           <div className="flex gap-4 flex-wrap">
-            <Button 
+            <Button
               variant="default"
               onClick={() => toast.success("Successfully saved!")}
             >
               Show Success Toast
             </Button>
-            <Button 
+            <Button
               variant="default"
               onClick={() => toast.success("Profile updated", {
                 description: "Your changes have been saved successfully.",
@@ -133,13 +133,13 @@ toast.promise(promise, {
         </p>
         <Card className="p-6">
           <div className="flex gap-4 flex-wrap">
-            <Button 
+            <Button
               variant="secondary"
               onClick={() => toast.info("New feature available")}
             >
               Show Info Toast
             </Button>
-            <Button 
+            <Button
               variant="secondary"
               onClick={() => toast.info("Meeting reminder", {
                 description: "Be at the area 10 minutes before the event time",
@@ -159,13 +159,13 @@ toast.promise(promise, {
         </p>
         <Card className="p-6">
           <div className="flex gap-4 flex-wrap">
-            <Button 
+            <Button
               variant="outline"
               onClick={() => toast.warning("Please save your work")}
             >
               Show Warning Toast
             </Button>
-            <Button 
+            <Button
               variant="outline"
               onClick={() => toast.warning("Invalid time selected", {
                 description: "Event start time cannot be earlier than 8am",
@@ -185,13 +185,13 @@ toast.promise(promise, {
         </p>
         <Card className="p-6">
           <div className="flex gap-4 flex-wrap">
-            <Button 
+            <Button
               variant="destructive"
               onClick={() => toast.error("Something went wrong")}
             >
               Show Error Toast
             </Button>
-            <Button 
+            <Button
               variant="destructive"
               onClick={() => toast.error("Failed to save changes", {
                 description: "There was a problem with your request.",
@@ -211,12 +211,12 @@ toast.promise(promise, {
         </p>
         <Card className="p-6">
           <div className="flex gap-4 flex-wrap">
-            <Button 
+            <Button
               onClick={() => {
-                const promise = new Promise((resolve) => 
+                const promise = new Promise((resolve) =>
                   setTimeout(() => resolve({ name: "John Doe" }), 2000)
                 )
-                
+
                 toast.promise(promise, {
                   loading: 'Loading...',
                   success: (data: any) => {
@@ -228,12 +228,12 @@ toast.promise(promise, {
             >
               Success Promise
             </Button>
-            <Button 
+            <Button
               onClick={() => {
-                const promise = new Promise((_, reject) => 
+                const promise = new Promise((_, reject) =>
                   setTimeout(() => reject(new Error("Failed to save")), 2000)
                 )
-                
+
                 toast.promise(promise, {
                   loading: 'Saving...',
                   success: 'Data saved successfully',
@@ -255,17 +255,17 @@ toast.promise(promise, {
         </p>
         <Card className="p-6">
           <div className="flex gap-4 flex-wrap">
-            <Button 
+            <Button
               onClick={() => toast("This will disappear quickly", { duration: 1000 })}
             >
               1 Second
             </Button>
-            <Button 
+            <Button
               onClick={() => toast("This stays longer", { duration: 5000 })}
             >
               5 Seconds
             </Button>
-            <Button 
+            <Button
               onClick={() => toast("This stays until dismissed", { duration: Infinity })}
             >
               Infinite
@@ -305,31 +305,31 @@ import { toast } from 'sonner'
 
 function LoginForm() {
   const { login, loginError } = useAuth()
-  
+
   // Show toast when error changes
   useEffect(() => {
     if (loginError) {
       toast.error(loginError)
     }
   }, [loginError])
-  
+
   const handleSubmit = (data) => {
     login(data) // Error will be shown via useEffect
   }
-  
+
   return <form onSubmit={handleSubmit}>...</form>
 }
 
 // Success example
 function UpdateProfile() {
   const [success, setSuccess] = useState(false)
-  
+
   useEffect(() => {
     if (success) {
       toast.success('Profile updated successfully!')
     }
   }, [success])
-  
+
   return ...
 }`}</code>
           </pre>
