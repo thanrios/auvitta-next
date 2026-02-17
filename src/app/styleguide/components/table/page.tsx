@@ -59,10 +59,10 @@ const invoices = [
 ]
 
 const users = [
-  { id: 1, name: "Alice Johnson", email: "alice@example.com", role: "Admin" },
-  { id: 2, name: "Bob Smith", email: "bob@example.com", role: "User" },
-  { id: 3, name: "Carol White", email: "carol@example.com", role: "Editor" },
-  { id: 4, name: "David Brown", email: "david@example.com", role: "User" },
+  { uuid: "550e8400-e29b-41d4-a716-446655440001", name: "Alice Johnson", email: "alice@example.com", role: "Admin" },
+  { uuid: "550e8400-e29b-41d4-a716-446655440002", name: "Bob Smith", email: "bob@example.com", role: "User" },
+  { uuid: "550e8400-e29b-41d4-a716-446655440003", name: "Carol White", email: "carol@example.com", role: "Editor" },
+  { uuid: "550e8400-e29b-41d4-a716-446655440004", name: "David Brown", email: "david@example.com", role: "User" },
 ]
 
 export default function TableShowcase() {
@@ -163,7 +163,7 @@ export default function TableShowcase() {
             </TableHeader>
             <TableBody>
               {users.map((user) => (
-                <TableRow key={user.id}>
+                <TableRow key={user.uuid}>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
@@ -191,7 +191,7 @@ export default function TableShowcase() {
             <TableBody>
               {users.map((user, index) => (
                 <TableRow
-                  key={user.id}
+                  key={user.uuid}
                   className={index % 2 === 0 ? "bg-muted/50" : ""}
                 >
                   <TableCell className="font-medium">{user.name}</TableCell>

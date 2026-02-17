@@ -8,7 +8,7 @@
 // ============================================================================
 
 export interface User {
-  id: number
+  uuid: string
   email: string
   full_name: string
   role: 'ADMIN' | 'DOCTOR' | 'RECEPTIONIST' | 'PATIENT'
