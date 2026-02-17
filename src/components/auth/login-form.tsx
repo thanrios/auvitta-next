@@ -18,10 +18,6 @@ import Link from 'next/link'
 export function LoginForm() {
   const { login, isLoggingIn, loginError } = useAuth()
 
-  // Debug: log error state
-  console.log('LoginForm - loginError:', loginError)
-  console.log('LoginForm - isLoggingIn:', isLoggingIn)
-
   const {
     register,
     handleSubmit,
@@ -39,7 +35,15 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <form
+		autoComplete="off"
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleSubmit(onSubmit)(e)
+      }}
+      className="space-y-5"
+      noValidate
+    >
       {loginError && (
         <Alert variant="destructive">
           <AlertDescription>{loginError}</AlertDescription>
@@ -67,6 +71,7 @@ export function LoginForm() {
           id="password"
           type="password"
           placeholder="••••••••"
+		  autoComplete="new-password"
           {...register('password')}
           disabled={isLoggingIn}
           aria-invalid={errors.password ? 'true' : 'false'}

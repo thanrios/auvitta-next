@@ -6,6 +6,20 @@
 import { create } from 'zustand'
 import type { User } from '@/types/auth.types'
 
+// ─── Cookie helpers ──────────────────────────────────────────────────────────
+// O proxy.ts lê cookies, não localStorage. Precisamos manter os dois em sync.
+
+function setCookie(name: string, value: string, days = 7) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString()
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`
+}
+
+// ─── Store ───────────────────────────────────────────────────────────────────
+
 interface AuthState {
   user: User | null
   accessToken: string | null
@@ -26,49 +40,53 @@ export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: true, // começa true até initializeAuth rodar
 
   setUser: (user) =>
     set({
       user,
-      isAuthenticated: !!user
+      isAuthenticated: !!user,
     }),
 
   setTokens: (access, refresh) => {
-    // Save tokens to localStorage
     if (typeof window !== 'undefined') {
+      // localStorage (leitura client-side)
       localStorage.setItem('access_token', access)
       localStorage.setItem('refresh_token', refresh)
+
+      // cookie (leitura pelo proxy/middleware)
+      setCookie('access_token', access)
+      setCookie('refresh_token', refresh)
     }
 
     set({
       accessToken: access,
       refreshToken: refresh,
-      isAuthenticated: true
+      isAuthenticated: true,
     })
   },
 
-  setLoading: (loading) =>
-    set({ isLoading: loading }),
+  setLoading: (loading) => set({ isLoading: loading }),
 
   logout: () => {
-    // Clear localStorage
     if (typeof window !== 'undefined') {
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
       localStorage.removeItem('user')
+
+      deleteCookie('access_token')
+      deleteCookie('refresh_token')
     }
 
     set({
       user: null,
       accessToken: null,
       refreshToken: null,
-      isAuthenticated: false
+      isAuthenticated: false,
     })
   },
 
   initializeAuth: () => {
-    // Load tokens from localStorage
     if (typeof window !== 'undefined') {
       const accessToken = localStorage.getItem('access_token')
       const refreshToken = localStorage.getItem('refresh_token')
@@ -77,12 +95,16 @@ export const useAuthStore = create<AuthState>((set) => ({
       if (accessToken && refreshToken) {
         const user = userStr ? JSON.parse(userStr) : null
 
+        // Garante que os cookies existem (caso o usuário tenha limpado só os cookies)
+        setCookie('access_token', accessToken)
+        setCookie('refresh_token', refreshToken)
+
         set({
           accessToken,
           refreshToken,
           user,
           isAuthenticated: true,
-          isLoading: false
+          isLoading: false,
         })
       } else {
         set({ isLoading: false })
@@ -91,21 +113,12 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 }))
 
-// Helper functions
-export const getAccessToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('access_token')
-  }
-  return null
-}
+// ─── Helpers standalone ──────────────────────────────────────────────────────
 
-export const getRefreshToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('refresh_token')
-  }
-  return null
-}
+export const getAccessToken = () =>
+  typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
 
-export const isAuthenticated = () => {
-  return !!getAccessToken()
-}
+export const getRefreshToken = () =>
+  typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null
+
+export const isAuthenticated = () => !!getAccessToken()

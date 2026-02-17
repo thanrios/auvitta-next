@@ -67,6 +67,18 @@ apiClient.interceptors.response.use(
 
     // If error is 401 and we haven't retried yet
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Skip token refresh logic for authentication endpoints
+      // These endpoints are meant to fail with 401 (e.g., wrong password)
+      const authEndpoints = ['/auth/token/', '/auth/token/refresh/', '/auth/register/']
+      const isAuthEndpoint = authEndpoints.some(endpoint =>
+        originalRequest.url?.includes(endpoint)
+      )
+
+      if (isAuthEndpoint) {
+        // Let the error bubble up to be handled by the calling code
+        return Promise.reject(error)
+      }
+
       // Check if this is the refresh endpoint itself
       if (originalRequest.url?.includes('/auth/refresh/')) {
         // Refresh token is invalid, logout user

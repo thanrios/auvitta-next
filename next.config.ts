@@ -1,27 +1,18 @@
 import type { NextConfig } from "next";
 
+const allowedOrigins =
+  process.env.CORS_ALLOWED_ORIGINS
+    ?.split(",")
+    .map(origin => origin.trim())
+    .filter(Boolean) ?? [];
+
 const nextConfig: NextConfig = {
-  /* config options here */
-  
-  // Allow access from local network during development
+  allowedDevOrigins: allowedOrigins,
+
   devIndicators: {
-    buildActivity: true,
-    buildActivityPosition: 'bottom-right',
-  },
-  
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Access-Control-Allow-Origin',
-            value: process.env.NODE_ENV === 'development' ? '*' : 'same-origin',
-          },
-        ],
-      },
-    ];
+    position: "bottom-left",
   },
 };
 
 export default nextConfig;
+
