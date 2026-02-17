@@ -19,6 +19,7 @@ export const navigation: NavSection[] = [
     title: "Components",
     items: [
       { name: "Table", href: "/styleguide/components/table" },
+      { name: "Toast", href: "/styleguide/components/toast" },
     ]
   }
 ]

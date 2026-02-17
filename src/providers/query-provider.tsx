@@ -31,8 +31,10 @@ export function QueryProvider({ children }: QueryProviderProps) {
             retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
           },
           mutations: {
-            // Retry failed mutations once
-            retry: 1,
+            // Don't retry failed mutations
+            retry: false,
+            // Keep mutation state (including errors) until garbage collected
+            gcTime: 5 * 60 * 1000,
           },
         },
       })
@@ -43,8 +45,8 @@ export function QueryProvider({ children }: QueryProviderProps) {
       {children}
       {/* Show DevTools only in development */}
       {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools 
-          initialIsOpen={false} 
+        <ReactQueryDevtools
+          initialIsOpen={false}
           buttonPosition="bottom-right"
         />
       )}

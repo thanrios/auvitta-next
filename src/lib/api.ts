@@ -67,6 +67,18 @@ apiClient.interceptors.response.use(
 
     // If error is 401 and we haven't retried yet
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // Skip token refresh logic for authentication endpoints
+      // These endpoints are meant to fail with 401 (e.g., wrong password)
+      const authEndpoints = ['/auth/token/', '/auth/token/refresh/', '/auth/register/']
+      const isAuthEndpoint = authEndpoints.some(endpoint =>
+        originalRequest.url?.includes(endpoint)
+      )
+
+      if (isAuthEndpoint) {
+        // Let the error bubble up to be handled by the calling code
+        return Promise.reject(error)
+      }
+
       // Check if this is the refresh endpoint itself
       if (originalRequest.url?.includes('/auth/refresh/')) {
         // Refresh token is invalid, logout user
@@ -183,19 +195,19 @@ export const getErrorMessage = (error: unknown): string => {
 
     // Default error messages
     if (error.response?.status === 404) {
-      return 'Resource not found'
+      return 'Recurso não encontrado'
     }
     if (error.response?.status === 500) {
-      return 'Internal server error'
+      return 'Erro interno do servidor'
     }
     if (error.code === 'ECONNABORTED') {
-      return 'Request timeout'
+      return 'Tempo de requisição esgotado'
     }
     if (error.code === 'ERR_NETWORK') {
-      return 'Network error. Please check your connection.'
+      return 'Erro de conexão. Verifique sua internet.'
     }
 
-    return error.message || 'An unexpected error occurred'
+    return error.message || 'Ocorreu um erro inesperado'
   }
 
   if (error instanceof Error) {
