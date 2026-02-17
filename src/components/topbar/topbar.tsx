@@ -1,6 +1,7 @@
 "use client"
 
 import { Bell, Menu } from "lucide-react"
+import { toast } from "sonner"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,6 +37,7 @@ export function Topbar({ breadcrumbs = [], actions }: TopbarProps) {
 
   const handleLogout = () => {
     logout()
+    toast.success("Você foi desconectado com sucesso!")
   }
 
   const getUserInitials = (name: string | undefined) => {

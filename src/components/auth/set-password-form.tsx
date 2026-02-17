@@ -5,10 +5,11 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { setPasswordSchema, type SetPasswordFormData } from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -65,6 +66,18 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
     }
   }
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error)
+    }
+  }, [error])
+
+  useEffect(() => {
+    if (success) {
+      toast.success('Senha redefinida com sucesso! Redirecionando...')
+    }
+  }, [success])
+
   if (success) {
     return (
       <div className="space-y-5">
@@ -93,12 +106,6 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
       <input type="hidden" {...register('token')} />
 
       <div className="space-y-3">

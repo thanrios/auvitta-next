@@ -5,14 +5,15 @@
 
 'use client'
 
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
 import { useAuth } from '@/hooks/use-auth'
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 
 export function LoginForm() {
@@ -34,6 +35,12 @@ export function LoginForm() {
     login(data)
   }
 
+  useEffect(() => {
+    if (loginError) {
+      toast.error(loginError)
+    }
+  }, [loginError])
+
   return (
     <form
 		autoComplete="off"
@@ -44,12 +51,6 @@ export function LoginForm() {
       className="space-y-5"
       noValidate
     >
-      {loginError && (
-        <Alert variant="destructive">
-          <AlertDescription>{loginError}</AlertDescription>
-        </Alert>
-      )}
-
       <div className="space-y-3">
         <Label htmlFor="email">E-mail</Label>
         <Input
