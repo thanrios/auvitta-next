@@ -94,7 +94,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       if (accessToken && refreshToken) {
         let user = null
-        
+
         // Safely parse user data from localStorage
         try {
           user = userStr ? JSON.parse(userStr) : null
