@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Topbar } from "@/components/topbar"
+import { Topbar } from "@/components/topbar/topbar"
 
 const patients = [
   {
