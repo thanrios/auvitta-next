@@ -93,7 +93,16 @@ export const useAuthStore = create<AuthState>((set) => ({
       const userStr = localStorage.getItem('user')
 
       if (accessToken && refreshToken) {
-        const user = userStr ? JSON.parse(userStr) : null
+        let user = null
+        
+        // Safely parse user data from localStorage
+        try {
+          user = userStr ? JSON.parse(userStr) : null
+        } catch (error) {
+          console.error('Failed to parse user data from localStorage:', error)
+          // Clear corrupted user data
+          localStorage.removeItem('user')
+        }
 
         // Garante que os cookies existem (caso o usuário tenha limpado só os cookies)
         setCookie('access_token', accessToken)

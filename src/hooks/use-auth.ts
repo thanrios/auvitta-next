@@ -5,6 +5,7 @@
 
 'use client'
 
+import { useEffect } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/auth-store'
@@ -103,9 +104,11 @@ export function useAuth() {
     staleTime: 5 * 60 * 1000,
   })
 
-  if (currentUser && !user) {
-    setUser(currentUser)
-  }
+  useEffect(() => {
+    if (currentUser && !user) {
+      setUser(currentUser)
+    }
+  }, [currentUser, user, setUser])
 
   // ── Login wrapper ──────────────────────────────────────────────────────────
   // Não chama reset() antes do mutate: isso limpava o erro imediatamente e
