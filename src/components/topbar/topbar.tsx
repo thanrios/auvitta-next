@@ -2,14 +2,6 @@
 
 import { Bell, Menu } from "lucide-react"
 import { toast } from "sonner"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -24,15 +16,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { useAuth } from "@/hooks/use-auth"
 
-interface TopbarProps {
-  breadcrumbs?: Array<{
-    label: string
-    href?: string
-  }>
-  actions?: React.ReactNode
-}
-
-export function Topbar({ breadcrumbs = [], actions }: TopbarProps) {
+export function Topbar() {
   const { user, logout } = useAuth()
 
   const handleLogout = () => {
@@ -55,31 +39,8 @@ export function Topbar({ breadcrumbs = [], actions }: TopbarProps) {
       <div className="flex items-center gap-2 flex-1">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        {breadcrumbs.length > 0 && (
-          <Breadcrumb>
-            <BreadcrumbList>
-              {breadcrumbs.map((breadcrumb, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <BreadcrumbItem>
-                    {index === breadcrumbs.length - 1 ? (
-                      <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
-                    ) : breadcrumb.href ? (
-                      <BreadcrumbLink href={breadcrumb.href}>
-                        {breadcrumb.label}
-                      </BreadcrumbLink>
-                    ) : (
-                      <span>{breadcrumb.label}</span>
-                    )}
-                  </BreadcrumbItem>
-                  {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                </div>
-              ))}
-            </BreadcrumbList>
-          </Breadcrumb>
-        )}
       </div>
       <div className="flex items-center gap-2">
-        {actions}
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-destructive" />
