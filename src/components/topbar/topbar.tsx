@@ -1,6 +1,7 @@
 "use client"
 
-import { Bell, Menu } from "lucide-react"
+import { Bell, Moon, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,10 +19,15 @@ import { useAuth } from "@/hooks/use-auth"
 
 export function Topbar() {
   const { user, logout } = useAuth()
+  const { resolvedTheme, setTheme } = useTheme()
 
   const handleLogout = () => {
     logout()
     toast.success("Você foi desconectado com sucesso!")
+  }
+
+  const handleThemeToggle = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark")
   }
 
   const getUserInitials = (name: string | undefined) => {
@@ -44,6 +50,16 @@ export function Topbar() {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-destructive" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative"
+          onClick={handleThemeToggle}
+          aria-label="Toggle theme"
+        >
+          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
