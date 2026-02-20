@@ -18,6 +18,7 @@ import {
 } from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
@@ -133,9 +134,8 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
 
       <div className="space-y-3">
         <Label htmlFor="new_password">{t('newPasswordLabel')}</Label>
-        <Input
+        <PasswordInput
           id="new_password"
-          type="password"
           placeholder={t('passwordPlaceholder')}
           {...register('new_password')}
           disabled={isSubmitting}
@@ -151,9 +151,8 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
 
       <div className="space-y-3">
         <Label htmlFor="new_password_confirm">{t('confirmPasswordLabel')}</Label>
-        <Input
+        <PasswordInput
           id="new_password_confirm"
-          type="password"
           placeholder={t('passwordPlaceholder')}
           {...register('new_password_confirm')}
           disabled={isSubmitting}
