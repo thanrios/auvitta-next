@@ -29,6 +29,7 @@ interface AuthState {
   setUser: (user: User | null) => void
   setTokens: (access: string, refresh: string) => void
   setLoading: (loading: boolean) => void
+  finishLoading: () => void
   logout: () => void
   initializeAuth: () => void
 }
@@ -65,6 +66,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   setLoading: (loading) => set({ isLoading: loading }),
+
+  finishLoading: () => set({ isLoading: false }),
 
   logout: () => {
     if (typeof window !== 'undefined') {

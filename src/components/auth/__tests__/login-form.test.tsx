@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { toast } from 'sonner'
 import { LoginForm } from '../login-form'
 import { TestProviders } from '@/test/mocks/auth-provider'
 
@@ -10,6 +11,13 @@ const mockUseAuth = vi.fn()
 
 vi.mock('@/hooks/use-auth', () => ({
   useAuth: () => mockUseAuth(),
+}))
+
+vi.mock('sonner', () => ({
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+  },
 }))
 
 // Mock Next.js Link
@@ -66,8 +74,8 @@ describe('LoginForm', () => {
     await user.click(submitButton)
 
     await waitFor(() => {
-      expect(screen.getByText(/email is required/i)).toBeInTheDocument()
-      expect(screen.getByText(/password is required/i)).toBeInTheDocument()
+      expect(screen.getByText(/email é obrigatório/i)).toBeInTheDocument()
+      expect(screen.getByText(/senha é obrigatória/i)).toBeInTheDocument()
     })
 
     expect(mockLogin).not.toHaveBeenCalled()
@@ -115,7 +123,7 @@ describe('LoginForm', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/password must be at least 6 characters/i)
+        screen.getByText(/a senha deve ter no mínimo 6 caracteres/i)
       ).toBeInTheDocument()
     })
 
@@ -179,7 +187,7 @@ describe('LoginForm', () => {
       </TestProviders>
     )
 
-    expect(screen.getByText(errorMessage)).toBeInTheDocument()
+    expect(toast.error).toHaveBeenCalledWith(errorMessage)
   })
 
   it('should have proper accessibility attributes', () => {

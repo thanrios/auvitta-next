@@ -1,15 +1,10 @@
 "use client"
 
-import { Bell, Menu } from "lucide-react"
+import { Bell, Moon, Sun, Globe } from "lucide-react"
+import { useTheme } from "next-themes"
+import { useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { toast } from "sonner"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -23,25 +18,30 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { useAuth } from "@/hooks/use-auth"
+import { useLocaleSwitch } from "@/hooks/use-locale-switch"
 
-interface TopbarProps {
-  breadcrumbs?: Array<{
-    label: string
-    href?: string
-  }>
-  actions?: React.ReactNode
-}
-
-export function Topbar({ breadcrumbs = [], actions }: TopbarProps) {
+export function Topbar() {
   const { user, logout } = useAuth()
+  const { resolvedTheme, setTheme } = useTheme()
+  const t = useTranslations('navigation.topbar')
+  const locale = useLocale()
+  const { switchLocale } = useLocaleSwitch()
 
   const handleLogout = () => {
     logout()
-    toast.success("Você foi desconectado com sucesso!")
+    toast.success(t('logoutSuccess'))
+  }
+
+  const handleThemeToggle = () => {
+    setTheme(resolvedTheme === "dark" ? "light" : "dark")
+  }
+
+  const handleLocaleSwitch = (newLocale: string) => {
+    switchLocale(newLocale)
   }
 
   const getUserInitials = (name: string | undefined) => {
-    if (!name) return "U"
+    if (!name) return t('userInitial')
     return name
       .split(" ")
       .map((n) => n[0])
@@ -55,60 +55,82 @@ export function Topbar({ breadcrumbs = [], actions }: TopbarProps) {
       <div className="flex items-center gap-2 flex-1">
         <SidebarTrigger className="-ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        {breadcrumbs.length > 0 && (
-          <Breadcrumb>
-            <BreadcrumbList>
-              {breadcrumbs.map((breadcrumb, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <BreadcrumbItem>
-                    {index === breadcrumbs.length - 1 ? (
-                      <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
-                    ) : breadcrumb.href ? (
-                      <BreadcrumbLink href={breadcrumb.href}>
-                        {breadcrumb.label}
-                      </BreadcrumbLink>
-                    ) : (
-                      <span>{breadcrumb.label}</span>
-                    )}
-                  </BreadcrumbItem>
-                  {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                </div>
-              ))}
-            </BreadcrumbList>
-          </Breadcrumb>
-        )}
       </div>
       <div className="flex items-center gap-2">
-        {actions}
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-destructive" />
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src="" alt={user?.full_name || "Usuário"} />
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t('changeLanguage')}
+            >
+              <Globe className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel className="text-xs font-semibold text-muted-foreground">
+              {t('language')}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => handleLocaleSwitch('pt-BR')}
+              className={locale === 'pt-BR' ? 'bg-accent' : ''}
+            >
+              <span className="mr-2">🇧🇷</span> Português (BR)
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleLocaleSwitch('en-US')}
+              className={locale === 'en-US' ? 'bg-accent' : ''}
+            >
+              <span className="mr-2">🇺🇸</span> English (US)
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative"
+          onClick={handleThemeToggle}
+          aria-label={t('toggleTheme')}
+        >
+          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-10 gap-2 p-2">
+              <Avatar className="h-9 w-9 border">
+                <AvatarImage src="" alt={user?.full_name || t('user')} />
                 <AvatarFallback>{getUserInitials(user?.full_name)}</AvatarFallback>
               </Avatar>
+              <div className="flex flex-col items-start leading-none">
+                <span className="text-sm font-medium">{user?.full_name || t('user')}</span>
+                <span className="text-xs text-muted-foreground">
+                  {user?.email || t('userEmailFallback')}
+                </span>
+              </div>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.full_name || "Usuário"}
+                  {user?.full_name || t('user')}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email || "usuario@clinica.com"}
+                  {user?.email || t('userEmailFallback')}
                 </p>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Perfil</DropdownMenuItem>
-            <DropdownMenuItem>Configurações</DropdownMenuItem>
+            <DropdownMenuItem>{t('profile')}</DropdownMenuItem>
+            <DropdownMenuItem>{t('settings')}</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>Sair</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>{t('logout')}</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

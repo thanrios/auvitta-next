@@ -219,7 +219,7 @@ toast.promise(promise, {
 
                 toast.promise(promise, {
                   loading: 'Loading...',
-                  success: (data: any) => {
+                  success: (data: { name: string }) => {
                     return `${data.name} has been added`;
                   },
                   error: 'Error',
@@ -341,10 +341,10 @@ function UpdateProfile() {
         <h2 className="text-2xl font-bold mb-4">Best Practices</h2>
         <Card className="p-6">
           <ul className="space-y-3 list-disc list-inside">
-            <li>Use <strong className="text-success">success</strong> toasts (verde) for confirming successful actions (e.g., "Data saved", "Logged out successfully")</li>
-            <li>Use <strong className="text-destructive">error</strong> toasts (vermelho) for failures that need user attention (e.g., "Failed to save", "Invalid credentials")</li>
-            <li>Use <strong className="text-warning">warning</strong> toasts (amarelo) for important non-blocking messages (e.g., "Session expiring soon")</li>
-            <li>Use <strong className="text-info">info</strong> toasts (azul) for helpful information (e.g., "New feature available")</li>
+            <li>Use <strong className="text-success">success</strong> toasts (green) for confirming successful actions (e.g., Data saved, Logged out successfully)</li>
+            <li>Use <strong className="text-destructive">error</strong> toasts (red) for failures that need user attention (e.g., Failed to save, Invalid credentials)</li>
+            <li>Use <strong className="text-warning">warning</strong> toasts (yellow) for important non-blocking messages (e.g., Session expiring soon)</li>
+            <li>Use <strong className="text-info">info</strong> toasts (blue) for helpful information (e.g., New feature available)</li>
             <li>Use <strong>promise</strong> toasts for async operations to show loading/success/error states</li>
             <li>Keep messages concise and actionable</li>
             <li>Avoid showing too many toasts at once</li>
@@ -364,19 +364,19 @@ function UpdateProfile() {
             <div>
               <h3 className="font-semibold mb-2">Authentication</h3>
               <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
-                <li><code>toast.error("Usuário e/ou senha incorreto(s)")</code> - Login failure</li>
-                <li><code>toast.success("Você foi desconectado com sucesso")</code> - Logout</li>
-                <li><code>toast.success("Email enviado com sucesso!")</code> - Password reset email sent</li>
-                <li><code>toast.success("Senha redefinida com sucesso!")</code> - Password changed</li>
+                <li><code>{'toast.error("Invalid email or password")'}</code> - Login failure</li>
+                <li><code>{'toast.success("You were successfully signed out")'}</code> - Logout</li>
+                <li><code>{'toast.success("Email sent successfully")'}</code> - Password reset email sent</li>
+                <li><code>{'toast.success("Password reset successfully")'}</code> - Password changed</li>
               </ul>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Data Operations</h3>
               <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
-                <li><code>toast.success("Paciente cadastrado com sucesso")</code> - Create operation</li>
-                <li><code>toast.success("Dados atualizados")</code> - Update operation</li>
-                <li><code>toast.error("Erro ao salvar dados")</code> - Save failure</li>
-                <li><code>toast.warning("Existem alterações não salvas")</code> - Unsaved changes warning</li>
+                <li><code>{'toast.success("Patient created successfully")'}</code> - Create operation</li>
+                <li><code>{'toast.success("Data updated")'}</code> - Update operation</li>
+                <li><code>{'toast.error("Failed to save data")'}</code> - Save failure</li>
+                <li><code>{'toast.warning("There are unsaved changes")'}</code> - Unsaved changes warning</li>
               </ul>
             </div>
           </div>

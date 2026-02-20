@@ -4,6 +4,7 @@
  */
 
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
+import { getCurrentLocale } from '@/i18n/locale'
 import type { ApiError } from '@/types/common.types'
 
 // Get API URL from environment
@@ -172,6 +173,26 @@ apiClient.interceptors.response.use(
 
 // Helper function to handle API errors
 export const getErrorMessage = (error: unknown): string => {
+  const locale = getCurrentLocale()
+  const localizedErrors = {
+    'pt-BR': {
+      resourceNotFound: 'Recurso não encontrado',
+      internalServer: 'Erro interno do servidor',
+      requestTimeout: 'Tempo de requisição esgotado',
+      network: 'Erro de conexão. Verifique sua internet.',
+      unexpected: 'Ocorreu um erro inesperado',
+    },
+    'en-US': {
+      resourceNotFound: 'Resource not found',
+      internalServer: 'Internal server error',
+      requestTimeout: 'Request timed out',
+      network: 'Connection error. Check your internet.',
+      unexpected: 'An unexpected error occurred',
+    },
+  } as const
+
+  const localeErrors = localizedErrors[locale]
+
   if (axios.isAxiosError(error)) {
     const apiError = error.response?.data as ApiError
 
@@ -195,26 +216,26 @@ export const getErrorMessage = (error: unknown): string => {
 
     // Default error messages
     if (error.response?.status === 404) {
-      return 'Recurso não encontrado'
+      return localeErrors.resourceNotFound
     }
     if (error.response?.status === 500) {
-      return 'Erro interno do servidor'
+      return localeErrors.internalServer
     }
     if (error.code === 'ECONNABORTED') {
-      return 'Tempo de requisição esgotado'
+      return localeErrors.requestTimeout
     }
     if (error.code === 'ERR_NETWORK') {
-      return 'Erro de conexão. Verifique sua internet.'
+      return localeErrors.network
     }
 
-    return error.message || 'Ocorreu um erro inesperado'
+    return error.message || localeErrors.unexpected
   }
 
   if (error instanceof Error) {
     return error.message
   }
 
-  return 'An unexpected error occurred'
+  return localeErrors.unexpected
 }
 
 export default apiClient

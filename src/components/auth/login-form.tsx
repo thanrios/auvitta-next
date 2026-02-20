@@ -6,25 +6,53 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/use-auth'
-import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
+import {
+  createAuthValidationSchemas,
+  type LoginFormData,
+} from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 
 export function LoginForm() {
   const { login, isLoggingIn, loginError } = useAuth()
+  const t = useTranslations('auth.login')
+  const tValidation = useTranslations('validation.auth')
+
+  const validationSchemas = useMemo(
+    () =>
+      createAuthValidationSchemas({
+        emailRequired: tValidation('emailRequired'),
+        emailInvalid: tValidation('emailInvalid'),
+        passwordRequired: tValidation('passwordRequired'),
+        passwordMin6: tValidation('passwordMin6'),
+        tokenRequired: tValidation('tokenRequired'),
+        newPasswordMin8: tValidation('newPasswordMin8'),
+        newPasswordUpper: tValidation('newPasswordUpper'),
+        newPasswordLower: tValidation('newPasswordLower'),
+        newPasswordNumber: tValidation('newPasswordNumber'),
+        confirmPasswordRequired: tValidation('confirmPasswordRequired'),
+        passwordsMustMatch: tValidation('passwordsMustMatch'),
+        currentPasswordRequired: tValidation('currentPasswordRequired'),
+        newPasswordMustDiffer: tValidation('newPasswordMustDiffer'),
+      }),
+    [tValidation]
+  )
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(validationSchemas.loginSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -52,11 +80,11 @@ export function LoginForm() {
       noValidate
     >
       <div className="space-y-3">
-        <Label htmlFor="email">E-mail</Label>
+        <Label htmlFor="email">{t('emailLabel')}</Label>
         <Input
           id="email"
           type="email"
-          placeholder="nome@clinica.com"
+          placeholder={t('emailPlaceholder')}
           {...register('email')}
           disabled={isLoggingIn}
           aria-invalid={errors.email ? 'true' : 'false'}
@@ -67,12 +95,11 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-3">
-        <Label htmlFor="password">Senha</Label>
-        <Input
+        <Label htmlFor="password">{t('passwordLabel')}</Label>
+        <PasswordInput
           id="password"
-          type="password"
           placeholder="••••••••"
-		  autoComplete="new-password"
+          autoComplete="new-password"
           {...register('password')}
           disabled={isLoggingIn}
           aria-invalid={errors.password ? 'true' : 'false'}
@@ -85,13 +112,13 @@ export function LoginForm() {
             href="/forgot-password"
             className="text-sm text-ring hover:text-foreground transition-colors underline"
           >
-            Esqueceu sua senha?
+            {t('forgotPassword')}
           </Link>
         </div>
       </div>
 
       <Button type="submit" className="w-full" disabled={isLoggingIn}>
-        {isLoggingIn ? 'Entrando...' : 'Entrar'}
+        {isLoggingIn ? t('submitting') : t('submit')}
       </Button>
     </form>
   )

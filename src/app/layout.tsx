@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
 import "./globals.css";
 import { Providers } from "@/providers";
 import { Toaster } from "@/components/ui/sonner";
@@ -16,22 +18,27 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Auvitta",
-  description: "Auvitta is a modern, open-source, and self-hosted media server built with Next.js and TypeScript. It provides a sleek and intuitive interface for managing and streaming your media collection, including movies, TV shows, music, and photos. With support for multiple users, Auvitta allows you to share your media library with friends and family while maintaining control over access and permissions. Whether you're looking to organize your media or stream it to various devices, Auvitta offers a powerful and customizable solution for all your media needs.",
+  description: "Plataforma de gestão clínica moderna com prontuário eletrônico e operação centralizada.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          {children}
-        </Providers>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Providers>
+            {children}
+          </Providers>
+        </NextIntlClientProvider>
         <Toaster />
       </body>
     </html>
