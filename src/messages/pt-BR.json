@@ -1,0 +1,173 @@
+{
+  "auth": {
+    "login": {
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "nome@clinica.com",
+      "passwordLabel": "Senha",
+      "forgotPassword": "Esqueceu sua senha?",
+      "submit": "Entrar",
+      "submitting": "Entrando..."
+    },
+    "forgotPassword": {
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "nome@clinica.com",
+      "helper": "Digite seu email cadastrado para receber um link de recuperação de senha.",
+      "submit": "Enviar link de recuperação",
+      "submitting": "Enviando...",
+      "backToLogin": "Voltar para o login",
+      "successToast": "Email enviado com sucesso! Verifique sua caixa de entrada.",
+      "successTitle": "Email enviado!",
+      "successDescription": "Se o email fornecido estiver cadastrado, você receberá um link para redefinir sua senha. Verifique sua caixa de entrada e spam.",
+      "fallbackError": "Falha ao enviar email de recuperação. Tente novamente."
+    },
+    "setPassword": {
+      "newPasswordLabel": "Nova senha",
+      "confirmPasswordLabel": "Confirmar nova senha",
+      "passwordPlaceholder": "••••••••",
+      "helper": "Mínimo de 8 caracteres, com letras maiúsculas, minúsculas e números.",
+      "submit": "Redefinir senha",
+      "submitting": "Redefinindo...",
+      "backToLogin": "Voltar para o login",
+      "goToLoginNow": "Ir para o login agora",
+      "successToast": "Senha redefinida com sucesso! Redirecionando...",
+      "successTitle": "Senha redefinida com sucesso!",
+      "successDescription": "Sua senha foi alterada. Você será redirecionado para a página de login em alguns segundos...",
+      "fallbackError": "Falha ao redefinir senha. O link pode ter expirado. Tente novamente."
+    }
+  },
+  "validation": {
+    "auth": {
+      "emailRequired": "Email é obrigatório",
+      "emailInvalid": "Formato de email inválido",
+      "passwordRequired": "Senha é obrigatória",
+      "passwordMin6": "A senha deve ter no mínimo 6 caracteres",
+      "tokenRequired": "Token é obrigatório",
+      "newPasswordMin8": "A senha deve ter no mínimo 8 caracteres",
+      "newPasswordUpper": "A senha deve conter pelo menos uma letra maiúscula",
+      "newPasswordLower": "A senha deve conter pelo menos uma letra minúscula",
+      "newPasswordNumber": "A senha deve conter pelo menos um número",
+      "confirmPasswordRequired": "Confirmação de senha é obrigatória",
+      "passwordsMustMatch": "As senhas não coincidem",
+      "currentPasswordRequired": "Senha atual é obrigatória",
+      "newPasswordMustDiffer": "A nova senha deve ser diferente da senha atual"
+    }
+  },
+  "pages": {
+    "login": {
+      "title": "Login - Auvitta",
+      "description": "Acesse o prontuário eletrônico Auvitta"
+    },
+    "forgotPassword": {
+      "title": "Esqueci minha senha - Auvitta",
+      "description": "Recupere sua senha do prontuário eletrônico Auvitta",
+      "heading": "Recuperar senha",
+      "subtitle": "Informe seu e-mail para receber as instruções de recuperação."
+    },
+    "setPassword": {
+      "title": "Redefinir senha - Auvitta",
+      "description": "Redefina sua senha do prontuário eletrônico Auvitta",
+      "heading": "Redefinir senha",
+      "subtitle": "Digite sua nova senha abaixo."
+    },
+    "dashboard": {
+      "heading": "Dashboard"
+    },
+    "patients": {
+      "heading": "Pacientes",
+      "newPatient": "Novo Paciente",
+      "listTitle": "Lista de Pacientes",
+      "viewDetails": "Ver detalhes",
+      "table": {
+        "name": "Nome",
+        "birthDate": "Data de Nascimento",
+        "therapy": "Terapia",
+        "actions": "Ações"
+      },
+      "therapy": {
+        "speechTherapy": "Fonoaudiologia",
+        "psychology": "Psicologia",
+        "occupationalTherapy": "Terapia Ocupacional"
+      }
+    },
+    "notFound": {
+      "title": "Página não encontrada",
+      "description": "Desculpe, a página que você está procurando não existe ou foi movida.",
+      "backToDashboard": "← Voltar ao Dashboard",
+      "goToLogin": "Ir para Login"
+    }
+  },
+  "errors": {
+    "resourceNotFound": "Recurso não encontrado",
+    "internalServer": "Erro interno do servidor",
+    "requestTimeout": "Tempo de requisição esgotado",
+    "network": "Erro de conexão. Verifique sua internet.",
+    "unexpected": "Ocorreu um erro inesperado"
+  },
+  "navigation": {
+    "sidebar": {
+      "clinic": {
+        "name": "Clínica Matriz",
+        "location": "Filial 01 - SP"
+      },
+      "sections": {
+        "clinic": "CLÍNICA",
+        "finance": "FINANCEIRO",
+        "settings": "CONFIGURAÇÕES"
+      },
+      "items": {
+        "schedule": "Agendamento",
+        "patients": "Pacientes",
+        "professionals": "Profissionais",
+        "accountsPayable": "Contas a Pagar",
+        "accountsReceivable": "Contas a Receber",
+        "billing": "Faturamento",
+        "insurance": "Convênio",
+        "permissions": "Permissões",
+        "clinicSettings": "Configurações da Clínica"
+      },
+      "dashboard": "Dashboard",
+      "switchClinic": "Trocar clínica",
+      "settings": "Configurações",
+      "support": "Suporte"
+    },
+    "topbar": {
+      "toggleTheme": "Alternar tema",
+      "logoutSuccess": "Você foi desconectado com sucesso!",
+      "user": "Usuário",
+      "userInitial": "U",
+      "userEmailFallback": "usuario@clinica.com",
+      "profile": "Perfil",
+      "settings": "Configurações",
+      "logout": "Sair",
+      "language": "Idioma",
+      "changeLanguage": "Mudar idioma"
+    },
+    "breadcrumbs": {
+      "home": "Início",
+      "segments": {
+        "dashboard": "Início",
+        "pacientes": "Pacientes",
+        "agendamento": "Agendamento",
+        "profissionais": "Profissionais",
+        "contas-pagar": "Contas a Pagar",
+        "contas-receber": "Contas a Receber",
+        "faturamento": "Faturamento",
+        "convenio": "Convênio",
+        "permissoes": "Permissões",
+        "configuracoes": "Configurações"
+      }
+    }
+  },
+  "layouts": {
+    "auth": {
+      "support": "Suporte"
+    },
+    "setPassword": {
+      "subtitle": "Prontuário Eletrônico"
+    }
+  },
+  "app": {
+    "name": "Auvitta",
+    "description": "Plataforma de gestão clínica moderna com prontuário eletrônico e operação centralizada."
+  }
+}

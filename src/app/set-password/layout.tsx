@@ -1,8 +1,12 @@
-export default function SetPasswordLayout({
+import { getTranslations } from 'next-intl/server'
+
+export default async function SetPasswordLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = await getTranslations('layouts.setPassword')
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
       <div className="w-full max-w-sm">
@@ -11,7 +15,7 @@ export default function SetPasswordLayout({
             Auvitta
           </h2>
           <p className="text-sm text-muted-foreground">
-            Prontuário Eletrônico
+            {t('subtitle')}
           </p>
         </div>
         {children}

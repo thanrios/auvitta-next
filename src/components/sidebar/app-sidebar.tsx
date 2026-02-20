@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useTranslations } from 'next-intl'
 import {
   Calendar,
   Users,
@@ -39,40 +40,41 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
 
-const clinicData = {
-  name: "Clínica Matriz",
-  location: "Filial 01 - SP",
-}
-
-const menuSections = [
-  {
-    label: "CLÍNICA",
-    items: [
-      { title: "Agendamento", icon: Calendar, href: "/agendamento" },
-      { title: "Pacientes", icon: Users, href: "/pacientes" },
-      { title: "Profissionais", icon: UserCog, href: "/profissionais" },
-    ],
-  },
-  {
-    label: "FINANCEIRO",
-    items: [
-      { title: "Contas a Pagar", icon: TrendingDown, href: "/contas-pagar" },
-      { title: "Contas a Receber", icon: TrendingUp, href: "/contas-receber" },
-      { title: "Faturamento", icon: DollarSign, href: "/faturamento" },
-      { title: "Convênio", icon: Building2, href: "/convenio" },
-    ],
-  },
-  {
-    label: "CONFIGURAÇÕES",
-    items: [
-      { title: "Permissões", icon: Lock, href: "/permissoes" },
-      { title: "Configurações da Clínica", icon: Settings, href: "/configuracoes" },
-    ],
-  },
-]
-
 export function AppSidebar() {
   const pathname = usePathname()
+  const t = useTranslations('navigation.sidebar')
+
+  const clinicData = {
+    name: t('clinic.name'),
+    location: t('clinic.location'),
+  }
+
+  const menuSections = [
+    {
+      label: t('sections.clinic'),
+      items: [
+        { title: t('items.schedule'), icon: Calendar, href: '/agendamento' },
+        { title: t('items.patients'), icon: Users, href: '/pacientes' },
+        { title: t('items.professionals'), icon: UserCog, href: '/profissionais' },
+      ],
+    },
+    {
+      label: t('sections.finance'),
+      items: [
+        { title: t('items.accountsPayable'), icon: TrendingDown, href: '/contas-pagar' },
+        { title: t('items.accountsReceivable'), icon: TrendingUp, href: '/contas-receber' },
+        { title: t('items.billing'), icon: DollarSign, href: '/faturamento' },
+        { title: t('items.insurance'), icon: Building2, href: '/convenio' },
+      ],
+    },
+    {
+      label: t('sections.settings'),
+      items: [
+        { title: t('items.permissions'), icon: Lock, href: '/permissoes' },
+        { title: t('items.clinicSettings'), icon: Settings, href: '/configuracoes' },
+      ],
+    },
+  ]
 
   return (
     <Sidebar collapsible="icon">
@@ -119,10 +121,10 @@ export function AppSidebar() {
                 sideOffset={4}
               >
                 <DropdownMenuItem>
-                  <span>Trocar clínica</span>
+                  <span>{t('switchClinic')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Configurações</span>
+                  <span>{t('settings')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -137,7 +139,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
                   <Link href="/dashboard">
                     <LayoutDashboard />
-                    <span>Dashboard</span>
+                    <span>{t('dashboard')}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -170,7 +172,7 @@ export function AppSidebar() {
             <SidebarMenuButton asChild>
               <Link href={process.env.NEXT_PUBLIC_SUPPORT_URL || "#"} target="_blank">
                 <LifeBuoy />
-                <span>Suporte</span>
+                <span>{t('support')}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

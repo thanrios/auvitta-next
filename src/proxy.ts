@@ -1,11 +1,12 @@
 /**
  * Proxy Configuration (Next.js 16+)
- * Route protection and authentication checks
+ * Route protection, authentication checks, and internationalization
  * Replaces the deprecated middleware.ts
  */
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { LOCALES, DEFAULT_LOCALE, LOCALE_COOKIE_NAME } from './i18n/config'
 
 // Public routes that DON'T require authentication
 const publicRoutes = [
@@ -18,6 +19,23 @@ const publicRoutes = [
 
 // Routes that should redirect to dashboard if already authenticated
 const authRoutes = ['/login', '/register', '/login-example']
+
+/**
+ * Get locale from request
+ */
+function getLocaleFromRequest(request: NextRequest): string {
+  const cookieLocale = request.cookies.get(LOCALE_COOKIE_NAME)?.value
+  if (cookieLocale && LOCALES.includes(cookieLocale as any)) {
+    return cookieLocale
+  }
+
+  const acceptLanguage = request.headers.get('accept-language') || ''
+  if (acceptLanguage.toLowerCase().includes('en')) {
+    return 'en-US'
+  }
+
+  return DEFAULT_LOCALE
+}
 
 /**
  * Check if a path matches any of the given routes
@@ -54,12 +72,16 @@ export default function proxy(request: NextRequest) {
   // Check if the current route is an auth route
   const isAuthRoute = isRouteMatch(pathname, authRoutes)
 
-  // If NOT a public route and NO token, redirect to login
+  // If NOT a public route and NO token, redirect to login (protege /dashboard e outras rotas)
   if (!isPublicRoute && !hasToken) {
     const url = new URL('/login', request.url)
     // Save the attempted URL to redirect after login
     url.searchParams.set('redirect', pathname)
-    return NextResponse.redirect(url)
+    const response = NextResponse.redirect(url)
+    // Impede cache para garantir que redireciona em reloads
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
+    response.headers.set('Pragma', 'no-cache')
+    return response
   }
 
   // If auth route and HAS token, redirect to dashboard

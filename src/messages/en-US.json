@@ -1,0 +1,173 @@
+{
+  "auth": {
+    "login": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@clinic.com",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Sign in",
+      "submitting": "Signing in..."
+    },
+    "forgotPassword": {
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@clinic.com",
+      "helper": "Enter your registered email to receive a password reset link.",
+      "submit": "Send recovery link",
+      "submitting": "Sending...",
+      "backToLogin": "Back to login",
+      "successToast": "Email sent successfully! Check your inbox.",
+      "successTitle": "Email sent!",
+      "successDescription": "If the provided email is registered, you will receive a link to reset your password. Check your inbox and spam folder.",
+      "fallbackError": "Failed to send password reset email. Please try again."
+    },
+    "setPassword": {
+      "newPasswordLabel": "New password",
+      "confirmPasswordLabel": "Confirm new password",
+      "passwordPlaceholder": "••••••••",
+      "helper": "Minimum 8 characters, with uppercase, lowercase and numbers.",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "backToLogin": "Back to login",
+      "goToLoginNow": "Go to login now",
+      "successToast": "Password reset successfully! Redirecting...",
+      "successTitle": "Password reset successfully!",
+      "successDescription": "Your password has been updated. You will be redirected to the login page in a few seconds...",
+      "fallbackError": "Failed to reset password. The link may have expired. Please try again."
+    }
+  },
+  "validation": {
+    "auth": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "passwordRequired": "Password is required",
+      "passwordMin6": "Password must be at least 6 characters",
+      "tokenRequired": "Token is required",
+      "newPasswordMin8": "Password must be at least 8 characters",
+      "newPasswordUpper": "Password must contain at least one uppercase letter",
+      "newPasswordLower": "Password must contain at least one lowercase letter",
+      "newPasswordNumber": "Password must contain at least one number",
+      "confirmPasswordRequired": "Password confirmation is required",
+      "passwordsMustMatch": "Passwords do not match",
+      "currentPasswordRequired": "Current password is required",
+      "newPasswordMustDiffer": "New password must be different from current password"
+    }
+  },
+  "pages": {
+    "login": {
+      "title": "Login - Auvitta",
+      "description": "Access Auvitta clinical records"
+    },
+    "forgotPassword": {
+      "title": "Forgot password - Auvitta",
+      "description": "Recover your Auvitta password",
+      "heading": "Recover password",
+      "subtitle": "Enter your email to receive recovery instructions."
+    },
+    "setPassword": {
+      "title": "Reset password - Auvitta",
+      "description": "Reset your Auvitta password",
+      "heading": "Reset password",
+      "subtitle": "Enter your new password below."
+    },
+    "dashboard": {
+      "heading": "Dashboard"
+    },
+    "patients": {
+      "heading": "Patients",
+      "newPatient": "New Patient",
+      "listTitle": "Patient List",
+      "viewDetails": "View details",
+      "table": {
+        "name": "Name",
+        "birthDate": "Date of Birth",
+        "therapy": "Therapy",
+        "actions": "Actions"
+      },
+      "therapy": {
+        "speechTherapy": "Speech Therapy",
+        "psychology": "Psychology",
+        "occupationalTherapy": "Occupational Therapy"
+      }
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "Sorry, the page you are looking for does not exist or has been moved.",
+      "backToDashboard": "← Back to Dashboard",
+      "goToLogin": "Go to Login"
+    }
+  },
+  "errors": {
+    "resourceNotFound": "Resource not found",
+    "internalServer": "Internal server error",
+    "requestTimeout": "Request timed out",
+    "network": "Connection error. Check your internet.",
+    "unexpected": "An unexpected error occurred"
+  },
+  "navigation": {
+    "sidebar": {
+      "clinic": {
+        "name": "Main Clinic",
+        "location": "Branch 01 - SP"
+      },
+      "sections": {
+        "clinic": "CLINIC",
+        "finance": "FINANCE",
+        "settings": "SETTINGS"
+      },
+      "items": {
+        "schedule": "Scheduling",
+        "patients": "Patients",
+        "professionals": "Professionals",
+        "accountsPayable": "Accounts Payable",
+        "accountsReceivable": "Accounts Receivable",
+        "billing": "Billing",
+        "insurance": "Insurance",
+        "permissions": "Permissions",
+        "clinicSettings": "Clinic Settings"
+      },
+      "dashboard": "Dashboard",
+      "switchClinic": "Switch clinic",
+      "settings": "Settings",
+      "support": "Support"
+    },
+    "topbar": {
+      "toggleTheme": "Toggle theme",
+      "logoutSuccess": "You have been successfully signed out!",
+      "user": "User",
+      "userInitial": "U",
+      "userEmailFallback": "user@clinic.com",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Sign out",
+      "language": "Language",
+      "changeLanguage": "Change language"
+    },
+    "breadcrumbs": {
+      "home": "Home",
+      "segments": {
+        "dashboard": "Home",
+        "pacientes": "Patients",
+        "agendamento": "Scheduling",
+        "profissionais": "Professionals",
+        "contas-pagar": "Accounts Payable",
+        "contas-receber": "Accounts Receivable",
+        "faturamento": "Billing",
+        "convenio": "Insurance",
+        "permissoes": "Permissions",
+        "configuracoes": "Settings"
+      }
+    }
+  },
+  "layouts": {
+    "auth": {
+      "support": "Support"
+    },
+    "setPassword": {
+      "subtitle": "Electronic Health Record"
+    }
+  },
+  "app": {
+    "name": "Auvitta",
+    "description": "Modern clinic management platform with electronic records and centralized operations."
+  }
+}

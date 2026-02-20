@@ -6,17 +6,23 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { setPasswordSchema, type SetPasswordFormData } from '@/lib/validations/auth'
+import {
+  createAuthValidationSchemas,
+  type SetPasswordFormData,
+} from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 import apiClient from '@/lib/api'
+import { getErrorMessage } from '@/lib/api'
 
 interface SetPasswordFormProps {
   token: string
@@ -27,13 +33,35 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const t = useTranslations('auth.setPassword')
+  const tValidation = useTranslations('validation.auth')
+
+  const validationSchemas = useMemo(
+    () =>
+      createAuthValidationSchemas({
+        emailRequired: tValidation('emailRequired'),
+        emailInvalid: tValidation('emailInvalid'),
+        passwordRequired: tValidation('passwordRequired'),
+        passwordMin6: tValidation('passwordMin6'),
+        tokenRequired: tValidation('tokenRequired'),
+        newPasswordMin8: tValidation('newPasswordMin8'),
+        newPasswordUpper: tValidation('newPasswordUpper'),
+        newPasswordLower: tValidation('newPasswordLower'),
+        newPasswordNumber: tValidation('newPasswordNumber'),
+        confirmPasswordRequired: tValidation('confirmPasswordRequired'),
+        passwordsMustMatch: tValidation('passwordsMustMatch'),
+        currentPasswordRequired: tValidation('currentPasswordRequired'),
+        newPasswordMustDiffer: tValidation('newPasswordMustDiffer'),
+      }),
+    [tValidation]
+  )
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SetPasswordFormData>({
-    resolver: zodResolver(setPasswordSchema),
+    resolver: zodResolver(validationSchemas.setPasswordSchema),
     defaultValues: {
       token,
       new_password: '',
@@ -54,13 +82,8 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
       setTimeout(() => {
         router.push('/login')
       }, 3000)
-    } catch (err: any) {
-      setError(
-        err.response?.data?.detail ||
-        err.response?.data?.new_password?.[0] ||
-        err.response?.data?.token?.[0] ||
-        'Failed to reset password. The link may have expired. Please try again.'
-      )
+    } catch (error: unknown) {
+      setError(getErrorMessage(error) || t('fallbackError'))
     } finally {
       setIsSubmitting(false)
     }
@@ -74,9 +97,9 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
 
   useEffect(() => {
     if (success) {
-      toast.success('Senha redefinida com sucesso! Redirecionando...')
+      toast.success(t('successToast'))
     }
-  }, [success])
+  }, [success, t])
 
   if (success) {
     return (
@@ -84,9 +107,9 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
         <Alert variant="default">
           <AlertDescription>
             <div className="space-y-2">
-              <p className="font-medium">Senha redefinida com sucesso!</p>
+              <p className="font-medium">{t('successTitle')}</p>
               <p className="text-sm text-muted-foreground">
-                Sua senha foi alterada. Você será redirecionado para a página de login em alguns segundos...
+                {t('successDescription')}
               </p>
             </div>
           </AlertDescription>
@@ -97,7 +120,7 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
             href="/login"
             className="text-sm text-ring hover:text-foreground transition-colors underline"
           >
-            Ir para o login agora
+            {t('goToLoginNow')}
           </Link>
         </div>
       </div>
@@ -109,11 +132,11 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
       <input type="hidden" {...register('token')} />
 
       <div className="space-y-3">
-        <Label htmlFor="new_password">Nova senha</Label>
+        <Label htmlFor="new_password">{t('newPasswordLabel')}</Label>
         <Input
           id="new_password"
           type="password"
-          placeholder="••••••••"
+          placeholder={t('passwordPlaceholder')}
           {...register('new_password')}
           disabled={isSubmitting}
           aria-invalid={errors.new_password ? 'true' : 'false'}
@@ -122,16 +145,16 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
           <p className="text-sm text-destructive">{errors.new_password.message}</p>
         )}
         <p className="text-sm text-muted-foreground">
-          Mínimo de 8 caracteres, com letras maiúsculas, minúsculas e números.
+          {t('helper')}
         </p>
       </div>
 
       <div className="space-y-3">
-        <Label htmlFor="new_password_confirm">Confirmar nova senha</Label>
+        <Label htmlFor="new_password_confirm">{t('confirmPasswordLabel')}</Label>
         <Input
           id="new_password_confirm"
           type="password"
-          placeholder="••••••••"
+          placeholder={t('passwordPlaceholder')}
           {...register('new_password_confirm')}
           disabled={isSubmitting}
           aria-invalid={errors.new_password_confirm ? 'true' : 'false'}
@@ -142,7 +165,7 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
       </div>
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? 'Redefinindo...' : 'Redefinir senha'}
+        {isSubmitting ? t('submitting') : t('submit')}
       </Button>
 
       <div className="text-center">
@@ -150,7 +173,7 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
           href="/login"
           className="text-sm text-ring hover:text-foreground transition-colors underline"
         >
-          Voltar para o login
+          {t('backToLogin')}
         </Link>
       </div>
     </form>

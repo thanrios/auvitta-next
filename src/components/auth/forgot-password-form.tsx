@@ -6,28 +6,56 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/lib/validations/auth'
+import {
+  createAuthValidationSchemas,
+  type ForgotPasswordFormData,
+} from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 import apiClient from '@/lib/api'
+import { getErrorMessage } from '@/lib/api'
 
 export function ForgotPasswordForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const t = useTranslations('auth.forgotPassword')
+  const tValidation = useTranslations('validation.auth')
+
+  const validationSchemas = useMemo(
+    () =>
+      createAuthValidationSchemas({
+        emailRequired: tValidation('emailRequired'),
+        emailInvalid: tValidation('emailInvalid'),
+        passwordRequired: tValidation('passwordRequired'),
+        passwordMin6: tValidation('passwordMin6'),
+        tokenRequired: tValidation('tokenRequired'),
+        newPasswordMin8: tValidation('newPasswordMin8'),
+        newPasswordUpper: tValidation('newPasswordUpper'),
+        newPasswordLower: tValidation('newPasswordLower'),
+        newPasswordNumber: tValidation('newPasswordNumber'),
+        confirmPasswordRequired: tValidation('confirmPasswordRequired'),
+        passwordsMustMatch: tValidation('passwordsMustMatch'),
+        currentPasswordRequired: tValidation('currentPasswordRequired'),
+        newPasswordMustDiffer: tValidation('newPasswordMustDiffer'),
+      }),
+    [tValidation]
+  )
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
+    resolver: zodResolver(validationSchemas.forgotPasswordSchema),
     defaultValues: {
       email: '',
     },
@@ -41,12 +69,8 @@ export function ForgotPasswordForm() {
     try {
       await apiClient.post('/users/password-reset/', data)
       setSuccess(true)
-    } catch (err: any) {
-      setError(
-        err.response?.data?.detail ||
-        err.response?.data?.email?.[0] ||
-        'Failed to send password reset email. Please try again.'
-      )
+    } catch (error: unknown) {
+      setError(getErrorMessage(error) || t('fallbackError'))
     } finally {
       setIsSubmitting(false)
     }
@@ -60,9 +84,9 @@ export function ForgotPasswordForm() {
 
   useEffect(() => {
     if (success) {
-      toast.success('Email enviado com sucesso! Verifique sua caixa de entrada.')
+      toast.success(t('successToast'))
     }
-  }, [success])
+  }, [success, t])
 
   if (success) {
     return (
@@ -70,10 +94,9 @@ export function ForgotPasswordForm() {
         <Alert variant="default">
           <AlertDescription>
             <div className="space-y-2">
-              <p className="font-medium">Email enviado!</p>
+              <p className="font-medium">{t('successTitle')}</p>
               <p className="text-sm text-muted-foreground">
-                Se o email fornecido estiver cadastrado, você receberá um link para redefinir sua senha.
-                Verifique sua caixa de entrada e spam.
+                {t('successDescription')}
               </p>
             </div>
           </AlertDescription>
@@ -84,7 +107,7 @@ export function ForgotPasswordForm() {
             href="/login"
             className="text-sm text-ring hover:text-foreground transition-colors underline"
           >
-            Voltar para o login
+            {t('backToLogin')}
           </Link>
         </div>
       </div>
@@ -94,11 +117,11 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="space-y-3">
-        <Label htmlFor="email">E-mail</Label>
+        <Label htmlFor="email">{t('emailLabel')}</Label>
         <Input
           id="email"
           type="email"
-          placeholder="nome@clinica.com"
+          placeholder={t('emailPlaceholder')}
           {...register('email')}
           disabled={isSubmitting}
           aria-invalid={errors.email ? 'true' : 'false'}
@@ -107,12 +130,12 @@ export function ForgotPasswordForm() {
           <p className="text-sm text-destructive">{errors.email.message}</p>
         )}
         <p className="text-sm text-muted-foreground">
-          Digite seu email cadastrado para receber um link de recuperação de senha.
+          {t('helper')}
         </p>
       </div>
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? 'Enviando...' : 'Enviar link de recuperação'}
+        {isSubmitting ? t('submitting') : t('submit')}
       </Button>
 
       <div className="text-center">
@@ -120,7 +143,7 @@ export function ForgotPasswordForm() {
           href="/login"
           className="text-sm text-ring hover:text-foreground transition-colors underline"
         >
-          Voltar para o login
+          {t('backToLogin')}
         </Link>
       </div>
     </form>

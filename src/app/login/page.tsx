@@ -1,11 +1,17 @@
+import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Stethoscope } from "lucide-react"
 import Link from "next/link"
 import { LoginForm } from "@/components/auth/login-form"
 
-export const metadata = {
-  title: 'Login - Auvitta',
-  description: 'Acesse o prontuário eletrônico Auvitta',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('pages.login')
+
+  return {
+    title: t('title'),
+    description: t('description'),
+  }
 }
 
 export default function LoginPage() {

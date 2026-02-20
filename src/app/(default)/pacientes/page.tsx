@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -16,42 +17,44 @@ const patients = [
     id: "p-001",
     name: "Mariana Souza",
     birthDate: "2017-05-12",
-    therapy: "Fonoaudiologia",
+    therapyKey: 'speechTherapy',
   },
   {
     id: "p-002",
     name: "João Silva",
     birthDate: "2015-08-23",
-    therapy: "Psicologia",
+    therapyKey: 'psychology',
   },
   {
     id: "p-003",
     name: "Ana Costa",
     birthDate: "2018-03-15",
-    therapy: "Terapia Ocupacional",
+    therapyKey: 'occupationalTherapy',
   },
-]
+] as const
 
 export default function PacientesPage() {
+  const t = useTranslations('pages.patients')
+
   return (
     <div className="flex-1 space-y-4 p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Pacientes</h1>
-        <Button>Novo Paciente</Button>
+        <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
+        <Button>{t('newPatient')}</Button>
       </div>
       <Card>
         <CardHeader>
-          <CardTitle>Lista de Pacientes</CardTitle>
+          <CardTitle>{t('listTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>
-                <TableHead>Nome</TableHead>
-                <TableHead>Data de Nascimento</TableHead>
-                <TableHead>Terapia</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
+                <TableHead>{t('table.name')}</TableHead>
+                <TableHead>{t('table.birthDate')}</TableHead>
+                <TableHead>{t('table.therapy')}</TableHead>
+                <TableHead className="text-right">{t('table.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -60,10 +63,10 @@ export default function PacientesPage() {
                   <TableCell className="font-medium">{patient.id}</TableCell>
                   <TableCell>{patient.name}</TableCell>
                   <TableCell>{patient.birthDate}</TableCell>
-                  <TableCell>{patient.therapy}</TableCell>
+                  <TableCell>{t(`therapy.${patient.therapyKey}`)}</TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm">
-                      Ver detalhes
+                      {t('viewDetails')}
                     </Button>
                   </TableCell>
                 </TableRow>

@@ -1,11 +1,14 @@
 import Link from "next/link"
+import { getTranslations } from 'next-intl/server'
 import { LifeBuoy, Stethoscope } from "lucide-react"
 
-export default function LoginLayout({
+export default async function LoginLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const t = await getTranslations('layouts.auth')
+
   return (
     <div className="min-h-screen w-full bg-white relative">
       {/* Diagonal Cross Top Right Fade Grid Background */}
@@ -44,7 +47,7 @@ export default function LoginLayout({
           className="text-base text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
         >
           <LifeBuoy className="h-5 w-5" />
-          Suporte
+          {t('support')}
         </Link>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useTranslations } from 'next-intl'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,14 +12,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-const segmentLabels: Record<string, string> = {
-  dashboard: "Início",
-  pacientes: "Pacientes",
-}
-
-function formatSegmentLabel(segment: string): string {
+function formatSegmentLabel(segment: string, translator: (segment: string) => string): string {
   return (
-    segmentLabels[segment] ||
+    translator(segment) ||
     segment
       .split("-")
       .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
@@ -28,6 +24,7 @@ function formatSegmentLabel(segment: string): string {
 
 export function DashboardBreadcrumbs() {
   const pathname = usePathname()
+  const t = useTranslations('navigation.breadcrumbs')
   const rawSegments = pathname.split("/").filter(Boolean)
 
   const segments =
@@ -35,11 +32,14 @@ export function DashboardBreadcrumbs() {
 
   const breadcrumbItems = [
     {
-      label: "Início",
+      label: t('home'),
       href: "/dashboard",
     },
     ...segments.map((segment, index) => ({
-      label: formatSegmentLabel(segment),
+      label: formatSegmentLabel(segment, (value) => {
+        const key = `segments.${value}`
+        return t.has(key) ? t(key) : ''
+      }),
       href: `/${segments.slice(0, index + 1).join("/")}`,
     })),
   ]

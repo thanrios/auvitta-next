@@ -43,9 +43,11 @@ export function useAuth() {
         localStorage.setItem('user', JSON.stringify(data.user))
       }
 
+      // Force refetch user data after login to ensure latest info
+      setTimeout(() => refetchUser(), 100)
+
       router.push('/dashboard')
     },
-    // Keep onError empty to expose the error through loginMutation.error.
   })
 
   const registerMutation = useMutation({
@@ -83,18 +85,24 @@ export function useAuth() {
     },
   })
 
-  const { data: currentUser, refetch: refetchUser } = useQuery({
+  const { data: currentUser, refetch: refetchUser, isLoading: isLoadingUser } = useQuery({
     queryKey: ['user', 'me'],
     queryFn: async () => {
-      return api.get<User>('/users/me/')
+      const response = await api.get<User>('/users/me/')
+      return response
     },
     enabled: isAuthenticated && !user,
     staleTime: 5 * 60 * 1000,
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   })
 
   useEffect(() => {
     if (currentUser && !user) {
       setUser(currentUser)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('user', JSON.stringify(currentUser))
+      }
     }
   }, [currentUser, user, setUser])
 
@@ -105,7 +113,7 @@ export function useAuth() {
   return {
     user: user || currentUser,
     isAuthenticated,
-    isLoading: isLoading || loginMutation.isPending,
+    isLoading: isLoading || loginMutation.isPending || (isAuthenticated && !user && isLoadingUser),
 
     login,
     loginAsync: loginMutation.mutateAsync,
