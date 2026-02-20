@@ -21,6 +21,8 @@ export function Topbar() {
   const { user, logout } = useAuth()
   const { resolvedTheme, setTheme } = useTheme()
 
+  console.log('user', user);
+
   const handleLogout = () => {
     logout()
     toast.success("Você foi desconectado com sucesso!")
@@ -63,11 +65,17 @@ export function Topbar() {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9">
+            <Button variant="ghost" className="h-10 gap-2 p-2">
+              <Avatar className="h-9 w-9 border">
                 <AvatarImage src="" alt={user?.full_name || "Usuário"} />
                 <AvatarFallback>{getUserInitials(user?.full_name)}</AvatarFallback>
               </Avatar>
+              <div className="flex flex-col items-start leading-none">
+                <span className="text-sm font-medium">{user?.full_name || "Usuário"}</span>
+                <span className="text-xs text-muted-foreground">
+                  {user?.email || "usuario@clinica.com"}
+                </span>
+              </div>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>

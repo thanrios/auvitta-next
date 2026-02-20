@@ -1,6 +1,5 @@
 /**
- * API Hooks
- * Custom hooks for API operations using TanStack Query
+ * API hooks built on TanStack Query.
  */
 
 'use client'
@@ -21,13 +20,6 @@ import type {
 } from '@/types/appointment.types'
 import type { PaginatedResponse } from '@/types/common.types'
 
-// ============================================================================
-// Patients
-// ============================================================================
-
-/**
- * Fetch all patients (paginated)
- */
 export function usePatients(page = 1, search = '') {
   return useQuery({
     queryKey: ['patients', page, search],
@@ -40,9 +32,6 @@ export function usePatients(page = 1, search = '') {
   })
 }
 
-/**
- * Fetch single patient by ID
- */
 export function usePatient(id: number | string) {
   return useQuery({
     queryKey: ['patients', id],
@@ -54,9 +43,6 @@ export function usePatient(id: number | string) {
   })
 }
 
-/**
- * Create new patient
- */
 export function useCreatePatient() {
   const queryClient = useQueryClient()
 
@@ -65,7 +51,6 @@ export function useCreatePatient() {
       return api.post<Patient>('/patients/', data)
     },
     onSuccess: () => {
-      // Invalidate patients list to refetch
       queryClient.invalidateQueries({ queryKey: ['patients'] })
     },
     onError: (error) => {
@@ -74,9 +59,6 @@ export function useCreatePatient() {
   })
 }
 
-/**
- * Update patient
- */
 export function useUpdatePatient(id: number | string) {
   const queryClient = useQueryClient()
 
@@ -85,9 +67,7 @@ export function useUpdatePatient(id: number | string) {
       return api.patch<Patient>(`/patients/${id}/`, data)
     },
     onSuccess: (updatedPatient) => {
-      // Update cache for single patient
       queryClient.setQueryData(['patients', id], updatedPatient)
-      // Invalidate patients list
       queryClient.invalidateQueries({ queryKey: ['patients'] })
     },
     onError: (error) => {
@@ -96,9 +76,6 @@ export function useUpdatePatient(id: number | string) {
   })
 }
 
-/**
- * Delete patient
- */
 export function useDeletePatient() {
   const queryClient = useQueryClient()
 
@@ -107,7 +84,6 @@ export function useDeletePatient() {
       return api.delete(`/patients/${id}/`)
     },
     onSuccess: () => {
-      // Invalidate patients list
       queryClient.invalidateQueries({ queryKey: ['patients'] })
     },
     onError: (error) => {
@@ -116,13 +92,6 @@ export function useDeletePatient() {
   })
 }
 
-// ============================================================================
-// Appointments
-// ============================================================================
-
-/**
- * Fetch all appointments (paginated)
- */
 export function useAppointments(page = 1, filters?: {
   patient_id?: number
   doctor_id?: number
@@ -140,9 +109,6 @@ export function useAppointments(page = 1, filters?: {
   })
 }
 
-/**
- * Fetch single appointment by ID
- */
 export function useAppointment(id: number | string) {
   return useQuery({
     queryKey: ['appointments', id],
@@ -154,9 +120,6 @@ export function useAppointment(id: number | string) {
   })
 }
 
-/**
- * Create new appointment
- */
 export function useCreateAppointment() {
   const queryClient = useQueryClient()
 
@@ -165,7 +128,6 @@ export function useCreateAppointment() {
       return api.post<Appointment>('/appointments/', data)
     },
     onSuccess: () => {
-      // Invalidate appointments list
       queryClient.invalidateQueries({ queryKey: ['appointments'] })
     },
     onError: (error) => {
@@ -174,9 +136,6 @@ export function useCreateAppointment() {
   })
 }
 
-/**
- * Update appointment
- */
 export function useUpdateAppointment(id: number | string) {
   const queryClient = useQueryClient()
 
@@ -185,9 +144,7 @@ export function useUpdateAppointment(id: number | string) {
       return api.patch<Appointment>(`/appointments/${id}/`, data)
     },
     onSuccess: (updatedAppointment) => {
-      // Update cache for single appointment
       queryClient.setQueryData(['appointments', id], updatedAppointment)
-      // Invalidate appointments list
       queryClient.invalidateQueries({ queryKey: ['appointments'] })
     },
     onError: (error) => {
@@ -196,9 +153,6 @@ export function useUpdateAppointment(id: number | string) {
   })
 }
 
-/**
- * Cancel appointment
- */
 export function useCancelAppointment() {
   const queryClient = useQueryClient()
 
@@ -209,7 +163,6 @@ export function useCancelAppointment() {
       })
     },
     onSuccess: () => {
-      // Invalidate appointments list
       queryClient.invalidateQueries({ queryKey: ['appointments'] })
     },
     onError: (error) => {
@@ -218,37 +171,3 @@ export function useCancelAppointment() {
   })
 }
 
-// ============================================================================
-// Example: How to use these hooks in a component
-// ============================================================================
-
-/*
-'use client'
-
-import { usePatients, useCreatePatient } from '@/hooks/use-api'
-
-export function PatientsPage() {
-  const { data, isLoading, error } = usePatients(1)
-  const createPatient = useCreatePatient()
-
-  const handleCreate = () => {
-    createPatient.mutate({
-      full_name: 'John Doe',
-      email: 'john@example.com',
-      // ... other fields
-    })
-  }
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-
-  return (
-    <div>
-      {data?.results.map((patient) => (
-        <div key={patient.id}>{patient.full_name}</div>
-      ))}
-      <button onClick={handleCreate}>Create Patient</button>
-    </div>
-  )
-}
-*/

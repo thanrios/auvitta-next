@@ -1,6 +1,5 @@
 /**
- * Authentication Hook
- * Custom hook for authentication operations
+ * Authentication hook with login, register, logout and password reset helpers.
  */
 
 'use client'
@@ -21,6 +20,7 @@ import type {
 
 export function useAuth() {
   const router = useRouter()
+
   const {
     user,
     isAuthenticated,
@@ -29,8 +29,6 @@ export function useAuth() {
     setTokens,
     logout: logoutStore,
   } = useAuthStore()
-
-  // ── Login ──────────────────────────────────────────────────────────────────
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginRequest) => {
@@ -47,12 +45,8 @@ export function useAuth() {
 
       router.push('/dashboard')
     },
-    // onError deliberadamente vazio: o erro fica em loginMutation.error
-    // e é exposto como loginError abaixo — sem reset automático que fazia
-    // o alerta piscar e sumir.
+    // Keep onError empty to expose the error through loginMutation.error.
   })
-
-  // ── Register ───────────────────────────────────────────────────────────────
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterRequest) => {
@@ -67,8 +61,6 @@ export function useAuth() {
     },
   })
 
-  // ── Logout ─────────────────────────────────────────────────────────────────
-
   const logoutMutation = useMutation({
     mutationFn: async () => {
       const refreshToken = useAuthStore.getState().refreshToken
@@ -82,8 +74,6 @@ export function useAuth() {
     },
   })
 
-  // ── Password reset ─────────────────────────────────────────────────────────
-
   const passwordResetMutation = useMutation({
     mutationFn: async (data: PasswordResetRequest) => {
       return api.post('/auth/password-reset/', data)
@@ -92,8 +82,6 @@ export function useAuth() {
       console.error('Password reset error:', getErrorMessage(error))
     },
   })
-
-  // ── Current user query ─────────────────────────────────────────────────────
 
   const { data: currentUser, refetch: refetchUser } = useQuery({
     queryKey: ['user', 'me'],
@@ -110,40 +98,28 @@ export function useAuth() {
     }
   }, [currentUser, user, setUser])
 
-  // ── Login wrapper ──────────────────────────────────────────────────────────
-  // Não chama reset() antes do mutate: isso limpava o erro imediatamente e
-  // causava o efeito de "piscar". O TanStack Query já sobrescreve o estado
-  // de erro quando um novo mutate começa (status → 'pending').
-
   const login = (credentials: LoginRequest) => {
     loginMutation.mutate(credentials)
   }
 
-  // ── Return ─────────────────────────────────────────────────────────────────
-
   return {
-    // State
     user: user || currentUser,
     isAuthenticated,
     isLoading: isLoading || loginMutation.isPending,
 
-    // Login
     login,
     loginAsync: loginMutation.mutateAsync,
     isLoggingIn: loginMutation.isPending,
     loginError: loginMutation.error ? getErrorMessage(loginMutation.error) : null,
 
-    // Register
     register: registerMutation.mutate,
     registerAsync: registerMutation.mutateAsync,
     isRegistering: registerMutation.isPending,
     registerError: registerMutation.error ? getErrorMessage(registerMutation.error) : null,
 
-    // Logout
     logout: logoutMutation.mutate,
     isLoggingOut: logoutMutation.isPending,
 
-    // Password reset
     requestPasswordReset: passwordResetMutation.mutate,
     requestPasswordResetAsync: passwordResetMutation.mutateAsync,
     isRequestingPasswordReset: passwordResetMutation.isPending,
@@ -151,7 +127,6 @@ export function useAuth() {
       ? getErrorMessage(passwordResetMutation.error)
       : null,
 
-    // Utilities
     refetchUser,
   }
 }
