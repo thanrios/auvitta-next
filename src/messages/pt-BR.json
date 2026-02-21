@@ -70,7 +70,8 @@
       "subtitle": "Digite sua nova senha abaixo."
     },
     "dashboard": {
-      "heading": "Dashboard"
+      "heading": "Dashboard",
+      "hi": "Olá"
     },
     "patients": {
       "heading": "Pacientes",

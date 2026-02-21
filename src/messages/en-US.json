@@ -70,7 +70,8 @@
       "subtitle": "Enter your new password below."
     },
     "dashboard": {
-      "heading": "Dashboard"
+      "heading": "Dashboard",
+      "hi": "Hi"
     },
     "patients": {
       "heading": "Patients",

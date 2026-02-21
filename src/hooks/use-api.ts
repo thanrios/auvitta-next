@@ -7,6 +7,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '@/lib/api-client'
 import { getErrorMessage } from '@/lib/api'
+import { API_ROUTES } from '@/lib/api-routes'
 
 import type {
   Patient,
@@ -24,7 +25,7 @@ export function usePatients(page = 1, search = '') {
   return useQuery({
     queryKey: ['patients', page, search],
     queryFn: async () => {
-      return api.get<PaginatedResponse<Patient>>('/patients/', {
+      return api.get<PaginatedResponse<Patient>>(API_ROUTES.patients.base, {
         params: { page, search },
       })
     },
@@ -36,7 +37,7 @@ export function usePatient(id: number | string) {
   return useQuery({
     queryKey: ['patients', id],
     queryFn: async () => {
-      return api.get<Patient>(`/patients/${id}/`)
+      return api.get<Patient>(API_ROUTES.patients.byId(id))
     },
     enabled: !!id,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -48,7 +49,7 @@ export function useCreatePatient() {
 
   return useMutation({
     mutationFn: async (data: PatientCreateRequest) => {
-      return api.post<Patient>('/patients/', data)
+      return api.post<Patient>(API_ROUTES.patients.base, data)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['patients'] })
@@ -64,7 +65,7 @@ export function useUpdatePatient(id: number | string) {
 
   return useMutation({
     mutationFn: async (data: PatientUpdateRequest) => {
-      return api.patch<Patient>(`/patients/${id}/`, data)
+      return api.patch<Patient>(API_ROUTES.patients.byId(id), data)
     },
     onSuccess: (updatedPatient) => {
       queryClient.setQueryData(['patients', id], updatedPatient)
@@ -81,7 +82,7 @@ export function useDeletePatient() {
 
   return useMutation({
     mutationFn: async (id: number | string) => {
-      return api.delete(`/patients/${id}/`)
+      return api.delete(API_ROUTES.patients.byId(id))
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['patients'] })
@@ -101,7 +102,7 @@ export function useAppointments(page = 1, filters?: {
   return useQuery({
     queryKey: ['appointments', page, filters],
     queryFn: async () => {
-      return api.get<PaginatedResponse<Appointment>>('/appointments/', {
+      return api.get<PaginatedResponse<Appointment>>(API_ROUTES.appointments.base, {
         params: { page, ...filters },
       })
     },
@@ -113,7 +114,7 @@ export function useAppointment(id: number | string) {
   return useQuery({
     queryKey: ['appointments', id],
     queryFn: async () => {
-      return api.get<Appointment>(`/appointments/${id}/`)
+      return api.get<Appointment>(API_ROUTES.appointments.byId(id))
     },
     enabled: !!id,
     staleTime: 2 * 60 * 1000, // 2 minutes
@@ -125,7 +126,7 @@ export function useCreateAppointment() {
 
   return useMutation({
     mutationFn: async (data: AppointmentCreateRequest) => {
-      return api.post<Appointment>('/appointments/', data)
+      return api.post<Appointment>(API_ROUTES.appointments.base, data)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['appointments'] })
@@ -141,7 +142,7 @@ export function useUpdateAppointment(id: number | string) {
 
   return useMutation({
     mutationFn: async (data: AppointmentUpdateRequest) => {
-      return api.patch<Appointment>(`/appointments/${id}/`, data)
+      return api.patch<Appointment>(API_ROUTES.appointments.byId(id), data)
     },
     onSuccess: (updatedAppointment) => {
       queryClient.setQueryData(['appointments', id], updatedAppointment)
@@ -158,7 +159,7 @@ export function useCancelAppointment() {
 
   return useMutation({
     mutationFn: async (id: number | string) => {
-      return api.patch<Appointment>(`/appointments/${id}/`, {
+      return api.patch<Appointment>(API_ROUTES.appointments.byId(id), {
         status: 'CANCELLED',
       })
     },

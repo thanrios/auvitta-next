@@ -31,7 +31,6 @@ export interface LoginRequest {
 export interface LoginResponse {
   access: string
   refresh: string
-  user: User
 }
 
 export interface RefreshTokenRequest {
@@ -40,7 +39,7 @@ export interface RefreshTokenRequest {
 
 export interface RefreshTokenResponse {
   access: string
-  refresh: string
+  refresh?: string
 }
 
 export interface LogoutRequest {

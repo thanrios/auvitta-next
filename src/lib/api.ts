@@ -5,6 +5,7 @@
 
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import { getCurrentLocale } from '@/i18n/locale'
+import { API_BASE_PATH, API_ROUTES, AUTH_IGNORED_401_ENDPOINTS } from '@/lib/api-routes'
 import type { ApiError } from '@/types/common.types'
 
 // Get API URL from environment
@@ -12,7 +13,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 // Create axios instance
 export const apiClient: AxiosInstance = axios.create({
-  baseURL: `${API_URL}/api/v1`,
+  baseURL: `${API_URL}${API_BASE_PATH}`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -70,8 +71,7 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       // Skip token refresh logic for authentication endpoints
       // These endpoints are meant to fail with 401 (e.g., wrong password)
-      const authEndpoints = ['/auth/token/', '/auth/token/refresh/', '/auth/register/']
-      const isAuthEndpoint = authEndpoints.some(endpoint =>
+      const isAuthEndpoint = AUTH_IGNORED_401_ENDPOINTS.some(endpoint =>
         originalRequest.url?.includes(endpoint)
       )
 
@@ -81,7 +81,7 @@ apiClient.interceptors.response.use(
       }
 
       // Check if this is the refresh endpoint itself
-      if (originalRequest.url?.includes('/auth/refresh/')) {
+      if (originalRequest.url?.includes(API_ROUTES.auth.refresh)) {
         // Refresh token is invalid, logout user
         if (typeof window !== 'undefined') {
           localStorage.removeItem('access_token')
@@ -127,7 +127,7 @@ apiClient.interceptors.response.use(
 
       try {
         // Attempt to refresh the token
-        const response = await axios.post(`${API_URL}/api/v1/auth/token/refresh/`, {
+        const response = await axios.post(`${API_URL}${API_BASE_PATH}${API_ROUTES.auth.refresh}`, {
           refresh: refreshToken,
         })
 

@@ -110,7 +110,7 @@ export function Topbar() {
               <div className="flex flex-col items-start leading-none">
                 <span className="text-sm font-medium">{user?.full_name || t('user')}</span>
                 <span className="text-xs text-muted-foreground">
-                  {user?.email || t('userEmailFallback')}
+                  {user?.role || t('userEmailFallback')}
                 </span>
               </div>
             </Button>
@@ -122,7 +122,7 @@ export function Topbar() {
                   {user?.full_name || t('user')}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email || t('userEmailFallback')}
+                  {user?.role || t('userEmailFallback')}
                 </p>
               </div>
             </DropdownMenuLabel>

@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/lib/auth-store'
 import api from '@/lib/api-client'
 import { getErrorMessage } from '@/lib/api'
+import { API_ROUTES } from '@/lib/api-routes'
 import type {
   LoginRequest,
   LoginResponse,
@@ -32,16 +33,11 @@ export function useAuth() {
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginRequest) => {
-      return api.post<LoginResponse>('/auth/token/', credentials)
+      return api.post<LoginResponse>(API_ROUTES.auth.token, credentials)
     },
     retry: false,
     onSuccess: (data) => {
       setTokens(data.access, data.refresh)
-      setUser(data.user)
-
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(data.user))
-      }
 
       // Force refetch user data after login to ensure latest info
       setTimeout(() => refetchUser(), 100)
@@ -52,7 +48,7 @@ export function useAuth() {
 
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterRequest) => {
-      return api.post<User>('/users/register/', data)
+      return api.post<User>(API_ROUTES.users.register, data)
     },
     retry: false,
     onSuccess: () => {
@@ -67,7 +63,7 @@ export function useAuth() {
     mutationFn: async () => {
       const refreshToken = useAuthStore.getState().refreshToken
       if (refreshToken) {
-        return api.post('/auth/logout/', { refresh: refreshToken })
+        return api.post(API_ROUTES.auth.logout, { refresh: refreshToken })
       }
     },
     onSettled: () => {
@@ -78,7 +74,7 @@ export function useAuth() {
 
   const passwordResetMutation = useMutation({
     mutationFn: async (data: PasswordResetRequest) => {
-      return api.post('/auth/password-reset/', data)
+      return api.post(API_ROUTES.users.forgotPassword, data)
     },
     onError: (error) => {
       console.error('Password reset error:', getErrorMessage(error))
@@ -88,7 +84,7 @@ export function useAuth() {
   const { data: currentUser, refetch: refetchUser, isLoading: isLoadingUser } = useQuery({
     queryKey: ['user', 'me'],
     queryFn: async () => {
-      const response = await api.get<User>('/users/me/')
+      const response = await api.get<User>(API_ROUTES.users.me)
       return response
     },
     enabled: isAuthenticated && !user,

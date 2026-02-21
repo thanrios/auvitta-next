@@ -53,27 +53,27 @@ export function AppSidebar() {
     {
       label: t('sections.clinic'),
       items: [
-        { title: t('items.schedule'), icon: Calendar, href: '/agendamento' },
+        // { title: t('items.schedule'), icon: Calendar, href: '/agendamento' },
         { title: t('items.patients'), icon: Users, href: '/pacientes' },
         { title: t('items.professionals'), icon: UserCog, href: '/profissionais' },
       ],
     },
-    {
-      label: t('sections.finance'),
-      items: [
-        { title: t('items.accountsPayable'), icon: TrendingDown, href: '/contas-pagar' },
-        { title: t('items.accountsReceivable'), icon: TrendingUp, href: '/contas-receber' },
-        { title: t('items.billing'), icon: DollarSign, href: '/faturamento' },
-        { title: t('items.insurance'), icon: Building2, href: '/convenio' },
-      ],
-    },
-    {
-      label: t('sections.settings'),
-      items: [
-        { title: t('items.permissions'), icon: Lock, href: '/permissoes' },
-        { title: t('items.clinicSettings'), icon: Settings, href: '/configuracoes' },
-      ],
-    },
+    // {
+    //   label: t('sections.finance'),
+    //   items: [
+    //     { title: t('items.accountsPayable'), icon: TrendingDown, href: '/contas-pagar' },
+    //     { title: t('items.accountsReceivable'), icon: TrendingUp, href: '/contas-receber' },
+    //     { title: t('items.billing'), icon: DollarSign, href: '/faturamento' },
+    //     { title: t('items.insurance'), icon: Building2, href: '/convenio' },
+    //   ],
+    // },
+    // {
+    //   label: t('sections.settings'),
+    //   items: [
+    //     { title: t('items.permissions'), icon: Lock, href: '/permissoes' },
+    //     { title: t('items.clinicSettings'), icon: Settings, href: '/configuracoes' },
+    //   ],
+    // },
   ]
 
   return (
@@ -82,7 +82,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard">
+              <Link href="/">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                   <Stethoscope className="size-4" />
                 </div>
@@ -94,7 +94,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         <Separator />
-        <SidebarMenu>
+        <SidebarMenu className="mb-2">
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

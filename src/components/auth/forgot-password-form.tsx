@@ -22,6 +22,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 import apiClient from '@/lib/api'
 import { getErrorMessage } from '@/lib/api'
+import { API_ROUTES } from '@/lib/api-routes'
 
 export function ForgotPasswordForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -67,7 +68,7 @@ export function ForgotPasswordForm() {
     setSuccess(false)
 
     try {
-      await apiClient.post('/users/password-reset/', data)
+      await apiClient.post(API_ROUTES.users.forgotPassword, data)
       setSuccess(true)
     } catch (error: unknown) {
       setError(getErrorMessage(error) || t('fallbackError'))

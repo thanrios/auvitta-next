@@ -17,13 +17,13 @@ import {
   type SetPasswordFormData,
 } from '@/lib/validations/auth'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import Link from 'next/link'
 import apiClient from '@/lib/api'
 import { getErrorMessage } from '@/lib/api'
+import { API_ROUTES } from '@/lib/api-routes'
 
 interface SetPasswordFormProps {
   token: string
@@ -76,7 +76,7 @@ export function SetPasswordForm({ token }: SetPasswordFormProps) {
     setSuccess(false)
 
     try {
-      await apiClient.post('/users/password-reset-confirm/', data)
+      await apiClient.post(API_ROUTES.users.setPassword, data)
       setSuccess(true)
 
       // Redirect to login after 3 seconds
