@@ -11,6 +11,7 @@ import { useAuthStore } from '@/lib/auth-store'
 import api from '@/lib/api-client'
 import { getErrorMessage } from '@/lib/api'
 import { API_ROUTES } from '@/lib/api-routes'
+import { QUERY_KEYS } from '@/lib/query-keys'
 import type {
   LoginRequest,
   LoginResponse,
@@ -18,6 +19,24 @@ import type {
   PasswordResetRequest,
   User,
 } from '@/types/auth.types'
+
+
+export function useAuthProtection() {
+  const router = useRouter()
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const isLoading = useAuthStore((state) => state.isLoading)
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/login')
+    }
+  }, [isLoading, isAuthenticated, router])
+
+  return {
+    isProtected: !isLoading && isAuthenticated,
+    isLoadingAuth: isLoading,
+  }
+}
 
 export function useAuth() {
   const router = useRouter()
@@ -82,7 +101,7 @@ export function useAuth() {
   })
 
   const { data: currentUser, refetch: refetchUser, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['user', 'me'],
+    queryKey: QUERY_KEYS.users.me(),
     queryFn: async () => {
       const response = await api.get<User>(API_ROUTES.users.me)
       return response

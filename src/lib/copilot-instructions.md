@@ -17,7 +17,11 @@ Avoid visual logic and direct coupling with UI components.
 Project pattern:
 1. Base API/interceptors configuration in `src/lib/api.ts`
 2. Typed HTTP helpers (`get`, `post`, `patch`, etc.) in `src/lib/api-client.ts`
-3. Consumption in data hooks (`src/hooks/use-api.ts`) with React Query
+3. Consumption in domain-specific hooks:
+   - `src/hooks/use-api-patients.ts` — patient queries and mutations
+   - `src/hooks/use-api-appointments.ts` — appointment queries and mutations
+   - All hooks use React Query for caching and state management
+4. Central re-export in `src/hooks/index.ts`
 
 Do not spread raw `axios` usage across components/pages.
 
