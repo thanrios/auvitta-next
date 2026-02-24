@@ -24,7 +24,31 @@ export const API_ROUTES = {
   },
   patients: {
     base: withTrailingSlash('/patients'),
-    byId: (id: string | number) => withTrailingSlash(`/patients/${id}`),
+    byId: (id: string) => withTrailingSlash(`/patients/${id}`),
+    phones: (patientId: string) => withTrailingSlash(`/patients/${patientId}/phones`),
+    phoneById: (patientId: string, phoneId: string) =>
+      withTrailingSlash(`/patients/${patientId}/phones/${phoneId}`),
+    addresses: (patientId: string) => withTrailingSlash(`/patients/${patientId}/addresses`),
+    addressById: (patientId: string, addressId: string) =>
+      withTrailingSlash(`/patients/${patientId}/addresses/${addressId}`),
+    documents: (patientId: string) => withTrailingSlash(`/patients/${patientId}/documents`),
+    documentById: (patientId: string, documentId: string) =>
+      withTrailingSlash(`/patients/${patientId}/documents/${documentId}`),
+    guardians: (patientId: string) => withTrailingSlash(`/patients/${patientId}/guardians`),
+    linkGuardian: (patientId: string) => withTrailingSlash(`/patients/${patientId}/guardians/link`),
+    guardianById: (patientId: string, guardianId: string) =>
+      withTrailingSlash(`/patients/${patientId}/guardians/${guardianId}`),
+  },
+  guardians: {
+    base: withTrailingSlash('/guardians'),
+    byId: (id: string) => withTrailingSlash(`/guardians/${id}`),
+    phones: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/phones`),
+    addresses: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/addresses`),
+    documents: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/documents`),
+    patients: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/patients`),
+    linkPatient: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/patients/link`),
+    patientById: (guardianId: string, patientId: string) =>
+      withTrailingSlash(`/guardians/${guardianId}/patients/${patientId}`),
   },
   appointments: {
     base: withTrailingSlash('/appointments'),

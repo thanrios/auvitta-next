@@ -79,10 +79,17 @@
       "listTitle": "Lista de Pacientes",
       "viewDetails": "Ver detalhes",
       "table": {
+        "age": "Idade",
         "name": "Nome",
         "birthDate": "Data de Nascimento",
         "therapy": "Terapia",
-        "actions": "Ações"
+        "actions": "Ações",
+        "loading": "Carregando pacientes...",
+        "error": "Não foi possível carregar os pacientes.",
+        "retry": "Tentar novamente",
+        "empty": "Nenhum paciente encontrado.",
+        "status": "Status",
+        "years": "anos"
       },
       "therapy": {
         "speechTherapy": "Fonoaudiologia",

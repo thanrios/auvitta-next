@@ -74,6 +74,7 @@
       "hi": "Hi"
     },
     "patients": {
+      "age": "Age",
       "heading": "Patients",
       "newPatient": "New Patient",
       "listTitle": "Patient List",
@@ -82,7 +83,13 @@
         "name": "Name",
         "birthDate": "Date of Birth",
         "therapy": "Therapy",
-        "actions": "Actions"
+        "actions": "Actions",
+        "loading": "Loading patients...",
+        "error": "Unable to load patients.",
+        "retry": "Try again",
+        "empty": "No patients found.",
+        "status": "Status",
+        "years": "years"
       },
       "therapy": {
         "speechTherapy": "Speech Therapy",
