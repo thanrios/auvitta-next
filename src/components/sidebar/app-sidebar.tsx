@@ -19,6 +19,8 @@ import {
   LayoutDashboard,
 } from "lucide-react"
 
+import { getFormattedVersion, getSupportUrl } from "@/lib/app-config"
+
 import {
   Sidebar,
   SidebarContent,
@@ -67,13 +69,14 @@ export function AppSidebar() {
     //     { title: t('items.insurance'), icon: Building2, href: '/convenio' },
     //   ],
     // },
-    // {
-    //   label: t('sections.settings'),
-    //   items: [
-    //     { title: t('items.permissions'), icon: Lock, href: '/permissoes' },
-    //     { title: t('items.clinicSettings'), icon: Settings, href: '/configuracoes' },
-    //   ],
-    // },
+    {
+      label: t('sections.settings'),
+      items: [
+        { title: t('items.permissions'), icon: Lock, href: '/permissoes' },
+        { title: t('items.clinicSettings'), icon: Settings, href: '/configuracoes' },
+        { title: t('items.companies'), icon: Lock, href: '/Companhias' },
+      ],
+    },
   ]
 
   return (
@@ -94,24 +97,25 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         <Separator />
-        <SidebarMenu className="mb-2">
-          <SidebarMenuItem>
+
+        <SidebarMenu className="mt-3 mb-2">
+          <SidebarMenuItem className="bg-accent-foreground rounded p-1 shadow-xl group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center"
                 >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-border">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-border group-data-[collapsible=icon]:mx-auto">
                     <Building2 className="size-4" />
                   </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
+                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-semibold">{clinicData.name}</span>
                     <span className="truncate text-xs text-muted-foreground">
                       {clinicData.location}
                     </span>
                   </div>
-                  <ChevronDown className="ml-auto" />
+                  <ChevronDown className="ml-auto group-data-[collapsible=icon]:hidden" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -170,15 +174,15 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href={process.env.NEXT_PUBLIC_SUPPORT_URL || "#"} target="_blank">
+              <Link href={getSupportUrl()} target="_blank">
                 <LifeBuoy />
                 <span>{t('support')}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <div className="px-3 py-2 text-xs text-muted-foreground">
-          v. {process.env.NEXT_PUBLIC_APP_VERSION || '0.0.1-dev'}
+        <div className="flex w-full justify-center px-3 py-2 text-xs text-muted-foreground text-center whitespace-nowrap leading-none group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:text-[10px]">
+          {getFormattedVersion()}
         </div>
       </SidebarFooter>
       <SidebarRail />

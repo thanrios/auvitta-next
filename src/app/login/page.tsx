@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Stethoscope } from "lucide-react"
 import Link from "next/link"
 import { LoginForm } from "@/components/auth/login-form"
+import { getFormattedVersion } from "@/lib/app-config"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('pages.login')
@@ -30,7 +31,7 @@ export default function LoginPage() {
             href="/"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            v. {process.env.NEXT_PUBLIC_APP_VERSION || '0.0.1-dev'}
+            {getFormattedVersion()}
           </Link>
         </div>
       </CardContent>
