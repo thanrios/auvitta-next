@@ -50,6 +50,42 @@
       "passwordsMustMatch": "As senhas não coincidem",
       "currentPasswordRequired": "Senha atual é obrigatória",
       "newPasswordMustDiffer": "A nova senha deve ser diferente da senha atual"
+    },
+    "patient": {
+      "fullNameRequired": "Nome completo é obrigatório",
+      "fullNameMin": "Nome completo deve ter ao menos 3 caracteres",
+      "birthDateRequired": "Data de nascimento é obrigatória",
+      "birthDateInvalid": "Data de nascimento inválida",
+      "birthDateFuture": "Data de nascimento não pode ser futura",
+      "sexRequired": "Sexo é obrigatório",
+      "documentTypeRequired": "Tipo de documento é obrigatório",
+      "documentNumberRequired": "Número do documento é obrigatório",
+      "documentCpfInvalid": "CPF inválido",
+      "guardianNameRequired": "Nome do responsável é obrigatório",
+      "guardianNameMin": "Nome do responsável deve ter ao menos 3 caracteres",
+      "guardianTypeRequired": "Tipo de responsável é obrigatório",
+      "guardianPrimaryRequired": "Selecione um responsável principal",
+      "guardianRequiredForMinor": "Paciente menor de idade deve possuir ao menos um responsável legal",
+      "guardianCpfRequiredWhenMinorWithoutPatientCpf": "Informe CPF válido de um responsável quando o paciente menor não tiver CPF próprio",
+      "patientCpfRequiredWhenAdultWithoutGuardian": "Paciente maior sem responsável deve informar CPF próprio válido",
+      "phoneMinItems": "Adicione ao menos um telefone",
+      "phoneCountryCodeRequired": "Código do país é obrigatório",
+      "phoneNumberRequired": "Número de telefone é obrigatório",
+      "phoneNumberInvalid": "Informe telefone com DDD válido (10 ou 11 dígitos)",
+      "phonePrimaryRequired": "Selecione um telefone principal",
+      "emailInvalid": "Email inválido",
+      "addressStreetRequired": "Rua é obrigatória",
+      "addressNumberRequired": "Número é obrigatório",
+      "addressCityRequired": "Cidade é obrigatória",
+      "addressStateRequired": "Estado é obrigatório",
+      "addressPostalCodeRequired": "CEP é obrigatório",
+      "careTypeRequired": "Tipo de atendimento é obrigatório",
+      "insuranceNameRequired": "Nome do convênio é obrigatório",
+      "insuranceCardNumberRequired": "Número da carteirinha é obrigatório",
+      "insurancePlanRequired": "Plano é obrigatório",
+      "specialtyRequired": "Especialidade é obrigatória",
+      "referralSourceRequired": "Encaminhamento é obrigatório",
+      "observationsMax": "Observações devem ter no máximo 500 caracteres"
     }
   },
   "pages": {
@@ -80,6 +116,8 @@
       "viewDetails": "Ver detalhes",
       "table": {
         "age": "Idade",
+        "sex": "Sexo",
+        "insurance": "Convênio",
         "name": "Nome",
         "birthDate": "Data de Nascimento",
         "therapy": "Terapia",
@@ -89,12 +127,236 @@
         "retry": "Tentar novamente",
         "empty": "Nenhum paciente encontrado.",
         "status": "Status",
-        "years": "anos"
+        "years": "anos",
+        "statusActive": "Ativo",
+        "statusInactive": "Inativo"
+      },
+      "sex": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "notInformed": "Não informado"
+      },
+      "careType": {
+        "private": "Particular",
+        "insurance": "Convênio",
+        "notInformed": "Não informado"
+      },
+      "card": {
+        "patientId": "ID: {id}",
+        "mockTag": "Exemplo",
+        "tags": "Tags selecionadas",
+        "noTags": "Sem tags"
       },
       "therapy": {
         "speechTherapy": "Fonoaudiologia",
         "psychology": "Psicologia",
         "occupationalTherapy": "Terapia Ocupacional"
+      },
+      "newForm": {
+        "meta": {
+          "title": "Novo Paciente - Auvitta",
+          "description": "Cadastro de novo paciente"
+        },
+        "heading": "Cadastro de Paciente",
+        "subtitle": "Preencha as etapas para concluir o cadastro.",
+        "stepLabel": "Etapa {step}",
+        "actions": {
+          "previous": "Voltar",
+          "skipOrContinue": "Pular etapa",
+          "next": "Próxima etapa",
+          "submit": "Finalizar cadastro"
+        },
+        "steps": {
+          "identification": {
+            "title": "Identificação do Paciente",
+            "support": "Dados pessoais",
+            "fields": {
+              "fullName": {
+                "label": "Nome completo",
+                "placeholder": "Digite o nome completo"
+              },
+              "socialName": {
+                "label": "Como você gostaria de ser chamado?",
+                "placeholder": "Opcional"
+              },
+              "birthDate": {
+                "label": "Data de nascimento"
+              },
+              "sex": {
+                "label": "Sexo"
+              },
+              "document": {
+                "title": "Documento de identificação",
+                "typeLabel": "Tipo",
+                "typePlaceholder": "Selecione o tipo",
+                "numberLabel": "Número",
+                "numberPlaceholder": "Digite o número do documento"
+              },
+              "documents": {
+                "title": "Documentação de identificação",
+                "typeLabel": "Tipo de documento",
+                "numberLabel": "Número do documento",
+                "numberPlaceholder": "Digite o número do documento",
+                "addButton": "Adicionar novo documento",
+                "addAriaLabel": "Adicionar documento",
+                "removeAriaLabel": "Remover documento"
+              }
+            },
+            "actions": {
+              "addGuardian": "Adicionar Responsável Legal"
+            }
+          },
+          "guardian": {
+            "title": "Responsável Legal",
+            "support": "Vínculos legais",
+            "helperMinor": "Para pacientes menores de idade, pelo menos um responsável legal é obrigatório.",
+            "helperAdult": "Etapa opcional para pacientes maiores de idade.",
+            "itemTitle": "Responsável {index}",
+            "sections": {
+              "basic": "Dados do responsável",
+              "documents": "Documentação de identificação"
+            },
+            "actions": {
+              "add": "Adicionar responsável",
+              "remove": "Remover"
+            },
+            "fields": {
+              "name": {
+                "label": "Nome",
+                "placeholder": "Digite o nome"
+              },
+              "type": {
+                "label": "Tipo",
+                "placeholder": "Selecione o tipo"
+              },
+              "isPrimary": {
+                "label": "Principal (financeiro)",
+                "action": "Marcar como principal",
+                "on": "ON",
+                "off": "OFF"
+              },
+              "document": {
+                "typeLabel": "Tipo de documento",
+                "typePlaceholder": "Selecione o tipo",
+                "numberLabel": "Número do documento",
+                "numberPlaceholder": "Digite o número"
+              }
+            }
+          },
+          "contact": {
+            "titleShort": "Contato",
+            "support": "Meios de contato",
+            "financialOnlyWarning": "Preencher somente se for responsável financeiro.",
+            "titleGuardian": "Contato do Responsável Legal",
+            "titlePatient": "Contato do Paciente",
+            "helperMinor": "Como o paciente é menor de idade, utilize os dados de contato do responsável legal.",
+            "helperAdult": "Informe os dados de contato do paciente.",
+            "fields": {
+              "phones": {
+                "title": "Telefones",
+                "countryCodeLabel": "Código do país",
+                "countryCodePlaceholder": "+55",
+                "numberLabel": "Número com DDD",
+                "numberPlaceholder": "(11) 99999-9999",
+                "whatsappLabel": "É WhatsApp",
+                "primaryLabel": "É principal",
+                "on": "ON",
+                "off": "OFF",
+                "primaryAction": "Marcar como principal",
+                "add": "Adicionar novo telefone",
+                "remove": "Remover"
+              },
+              "email": {
+                "label": "Email",
+                "placeholder": "Opcional"
+              },
+              "address": {
+                "title": "Endereço",
+                "streetLabel": "Rua",
+                "streetPlaceholder": "Digite a rua",
+                "numberLabel": "Número",
+                "numberPlaceholder": "Digite o número",
+                "complementLabel": "Complemento",
+                "complementPlaceholder": "Opcional",
+                "cityLabel": "Cidade",
+                "cityPlaceholder": "Digite a cidade",
+                "stateLabel": "Estado",
+                "statePlaceholder": "Digite o estado",
+                "postalCodeLabel": "CEP",
+                "postalCodePlaceholder": "00000-000"
+              }
+            }
+          },
+          "administrative": {
+            "title": "Informações Administrativas",
+            "support": "Dados de atendimento",
+            "fields": {
+              "careType": {
+                "label": "Tipo de atendimento"
+              },
+              "insuranceName": {
+                "label": "Nome do convênio",
+                "placeholder": "Digite o nome do convênio"
+              },
+              "insuranceCardNumber": {
+                "label": "Número da carteirinha",
+                "placeholder": "Digite o número"
+              },
+              "insurancePlan": {
+                "label": "Plano",
+                "placeholder": "Digite o plano"
+              },
+              "specialty": {
+                "label": "Especialidade",
+                "placeholder": "Selecione especialidades",
+                "helper": "Selecione uma ou mais especialidades (Ctrl/Cmd + clique)."
+              },
+              "referralSource": {
+                "label": "Encaminhamento"
+              },
+              "observations": {
+                "label": "Observações",
+                "placeholder": "Digite observações relevantes",
+                "counter": "{current}/{max} caracteres"
+              }
+            }
+          }
+        },
+        "options": {
+          "sex": {
+            "masculino": "Masculino",
+            "feminino": "Feminino",
+            "outro": "Outro"
+          },
+          "documentType": {
+            "cpf": "CPF",
+            "rg": "RG",
+            "passaporte": "Passaporte",
+            "cnh": "CNH",
+            "outro": "Outro"
+          },
+          "guardianType": {
+            "pai": "Pai",
+            "mae": "Mãe",
+            "tutor": "Tutor",
+            "outro": "Outro"
+          },
+          "specialty": {
+            "fonoaudiologia": "Fonoaudiologia",
+            "psicologia": "Psicologia",
+            "psicopedagogia": "Psicopedagogia"
+          },
+          "referralSource": {
+            "indicacao_amigo_familiar": "Indicação de amigo/familiar",
+            "indicacao_profissional_saude": "Indicação de profissional de saúde",
+            "busca_ativa": "Busca ativa",
+            "outro": "Outro"
+          },
+          "careType": {
+            "particular": "Particular",
+            "convenio": "Convênio"
+          }
+        }
       }
     },
     "notFound": {
@@ -131,7 +393,8 @@
         "billing": "Faturamento",
         "insurance": "Convênio",
         "permissions": "Permissões",
-        "clinicSettings": "Configurações da Clínica"
+        "clinicSettings": "Configurações da Clínica",
+        "companies": "Empresas"
       },
       "dashboard": "Dashboard",
       "switchClinic": "Trocar clínica",
@@ -155,6 +418,7 @@
       "segments": {
         "dashboard": "Início",
         "pacientes": "Pacientes",
+        "novo": "Novo",
         "agendamento": "Agendamento",
         "profissionais": "Profissionais",
         "contas-pagar": "Contas a Pagar",

@@ -50,6 +50,42 @@
       "passwordsMustMatch": "Passwords do not match",
       "currentPasswordRequired": "Current password is required",
       "newPasswordMustDiffer": "New password must be different from current password"
+    },
+    "patient": {
+      "fullNameRequired": "Full name is required",
+      "fullNameMin": "Full name must have at least 3 characters",
+      "birthDateRequired": "Birth date is required",
+      "birthDateInvalid": "Invalid birth date",
+      "birthDateFuture": "Birth date cannot be in the future",
+      "sexRequired": "Sex is required",
+      "documentTypeRequired": "Document type is required",
+      "documentNumberRequired": "Document number is required",
+      "documentCpfInvalid": "Invalid CPF",
+      "guardianNameRequired": "Guardian name is required",
+      "guardianNameMin": "Guardian name must have at least 3 characters",
+      "guardianTypeRequired": "Guardian type is required",
+      "guardianPrimaryRequired": "Select one primary guardian",
+      "guardianRequiredForMinor": "Minor patients must have at least one legal guardian",
+      "guardianCpfRequiredWhenMinorWithoutPatientCpf": "Provide a valid guardian CPF when minor patient has no CPF",
+      "patientCpfRequiredWhenAdultWithoutGuardian": "Adult patient without guardian must provide a valid CPF",
+      "phoneMinItems": "Add at least one phone",
+      "phoneCountryCodeRequired": "Country code is required",
+      "phoneNumberRequired": "Phone number is required",
+      "phoneNumberInvalid": "Provide a valid Brazilian phone with area code (10 or 11 digits)",
+      "phonePrimaryRequired": "Select a primary phone",
+      "emailInvalid": "Invalid email",
+      "addressStreetRequired": "Street is required",
+      "addressNumberRequired": "Number is required",
+      "addressCityRequired": "City is required",
+      "addressStateRequired": "State is required",
+      "addressPostalCodeRequired": "Postal code is required",
+      "careTypeRequired": "Care type is required",
+      "insuranceNameRequired": "Insurance name is required",
+      "insuranceCardNumberRequired": "Insurance card number is required",
+      "insurancePlanRequired": "Insurance plan is required",
+      "specialtyRequired": "Specialty is required",
+      "referralSourceRequired": "Referral source is required",
+      "observationsMax": "Observations must have at most 500 characters"
     }
   },
   "pages": {
@@ -81,6 +117,8 @@
       "viewDetails": "View details",
       "table": {
         "name": "Name",
+        "sex": "Sex",
+        "insurance": "Insurance",
         "birthDate": "Date of Birth",
         "therapy": "Therapy",
         "actions": "Actions",
@@ -89,12 +127,236 @@
         "retry": "Try again",
         "empty": "No patients found.",
         "status": "Status",
-        "years": "years"
+        "years": "years",
+        "statusActive": "Active",
+        "statusInactive": "Inactive"
+      },
+      "sex": {
+        "male": "Male",
+        "female": "Female",
+        "notInformed": "Not informed"
+      },
+      "careType": {
+        "private": "Private",
+        "insurance": "Insurance",
+        "notInformed": "Not informed"
+      },
+      "card": {
+        "patientId": "ID: {id}",
+        "mockTag": "Example",
+        "tags": "Selected tags",
+        "noTags": "No tags"
       },
       "therapy": {
         "speechTherapy": "Speech Therapy",
         "psychology": "Psychology",
         "occupationalTherapy": "Occupational Therapy"
+      },
+      "newForm": {
+        "meta": {
+          "title": "New Patient - Auvitta",
+          "description": "New patient registration"
+        },
+        "heading": "Patient Registration",
+        "subtitle": "Complete the steps to finish registration.",
+        "stepLabel": "Step {step}",
+        "actions": {
+          "previous": "Back",
+          "skipOrContinue": "Skip step",
+          "next": "Next step",
+          "submit": "Finish registration"
+        },
+        "steps": {
+          "identification": {
+            "title": "Patient Identification",
+            "support": "Personal data",
+            "fields": {
+              "fullName": {
+                "label": "Full name",
+                "placeholder": "Type full name"
+              },
+              "socialName": {
+                "label": "Preferred name",
+                "placeholder": "Optional"
+              },
+              "birthDate": {
+                "label": "Birth date"
+              },
+              "sex": {
+                "label": "Sex"
+              },
+              "document": {
+                "title": "Identification document",
+                "typeLabel": "Type",
+                "typePlaceholder": "Select document type",
+                "numberLabel": "Number",
+                "numberPlaceholder": "Type document number"
+              },
+              "documents": {
+                "title": "Identification documents",
+                "typeLabel": "Document type",
+                "numberLabel": "Document number",
+                "numberPlaceholder": "Type document number",
+                "addButton": "Add new document",
+                "addAriaLabel": "Add document",
+                "removeAriaLabel": "Remove document"
+              }
+            },
+            "actions": {
+              "addGuardian": "Add Legal Guardian"
+            }
+          },
+          "guardian": {
+            "title": "Legal Guardian",
+            "support": "Legal guardianship",
+            "helperMinor": "For minor patients, at least one legal guardian is required.",
+            "helperAdult": "Optional step for adult patients.",
+            "itemTitle": "Guardian {index}",
+            "sections": {
+              "basic": "Guardian data",
+              "documents": "Identification documents"
+            },
+            "actions": {
+              "add": "Add guardian",
+              "remove": "Remove"
+            },
+            "fields": {
+              "name": {
+                "label": "Name",
+                "placeholder": "Type name"
+              },
+              "type": {
+                "label": "Type",
+                "placeholder": "Select guardian type"
+              },
+              "isPrimary": {
+                "label": "Primary (financial)",
+                "action": "Set as primary",
+                "on": "ON",
+                "off": "OFF"
+              },
+              "document": {
+                "typeLabel": "Document type",
+                "typePlaceholder": "Select document type",
+                "numberLabel": "Document number",
+                "numberPlaceholder": "Type document number"
+              }
+            }
+          },
+          "contact": {
+            "titleShort": "Contact",
+            "support": "Contact channels",
+            "financialOnlyWarning": "Fill only if this is the financial responsible.",
+            "titleGuardian": "Legal Guardian Contact",
+            "titlePatient": "Patient Contact",
+            "helperMinor": "Because the patient is a minor, provide legal guardian contact details.",
+            "helperAdult": "Provide patient contact details.",
+            "fields": {
+              "phones": {
+                "title": "Phones",
+                "countryCodeLabel": "Country code",
+                "countryCodePlaceholder": "+55",
+                "numberLabel": "Phone number with area code",
+                "numberPlaceholder": "(11) 99999-9999",
+                "whatsappLabel": "Is WhatsApp",
+                "primaryLabel": "Is primary",
+                "on": "ON",
+                "off": "OFF",
+                "primaryAction": "Set as primary",
+                "add": "Add new phone",
+                "remove": "Remove"
+              },
+              "email": {
+                "label": "Email",
+                "placeholder": "Optional"
+              },
+              "address": {
+                "title": "Address",
+                "streetLabel": "Street",
+                "streetPlaceholder": "Type street",
+                "numberLabel": "Number",
+                "numberPlaceholder": "Type number",
+                "complementLabel": "Complement",
+                "complementPlaceholder": "Optional",
+                "cityLabel": "City",
+                "cityPlaceholder": "Type city",
+                "stateLabel": "State",
+                "statePlaceholder": "Type state",
+                "postalCodeLabel": "Postal code",
+                "postalCodePlaceholder": "00000-000"
+              }
+            }
+          },
+          "administrative": {
+            "title": "Administrative Information",
+            "support": "Care details",
+            "fields": {
+              "careType": {
+                "label": "Care type"
+              },
+              "insuranceName": {
+                "label": "Insurance name",
+                "placeholder": "Type insurance name"
+              },
+              "insuranceCardNumber": {
+                "label": "Insurance card number",
+                "placeholder": "Type card number"
+              },
+              "insurancePlan": {
+                "label": "Plan",
+                "placeholder": "Type plan"
+              },
+              "specialty": {
+                "label": "Specialty",
+                "placeholder": "Select specialties",
+                "helper": "Select one or more specialties (Ctrl/Cmd + click)."
+              },
+              "referralSource": {
+                "label": "Referral source"
+              },
+              "observations": {
+                "label": "Observations",
+                "placeholder": "Type relevant notes",
+                "counter": "{current}/{max} characters"
+              }
+            }
+          }
+        },
+        "options": {
+          "sex": {
+            "masculino": "Male",
+            "feminino": "Female",
+            "outro": "Other"
+          },
+          "documentType": {
+            "cpf": "CPF",
+            "rg": "RG",
+            "passaporte": "Passport",
+            "cnh": "Driver License",
+            "outro": "Other"
+          },
+          "guardianType": {
+            "pai": "Father",
+            "mae": "Mother",
+            "tutor": "Guardian",
+            "outro": "Other"
+          },
+          "specialty": {
+            "fonoaudiologia": "Speech Therapy",
+            "psicologia": "Psychology",
+            "psicopedagogia": "Psychopedagogy"
+          },
+          "referralSource": {
+            "indicacao_amigo_familiar": "Friend/Family referral",
+            "indicacao_profissional_saude": "Healthcare professional referral",
+            "busca_ativa": "Active outreach",
+            "outro": "Other"
+          },
+          "careType": {
+            "particular": "Private",
+            "convenio": "Insurance"
+          }
+        }
       }
     },
     "notFound": {
@@ -131,7 +393,8 @@
         "billing": "Billing",
         "insurance": "Insurance",
         "permissions": "Permissions",
-        "clinicSettings": "Clinic Settings"
+        "clinicSettings": "Clinic Settings",
+        "companies": "Empresas"
       },
       "dashboard": "Dashboard",
       "switchClinic": "Switch clinic",
@@ -155,6 +418,7 @@
       "segments": {
         "dashboard": "Home",
         "pacientes": "Patients",
+        "novo": "New",
         "agendamento": "Scheduling",
         "profissionais": "Professionals",
         "contas-pagar": "Accounts Payable",
