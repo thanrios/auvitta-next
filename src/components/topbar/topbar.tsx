@@ -53,11 +53,11 @@ export function Topbar() {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 px-4 mb-3">
       <div className="flex items-center gap-2 flex-1">
-        <SidebarTrigger className="-ml-1" />
+        <SidebarTrigger className="-ml-1 rounded-full" />
         <Separator orientation="vertical" className="mr-2 h-4" />
       </div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="relative">
+        <Button variant="ghost" size="icon" className="relative rounded-full">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-destructive" />
         </Button>
@@ -66,6 +66,7 @@ export function Topbar() {
             <Button
               variant="ghost"
               size="icon"
+              className="rounded-full"
               aria-label={t('changeLanguage')}
             >
               <Globe className="h-5 w-5" />
@@ -78,13 +79,13 @@ export function Topbar() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => handleLocaleSwitch('pt-BR')}
-              className={locale === 'pt-BR' ? 'bg-accent' : ''}
+              className={locale === 'pt-BR' ? 'bg-surface-hover' : ''}
             >
               <span className="mr-2">🇧🇷</span> Português (BR)
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => handleLocaleSwitch('en-US')}
-              className={locale === 'en-US' ? 'bg-accent' : ''}
+              className={locale === 'en-US' ? 'bg-surface-hover' : ''}
             >
               <span className="mr-2">🇺🇸</span> English (US)
             </DropdownMenuItem>
@@ -93,7 +94,7 @@ export function Topbar() {
         <Button
           variant="ghost"
           size="icon"
-          className="relative"
+          className="relative rounded-full"
           onClick={handleThemeToggle}
           aria-label={t('toggleTheme')}
         >
@@ -102,7 +103,10 @@ export function Topbar() {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-10 gap-2 p-2">
+            <Button
+              variant="ghost"
+              className="h-auto gap-2 rounded-xl border border-border bg-card px-3 py-2"
+            >
               <Avatar className="h-9 w-9 border">
                 <AvatarImage src="" alt={user?.full_name || t('user')} />
                 <AvatarFallback>{getUserInitials(user?.full_name)}</AvatarFallback>

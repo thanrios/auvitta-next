@@ -18,7 +18,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <AppSidebar />
         <SidebarInset>
           <Topbar />
-          {/* <DashboardBreadcrumbs /> */}
+          <DashboardBreadcrumbs />
           {children}
         </SidebarInset>
       </SidebarProvider>

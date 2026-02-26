@@ -99,23 +99,23 @@ export function AppSidebar() {
         <Separator />
 
         <SidebarMenu className="mt-3 mb-2">
-          <SidebarMenuItem className="bg-accent-foreground rounded p-1 shadow-xl group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
+          <SidebarMenuItem className="bg-sidebar-accent rounded border border-sidebar-border p-1 text-sidebar-foreground shadow-xl group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-surface-hover data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center"
+                  className="text-sidebar-foreground data-[state=open]:bg-surface-hover data-[state=open]:text-sidebar-foreground group-data-[collapsible=icon]:justify-center"
                 >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-border group-data-[collapsible=icon]:mx-auto">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-foreground/15 text-sidebar-foreground group-data-[collapsible=icon]:mx-auto">
                     <Building2 className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-semibold">{clinicData.name}</span>
-                    <span className="truncate text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-sidebar-foreground/80">
                       {clinicData.location}
                     </span>
                   </div>
-                  <ChevronDown className="ml-auto group-data-[collapsible=icon]:hidden" />
+                  <ChevronDown className="ml-auto text-sidebar-foreground/90 group-data-[collapsible=icon]:hidden" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent

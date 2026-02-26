@@ -45,7 +45,7 @@ export function DashboardBreadcrumbs() {
   ]
 
   return (
-    <div className="px-4 pb-3 pt-5">
+    <div className="px-4 pb-3">
       <Breadcrumb>
         <BreadcrumbList>
           {breadcrumbItems.map((item, index) => {
