@@ -104,6 +104,7 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
+                  tooltip={clinicData.name}
                   className="text-sidebar-foreground data-[state=open]:bg-surface-hover data-[state=open]:text-sidebar-foreground group-data-[collapsible=icon]:justify-center"
                 >
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-foreground/15 text-sidebar-foreground group-data-[collapsible=icon]:mx-auto">
@@ -140,7 +141,11 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/dashboard"}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/dashboard"}
+                  tooltip={t('dashboard')}
+                >
                   <Link href="/dashboard">
                     <LayoutDashboard />
                     <span>{t('dashboard')}</span>
@@ -157,7 +162,7 @@ export function AppSidebar() {
               <SidebarMenu>
                 {section.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={pathname === item.href}>
+                    <SidebarMenuButton asChild isActive={pathname === item.href} tooltip={item.title}>
                       <Link href={item.href}>
                         <item.icon />
                         <span>{item.title}</span>
@@ -173,7 +178,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="justify-center">
+            <SidebarMenuButton asChild className="justify-center" tooltip={t('support')}>
               <Link href={getSupportUrl()} target="_blank">
                 <LifeBuoy />
                 <span className="group-data-[collapsible=icon]:hidden">{t('support')}</span>
