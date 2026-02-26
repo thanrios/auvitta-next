@@ -104,7 +104,7 @@ export function AppSidebar() {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center"
+                  className="data-[state=open]:bg-surface-hover data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center"
                 >
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-border group-data-[collapsible=icon]:mx-auto">
                     <Building2 className="size-4" />
