@@ -173,10 +173,10 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild className="justify-center">
               <Link href={getSupportUrl()} target="_blank">
                 <LifeBuoy />
-                <span>{t('support')}</span>
+                <span className="group-data-[collapsible=icon]:hidden">{t('support')}</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

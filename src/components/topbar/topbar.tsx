@@ -1,6 +1,6 @@
 "use client"
 
-import { Bell, Moon, Sun, Globe } from "lucide-react"
+import { Bell, Moon, Sun, Globe, ChevronDown } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useTranslations } from 'next-intl'
 import { useLocale } from 'next-intl'
@@ -105,7 +105,7 @@ export function Topbar() {
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="h-auto gap-2 rounded-xl border border-border bg-card px-3 py-2"
+              className="h-auto gap-2 rounded-xl border border-border bg-card px-5 py-2"
             >
               <Avatar className="h-9 w-9 border">
                 <AvatarImage src="" alt={user?.full_name || t('user')} />
@@ -117,6 +117,7 @@ export function Topbar() {
                   {user?.role || t('userEmailFallback')}
                 </span>
               </div>
+              <ChevronDown className="ml-1 h-4 w-4 text-muted-foreground" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>
