@@ -1,5 +1,5 @@
 import { getRequestConfig } from 'next-intl/server'
-import { cookies, headers } from 'next/headers'
+import { cookies } from 'next/headers'
 import {
   DEFAULT_LOCALE,
   isAppLocale,
@@ -7,7 +7,7 @@ import {
   type AppLocale,
 } from './config'
 
-function getLocaleFromAcceptLanguage(acceptLanguage: string | null): AppLocale {
+function getLocaleFromAcceptLanguage(): AppLocale {
 // TODO - Ajustar para quando salvarmos a informação via BD
 //   if (!acceptLanguage) {
 //     return DEFAULT_LOCALE
@@ -24,12 +24,11 @@ function getLocaleFromAcceptLanguage(acceptLanguage: string | null): AppLocale {
 
 export default getRequestConfig(async () => {
   const cookieStore = await cookies()
-  const headerStore = await headers()
 
   const localeFromCookie = cookieStore.get(LOCALE_COOKIE_NAME)?.value
   const locale = localeFromCookie && isAppLocale(localeFromCookie)
     ? localeFromCookie
-    : getLocaleFromAcceptLanguage(headerStore.get('accept-language'))
+    : getLocaleFromAcceptLanguage()
 
   return {
     locale,

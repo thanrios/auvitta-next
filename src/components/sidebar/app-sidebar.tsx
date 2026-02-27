@@ -4,12 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTranslations } from 'next-intl'
 import {
-  Calendar,
   Users,
   UserCog,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
   Settings,
   Lock,
   Building2,
@@ -55,26 +51,26 @@ export function AppSidebar() {
     {
       label: t('sections.clinic'),
       items: [
-        // { title: t('items.schedule'), icon: Calendar, href: '/agendamento' },
-        { title: t('items.patients'), icon: Users, href: '/pacientes' },
-        { title: t('items.professionals'), icon: UserCog, href: '/profissionais' },
+        // { title: t('items.schedule'), icon: Calendar, href: '/schedule' },
+        { title: t('items.patients'), icon: Users, href: '/patients' },
+        { title: t('items.professionals'), icon: UserCog, href: '/professionals' },
       ],
     },
     // {
     //   label: t('sections.finance'),
     //   items: [
-    //     { title: t('items.accountsPayable'), icon: TrendingDown, href: '/contas-pagar' },
-    //     { title: t('items.accountsReceivable'), icon: TrendingUp, href: '/contas-receber' },
-    //     { title: t('items.billing'), icon: DollarSign, href: '/faturamento' },
-    //     { title: t('items.insurance'), icon: Building2, href: '/convenio' },
+    //     { title: t('items.accountsPayable'), icon: TrendingDown, href: '/accounts-payable' },
+    //     { title: t('items.accountsReceivable'), icon: TrendingUp, href: '/accounts-receivable' },
+    //     { title: t('items.billing'), icon: DollarSign, href: '/billing' },
+    //     { title: t('items.insurance'), icon: Building2, href: '/insurance' },
     //   ],
     // },
     {
       label: t('sections.settings'),
       items: [
-        { title: t('items.permissions'), icon: Lock, href: '/permissoes' },
-        { title: t('items.clinicSettings'), icon: Settings, href: '/configuracoes' },
-        { title: t('items.companies'), icon: Lock, href: '/Companhias' },
+        { title: t('items.permissions'), icon: Lock, href: '/permissions' },
+        { title: t('items.clinicSettings'), icon: Settings, href: '/settings' },
+        { title: t('items.companies'), icon: Lock, href: '/companies' },
       ],
     },
   ]

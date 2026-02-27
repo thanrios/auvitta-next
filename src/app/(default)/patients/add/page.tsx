@@ -11,6 +11,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function PacientesNovoPage() {
+export default function PatientsAddPage() {
   return <NewPatientPage />
 }

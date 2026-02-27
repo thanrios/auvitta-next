@@ -8,16 +8,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
 import { CheckCircle2, AlertTriangle, Info, XCircle } from "lucide-react"
 
 export default function StyleguidePage() {
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const colors = [
     { name: "background", var: "--background" },
@@ -57,10 +51,6 @@ export default function StyleguidePage() {
     { name: "chart-4", var: "--chart-4" },
     { name: "chart-5", var: "--chart-5" },
   ]
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <div className="p-8 max-w-6xl mx-auto space-y-12">
@@ -333,7 +323,7 @@ export default function StyleguidePage() {
               <Info className="h-4 w-4" />
               <AlertTitle>Information</AlertTitle>
               <AlertDescription>
-                Here's some helpful information for you.
+                Here&apos;s some helpful information for you.
               </AlertDescription>
             </Alert>
           </div>

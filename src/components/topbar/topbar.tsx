@@ -17,6 +17,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { DashboardBreadcrumbs } from "@/components/topbar/dashboard-breadcrumbs"
 import { useAuth } from "@/hooks/use-auth"
 import { useLocaleSwitch } from "@/hooks/use-locale-switch"
 
@@ -55,6 +56,7 @@ export function Topbar() {
       <div className="flex items-center gap-2 flex-1">
         <SidebarTrigger className="-ml-1 rounded-full" />
         <Separator orientation="vertical" className="mr-2 h-4" />
+        <DashboardBreadcrumbs />
       </div>
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" className="relative rounded-full">

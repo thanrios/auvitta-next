@@ -1,13 +1,20 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
+import { useSearchParams } from 'next/navigation'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import {
   createPatientValidationSchema,
   type PatientFormData,
 } from '@/lib/validations/patient'
+import type {
+  DocumentType,
+  PatientDetail,
+  RelationshipType,
+} from '@/types/patient.types'
+import { usePatient } from '@/hooks/use-api-patients'
 import { Button } from '@/components/ui/button'
 import { StepAdministrative } from '@/components/patients/steps/step-administrative'
 import { StepGuardian } from '@/components/patients/steps/step-guardian'
@@ -43,10 +50,153 @@ function isMinorByBirthDate(birthDate: string): boolean {
   return age < 18
 }
 
+function mapSexToFormValue(value?: number): 'masculino' | 'feminino' | 'outro' {
+  if (value === 1) {
+    return 'masculino'
+  }
+
+  if (value === 2) {
+    return 'feminino'
+  }
+
+  return 'outro'
+}
+
+function mapDocumentTypeToFormValue(value?: DocumentType): 'cpf' | 'rg' | 'passaporte' | 'cnh' | 'outro' {
+  if (value === 1) {
+    return 'cpf'
+  }
+
+  if (value === 2) {
+    return 'rg'
+  }
+
+  if (value === 3) {
+    return 'passaporte'
+  }
+
+  return 'outro'
+}
+
+function mapRelationshipTypeToFormValue(value?: RelationshipType): 'pai' | 'mae' | 'tutor' | 'outro' {
+  if (value === 1) {
+    return 'mae'
+  }
+
+  if (value === 2) {
+    return 'pai'
+  }
+
+  if (value === 3) {
+    return 'tutor'
+  }
+
+  return 'outro'
+}
+
+function mapPatientDetailToFormValues(patient: PatientDetail): PatientFormData {
+  const firstAddress = patient.addresses[0]
+  const mappedDocuments = patient.documents.length > 0
+    ? patient.documents.map((document) => ({
+        type: mapDocumentTypeToFormValue(document.document_type),
+        number: document.document_number ?? '',
+      }))
+    : [{ type: 'cpf' as const, number: '' }]
+
+  return {
+    identification: {
+      fullName: patient.full_name ?? '',
+      socialName: '',
+      birthDate: patient.birth_date ?? '',
+      sex: mapSexToFormValue(patient.biological_sex),
+      documents: mappedDocuments,
+      contact: {
+        email: '',
+        phones: patient.phones.map((phone) => ({
+          countryCode: phone.ddi ? `+${phone.ddi}` : '+55',
+          number: phone.ddd && phone.phone_number
+            ? `(${phone.ddd}) ${phone.phone_number}`
+            : phone.phone_number ?? '',
+          isWhatsapp: phone.is_whatsapp,
+          isPrimary: phone.is_primary,
+        })),
+        address: {
+          postalCode: firstAddress?.postal_code ?? '',
+          street: firstAddress?.street ?? '',
+          number: firstAddress?.number ?? '',
+          complement: firstAddress?.complement ?? '',
+          city: firstAddress?.city ?? '',
+          state: firstAddress?.state ?? '',
+        },
+      },
+    },
+    guardians: patient.guardians.map((guardian) => {
+      const guardianDocument = guardian.documents?.[0]
+      const guardianPhone = guardian.phones?.[0]
+      const guardianAddress = guardian.addresses?.[0]
+
+      return {
+        name: guardian.full_name ?? '',
+        type: mapRelationshipTypeToFormValue(guardian.relationship_type),
+        isPrimary: guardian.is_primary_responsible,
+        document: {
+          type: guardianDocument ? mapDocumentTypeToFormValue(guardianDocument.document_type) : undefined,
+          number: guardianDocument?.document_number ?? '',
+        },
+        contact: {
+          email: '',
+          phones: [
+            {
+              countryCode: guardianPhone?.ddi ? `+${guardianPhone.ddi}` : '+55',
+              number: guardianPhone?.ddd && guardianPhone?.phone_number
+                ? `(${guardianPhone.ddd}) ${guardianPhone.phone_number}`
+                : guardianPhone?.phone_number ?? '',
+              isWhatsapp: guardianPhone?.is_whatsapp ?? false,
+              isPrimary: guardianPhone?.is_primary ?? true,
+            },
+          ],
+          address: {
+            postalCode: guardianAddress?.postal_code ?? '',
+            street: guardianAddress?.street ?? '',
+            number: guardianAddress?.number ?? '',
+            complement: guardianAddress?.complement ?? '',
+            city: guardianAddress?.city ?? '',
+            state: guardianAddress?.state ?? '',
+          },
+        },
+      }
+    }),
+    contact: {
+      email: '',
+      phones: [],
+      address: {
+        postalCode: '',
+        street: '',
+        number: '',
+        complement: '',
+        city: '',
+        state: '',
+      },
+    },
+    administrative: {
+      careType: 'particular',
+      insuranceName: '',
+      insuranceCardNumber: '',
+      insurancePlan: '',
+      specialties: ['fonoaudiologia'],
+      referralSource: 'indicacao_amigo_familiar',
+      observations: '',
+    },
+  }
+}
+
 export function NewPatientPage() {
   const t = useTranslations('pages.patients.newForm')
   const tValidation = useTranslations('validation.patient')
+  const searchParams = useSearchParams()
   const [currentStep, setCurrentStep] = useState(0)
+  const editId = searchParams.get('editId')
+  const isEditMode = Boolean(editId)
 
   const validationSchema = useMemo(
     () =>
@@ -141,6 +291,19 @@ export function NewPatientPage() {
       },
     },
   })
+
+  const {
+    data: patientToEdit,
+    isLoading: isLoadingPatientToEdit,
+  } = usePatient(editId ?? '')
+
+  useEffect(() => {
+    if (!patientToEdit || !isEditMode) {
+      return
+    }
+
+    methods.reset(mapPatientDetailToFormValues(patientToEdit))
+  }, [isEditMode, methods, patientToEdit])
 
   const birthDate = useWatch({
     control: methods.control,
@@ -274,9 +437,15 @@ export function NewPatientPage() {
   return (
     <div className="flex-1 space-y-4 p-4">
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {isEditMode ? t('edit.heading') : t('heading')}
+        </h1>
         <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
       </div>
+
+      {isEditMode && isLoadingPatientToEdit && (
+        <p className="text-sm text-muted-foreground">{t('edit.loading')}</p>
+      )}
 
       <div className="mt-6 grid w-full grid-cols-1 gap-6 md:mt-8 md:grid-cols-3 md:gap-x-3">
         {STEP_KEYS.map((stepKey, index) => {
@@ -338,7 +507,7 @@ export function NewPatientPage() {
                 {currentStep === 1 && !isMinor ? t('actions.skipOrContinue') : t('actions.next')}
               </Button>
             ) : (
-              <Button type="submit">{t('actions.submit')}</Button>
+              <Button type="submit">{isEditMode ? t('edit.submit') : t('actions.submit')}</Button>
             )}
           </div>
         </form>

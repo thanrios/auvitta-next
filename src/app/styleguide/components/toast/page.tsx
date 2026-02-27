@@ -213,7 +213,7 @@ toast.promise(promise, {
           <div className="flex gap-4 flex-wrap">
             <Button
               onClick={() => {
-                const promise = new Promise((resolve) =>
+                const promise: Promise<{ name: string }> = new Promise((resolve) =>
                   setTimeout(() => resolve({ name: "John Doe" }), 2000)
                 )
 

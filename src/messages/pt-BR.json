@@ -114,6 +114,31 @@
       "newPatient": "Novo Paciente",
       "listTitle": "Lista de Pacientes",
       "viewDetails": "Ver detalhes",
+      "summary": {
+        "meta": {
+          "title": "Resumo do Paciente - Auvitta",
+          "description": "Visualização resumida dos dados do paciente"
+        },
+        "startSession": "Iniciar Sessão",
+        "tabs": {
+          "data": "Dados",
+          "anamnesis": "Anamnese",
+          "sessions": "Sessões",
+          "documents": "Documentos"
+        }
+      },
+      "details": {
+        "title": "Detalhes do paciente",
+        "description": "Visualize todas as informações cadastradas deste paciente.",
+        "empty": "Sem informações cadastradas.",
+        "sections": {
+          "identification": "Identificação",
+          "documents": "Documentos",
+          "phones": "Telefones",
+          "addresses": "Endereços",
+          "guardians": "Responsáveis"
+        }
+      },
       "table": {
         "age": "Idade",
         "sex": "Sexo",
@@ -126,10 +151,29 @@
         "error": "Não foi possível carregar os pacientes.",
         "retry": "Tentar novamente",
         "empty": "Nenhum paciente encontrado.",
+        "emptyFiltered": "Nenhum paciente corresponde aos filtros selecionados.",
         "status": "Status",
+        "actionsMenuAriaLabel": "Abrir ações do paciente",
+        "actionView": "Ver",
+        "actionEdit": "Editar",
         "years": "anos",
         "statusActive": "Ativo",
         "statusInactive": "Inativo"
+      },
+      "filters": {
+        "title": "Filtros",
+        "openAriaLabel": "Abrir filtros",
+        "searchLabel": "Buscar paciente",
+        "searchPlaceholder": "Buscar por nome",
+        "status": "Status",
+        "sex": "Sexo"
+      },
+      "pagination": {
+        "rowsPerPage": "Pacientes por página",
+        "previous": "Anterior",
+        "next": "Próxima",
+        "page": "Página {current} de {total}",
+        "showing": "Mostrando {start} a {end} de {total} registros"
       },
       "sex": {
         "male": "Masculino",
@@ -159,6 +203,11 @@
         },
         "heading": "Cadastro de Paciente",
         "subtitle": "Preencha as etapas para concluir o cadastro.",
+        "edit": {
+          "heading": "Editar Paciente",
+          "loading": "Carregando dados do paciente...",
+          "submit": "Salvar alterações"
+        },
         "stepLabel": "Etapa {step}",
         "actions": {
           "previous": "Voltar",
@@ -417,16 +466,18 @@
       "home": "Início",
       "segments": {
         "dashboard": "Início",
-        "pacientes": "Pacientes",
-        "novo": "Novo",
-        "agendamento": "Agendamento",
-        "profissionais": "Profissionais",
-        "contas-pagar": "Contas a Pagar",
-        "contas-receber": "Contas a Receber",
-        "faturamento": "Faturamento",
-        "convenio": "Convênio",
-        "permissoes": "Permissões",
-        "configuracoes": "Configurações"
+        "patients": "Pacientes",
+        "add": "Adicionar",
+        "summary": "Resumo",
+        "schedule": "Agendamento",
+        "professionals": "Profissionais",
+        "accounts-payable": "Contas a Pagar",
+        "accounts-receivable": "Contas a Receber",
+        "billing": "Faturamento",
+        "insurance": "Convênio",
+        "permissions": "Permissões",
+        "settings": "Configurações",
+        "companies": "Empresas"
       }
     }
   },

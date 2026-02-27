@@ -115,6 +115,31 @@
       "newPatient": "New Patient",
       "listTitle": "Patient List",
       "viewDetails": "View details",
+      "summary": {
+        "meta": {
+          "title": "Patient Summary - Auvitta",
+          "description": "Summarized view of patient information"
+        },
+        "startSession": "Start Session",
+        "tabs": {
+          "data": "Data",
+          "anamnesis": "Anamnesis",
+          "sessions": "Sessions",
+          "documents": "Documents"
+        }
+      },
+      "details": {
+        "title": "Patient details",
+        "description": "View all registered information for this patient.",
+        "empty": "No information available.",
+        "sections": {
+          "identification": "Identification",
+          "documents": "Documents",
+          "phones": "Phones",
+          "addresses": "Addresses",
+          "guardians": "Guardians"
+        }
+      },
       "table": {
         "name": "Name",
         "sex": "Sex",
@@ -126,10 +151,29 @@
         "error": "Unable to load patients.",
         "retry": "Try again",
         "empty": "No patients found.",
+        "emptyFiltered": "No patients match the selected filters.",
         "status": "Status",
+        "actionsMenuAriaLabel": "Open patient actions",
+        "actionView": "View",
+        "actionEdit": "Edit",
         "years": "years",
         "statusActive": "Active",
         "statusInactive": "Inactive"
+      },
+      "filters": {
+        "title": "Filters",
+        "openAriaLabel": "Open filters",
+        "searchLabel": "Search patient",
+        "searchPlaceholder": "Search by name",
+        "status": "Status",
+        "sex": "Sex"
+      },
+      "pagination": {
+        "rowsPerPage": "Patients per page",
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {current} of {total}",
+        "showing": "Showing {start} to {end} of {total} records"
       },
       "sex": {
         "male": "Male",
@@ -159,6 +203,11 @@
         },
         "heading": "Patient Registration",
         "subtitle": "Complete the steps to finish registration.",
+        "edit": {
+          "heading": "Edit Patient",
+          "loading": "Loading patient data...",
+          "submit": "Save changes"
+        },
         "stepLabel": "Step {step}",
         "actions": {
           "previous": "Back",
@@ -417,16 +466,18 @@
       "home": "Home",
       "segments": {
         "dashboard": "Home",
-        "pacientes": "Patients",
-        "novo": "New",
-        "agendamento": "Scheduling",
-        "profissionais": "Professionals",
-        "contas-pagar": "Accounts Payable",
-        "contas-receber": "Accounts Receivable",
-        "faturamento": "Billing",
-        "convenio": "Insurance",
-        "permissoes": "Permissions",
-        "configuracoes": "Settings"
+        "patients": "Patients",
+        "add": "Add",
+        "summary": "Summary",
+        "schedule": "Scheduling",
+        "professionals": "Professionals",
+        "accounts-payable": "Accounts Payable",
+        "accounts-receivable": "Accounts Receivable",
+        "billing": "Billing",
+        "insurance": "Insurance",
+        "permissions": "Permissions",
+        "settings": "Settings",
+        "companies": "Companies"
       }
     }
   },

@@ -6,7 +6,6 @@
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { LOCALES, DEFAULT_LOCALE, LOCALE_COOKIE_NAME } from './i18n/config'
 
 // Public routes that DON'T require authentication
 const publicRoutes = [
@@ -19,23 +18,6 @@ const publicRoutes = [
 
 // Routes that should redirect to dashboard if already authenticated
 const authRoutes = ['/login', '/register', '/login-example']
-
-/**
- * Get locale from request
- */
-function getLocaleFromRequest(request: NextRequest): string {
-  const cookieLocale = request.cookies.get(LOCALE_COOKIE_NAME)?.value
-  if (cookieLocale && LOCALES.includes(cookieLocale as any)) {
-    return cookieLocale
-  }
-
-  const acceptLanguage = request.headers.get('accept-language') || ''
-  if (acceptLanguage.toLowerCase().includes('en')) {
-    return 'en-US'
-  }
-
-  return DEFAULT_LOCALE
-}
 
 /**
  * Check if a path matches any of the given routes
