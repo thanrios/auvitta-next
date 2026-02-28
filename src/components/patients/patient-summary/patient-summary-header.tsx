@@ -29,6 +29,7 @@ export function PatientSummaryHeader({
   yearsLabel,
   sex,
   startSessionLabel,
+  onStartSession,
 }: PatientSummaryHeaderProps) {
   return (
     <Card className="shadow-md">
@@ -48,7 +49,7 @@ export function PatientSummaryHeader({
           </div>
         </div>
 
-        <Button type="button">{startSessionLabel}</Button>
+        <Button type="button" onClick={onStartSession}>{startSessionLabel}</Button>
       </CardContent>
     </Card>
   )

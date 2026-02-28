@@ -46,6 +46,7 @@ export interface PatientSummaryHeaderProps {
   yearsLabel: string
   sex: string
   startSessionLabel: string
+  onStartSession: () => void
 }
 
 export interface PatientDataSectionLabels {

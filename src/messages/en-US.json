@@ -143,6 +143,102 @@
           }
         }
       },
+      "newSession": {
+        "meta": {
+          "title": "New Session - Auvitta",
+          "description": "Patient clinical session record"
+        },
+        "heading": "New Session",
+        "subtitle": "Register the session details for {patientName}.",
+        "fallbackPatientName": "patient",
+        "loading": "Loading session...",
+        "sessionName": {
+          "label": "Session name",
+          "placeholder": "Enter the session name",
+          "default": "Session from {date}"
+        },
+        "sessionType": {
+          "label": "Session type",
+          "options": {
+            "session": "Session",
+            "evolution": "Evolution",
+            "anamnesis": "Anamnesis"
+          }
+        },
+        "actions": {
+          "startSession": "Start session",
+          "finishSession": "Finish session",
+          "exitSession": "Exit session",
+          "saveAndExit": "Save and exit"
+        },
+        "lastSaved": "Last saved: {date}",
+        "resumeModal": {
+          "title": "Unfinished session found",
+          "description": "We found a saved session for this patient. Do you want to continue where you left off or start a new session?",
+          "actions": {
+            "newSession": "Start new session",
+            "continue": "Continue session"
+          }
+        },
+        "protocols": {
+          "title": "Protocols / Forms",
+          "empty": "No protocol added.",
+          "contentPlaceholder": "Add observations for this form...",
+          "noContent": "No content filled yet.",
+          "options": {
+            "speech-assessment": "Speech assessment",
+            "motor-coordination": "Motor coordination",
+            "school-follow-up": "School follow-up"
+          },
+          "actions": {
+            "add": "Add protocol",
+            "edit": "Edit",
+            "view": "View",
+            "remove": "Remove"
+          },
+          "viewModal": {
+            "title": "View protocol",
+            "description": "Selected protocol content",
+            "close": "Close"
+          }
+        },
+        "notes": {
+          "title": "Notes",
+          "placeholder": "Write the session notes..."
+        },
+        "files": {
+          "title": "Files",
+          "empty": "No files added.",
+          "size": "{size} KB",
+          "categories": {
+            "anamnesis": "Anamnesis",
+            "report": "Report",
+            "protocol": "Protocol",
+            "other": "Other"
+          },
+          "actions": {
+            "add": "Add files",
+            "remove": "Remove file"
+          }
+        },
+        "evolution": {
+          "title": "Evolution",
+          "actions": {
+            "add": "Add evolution"
+          },
+          "progress": {
+            "label": "Progress"
+          },
+          "status": {
+            "label": "Evolution status",
+            "options": {
+              "not_started": "Not started",
+              "in_progress": "In progress",
+              "achieved": "Achieved"
+            }
+          }
+        }
+      },
       "details": {
         "title": "Patient details",
         "description": "View all registered information for this patient.",
@@ -604,6 +700,7 @@
         "users": "Users",
         "add": "Add",
         "summary": "Summary",
+        "sessions": "Sessions",
         "schedule": "Scheduling",
         "professionals": "Professionals",
         "accounts-payable": "Accounts Payable",

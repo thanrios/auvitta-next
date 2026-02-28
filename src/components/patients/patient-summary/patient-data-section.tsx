@@ -6,11 +6,11 @@ import type { PatientDataSectionProps } from './types'
 export function PatientDataSection({ patient, labels }: PatientDataSectionProps) {
   return (
     <div className="space-y-4 pb-4">
-      <Card className="shadow-md">
-        <CardHeader className="py-3">
+      <Card className="shadow-md gap-0">
+        <CardHeader className="pb-3 pt-4">
           <CardTitle className="text-base">{labels.identification}</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-2 text-sm md:grid-cols-2">
+        <CardContent className="grid grid-cols-1 gap-2 pt-0 text-sm md:grid-cols-2">
           <div>
             <p className="text-muted-foreground">{labels.name}</p>
             <p className="font-medium">{patient.full_name}</p>
@@ -36,11 +36,11 @@ export function PatientDataSection({ patient, labels }: PatientDataSectionProps)
         </CardContent>
       </Card>
 
-      <Card className="shadow-md">
-        <CardHeader className="py-3">
+      <Card className="shadow-md gap-0">
+        <CardHeader className="pb-3 pt-4">
           <CardTitle className="text-base">{labels.documents}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-1.5 text-sm">
+        <CardContent className="space-y-1.5 pt-0 text-sm">
           {patient.documents.length === 0 ? (
             <p className="text-muted-foreground">{labels.empty}</p>
           ) : (
@@ -54,11 +54,11 @@ export function PatientDataSection({ patient, labels }: PatientDataSectionProps)
         </CardContent>
       </Card>
 
-      <Card className="shadow-md">
-        <CardHeader className="py-3">
+      <Card className="shadow-md gap-0">
+        <CardHeader className="pb-3 pt-4">
           <CardTitle className="text-base">{labels.phones}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-1.5 text-sm">
+        <CardContent className="space-y-1.5 pt-0 text-sm">
           {patient.phones.length === 0 ? (
             <p className="text-muted-foreground">{labels.empty}</p>
           ) : (
@@ -72,11 +72,11 @@ export function PatientDataSection({ patient, labels }: PatientDataSectionProps)
         </CardContent>
       </Card>
 
-      <Card className="shadow-md">
-        <CardHeader className="py-3">
+      <Card className="shadow-md gap-0">
+        <CardHeader className="pb-3 pt-4">
           <CardTitle className="text-base">{labels.addresses}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-1.5 text-sm">
+        <CardContent className="space-y-1.5 pt-0 text-sm">
           {patient.addresses.length === 0 ? (
             <p className="text-muted-foreground">{labels.empty}</p>
           ) : (
@@ -96,11 +96,11 @@ export function PatientDataSection({ patient, labels }: PatientDataSectionProps)
         </CardContent>
       </Card>
 
-      <Card className="shadow-md">
-        <CardHeader className="py-3">
+      <Card className="shadow-md gap-0">
+        <CardHeader className="pb-3 pt-4">
           <CardTitle className="text-base">{labels.guardians}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-1.5 text-sm">
+        <CardContent className="space-y-1.5 pt-0 text-sm">
           {patient.guardians.length === 0 ? (
             <p className="text-muted-foreground">{labels.empty}</p>
           ) : (

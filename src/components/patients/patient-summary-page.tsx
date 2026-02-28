@@ -1,7 +1,8 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { DocumentCards } from '@/components/patients/patient-summary/document-cards'
 import { mockAnamnesis, mockDocuments, mockSessions } from '@/components/patients/patient-summary/mocks'
@@ -22,7 +23,13 @@ import { Button } from '@/components/ui/button'
 
 export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
   const t = useTranslations('pages.patients')
-  const [activeTab, setActiveTab] = useState<SummaryTab>('data')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const tabParam = searchParams.get('tab')
+  const activeTab: SummaryTab =
+    tabParam === 'anamnesis' || tabParam === 'sessions' || tabParam === 'documents' || tabParam === 'data'
+      ? tabParam
+      : 'data'
 
   const {
     data: patient,
@@ -83,6 +90,12 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
     [t]
   )
 
+  const handleTabChange = (tab: SummaryTab) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('tab', tab)
+    router.replace(`/patients/${patientId}/summary?${params.toString()}`)
+  }
+
   return (
     <div className="flex-1 space-y-4 p-4">
       <PatientSummaryHeader
@@ -91,9 +104,10 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
         yearsLabel={t('table.years')}
         sex={patientSex}
         startSessionLabel={t('summary.startSession')}
+        onStartSession={() => router.push(`/patients/${patientId}/sessions/add`)}
       />
 
-      <PatientSummaryTabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      <PatientSummaryTabs tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
 
       {isLoading && <p className="text-sm text-muted-foreground">{t('table.loading')}</p>}
 

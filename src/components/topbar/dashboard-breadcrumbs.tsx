@@ -31,41 +31,53 @@ export function DashboardBreadcrumbs() {
   const segments =
     rawSegments[0] === "dashboard" ? rawSegments.slice(1) : rawSegments
 
-  const isPatientSummaryRoute =
-    segments.length === 3 && segments[0] === 'patients' && segments[2] === 'summary'
-  const patientId = isPatientSummaryRoute ? segments[1] : ''
+  const isPatientScopedRoute =
+    segments.length >= 3 && segments[0] === 'patients' && segments[1] !== 'add'
+  const patientId = isPatientScopedRoute ? segments[1] : ''
 
   const { data: patient } = usePatient(patientId)
 
-  const breadcrumbItems = isPatientSummaryRoute ? [
-    {
-      label: t('home'),
-      href: '/dashboard',
-    },
-    {
-      label: formatSegmentLabel('patients', (value) => {
-        const key = `segments.${value}`
-        return t.has(key) ? t(key) : ''
-      }),
-      href: '/patients',
-    },
-    {
-      label: patient?.full_name || segments[1],
-      href: `/patients/${segments[1]}/summary`,
-    },
-  ] : [
-    {
-      label: t('home'),
-      href: "/dashboard",
-    },
-    ...segments.map((segment, index) => ({
-      label: formatSegmentLabel(segment, (value) => {
-        const key = `segments.${value}`
-        return t.has(key) ? t(key) : ''
-      }),
-      href: `/${segments.slice(0, index + 1).join("/")}`,
-    })),
-  ]
+  const breadcrumbItems = isPatientScopedRoute
+    ? [
+        {
+          label: t('home'),
+          href: '/dashboard',
+        },
+        {
+          label: formatSegmentLabel('patients', (value) => {
+            const key = `segments.${value}`
+            return t.has(key) ? t(key) : ''
+          }),
+          href: '/patients',
+        },
+        {
+          label: patient?.full_name || segments[1],
+          href: `/patients/${segments[1]}/summary`,
+        },
+        ...segments.slice(2).map((segment, index) => ({
+          label: formatSegmentLabel(segment, (value) => {
+            const key = `segments.${value}`
+            return t.has(key) ? t(key) : ''
+          }),
+          href:
+            segment === 'sessions'
+              ? `/patients/${segments[1]}/summary?tab=sessions`
+              : `/patients/${segments[1]}/${segments.slice(2, index + 3).join('/')}`,
+        })),
+      ]
+    : [
+        {
+          label: t('home'),
+          href: "/dashboard",
+        },
+        ...segments.map((segment, index) => ({
+          label: formatSegmentLabel(segment, (value) => {
+            const key = `segments.${value}`
+            return t.has(key) ? t(key) : ''
+          }),
+          href: `/${segments.slice(0, index + 1).join("/")}`,
+        })),
+      ]
 
   return (
     <Breadcrumb>

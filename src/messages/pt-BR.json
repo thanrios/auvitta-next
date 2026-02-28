@@ -142,6 +142,102 @@
           }
         }
       },
+      "newSession": {
+        "meta": {
+          "title": "Nova Sessão - Auvitta",
+          "description": "Registro de sessão clínica do paciente"
+        },
+        "heading": "Nova Sessão",
+        "subtitle": "Registre os dados da sessão de {patientName}.",
+        "fallbackPatientName": "paciente",
+        "loading": "Carregando sessão...",
+        "sessionName": {
+          "label": "Nome da sessão",
+          "placeholder": "Informe o nome da sessão",
+          "default": "Sessão do dia {date}"
+        },
+        "sessionType": {
+          "label": "Tipo de sessão",
+          "options": {
+            "session": "Sessão",
+            "evolution": "Evolução",
+            "anamnesis": "Anamnese"
+          }
+        },
+        "actions": {
+          "startSession": "Iniciar sessão",
+          "finishSession": "Finalizar sessão",
+          "exitSession": "Sair da sessão",
+          "saveAndExit": "Salvar e sair"
+        },
+        "lastSaved": "Último salvamento: {date}",
+        "resumeModal": {
+          "title": "Sessão não finalizada encontrada",
+          "description": "Encontramos uma sessão salva para este paciente. Você deseja continuar de onde parou ou iniciar uma nova sessão?",
+          "actions": {
+            "newSession": "Iniciar nova sessão",
+            "continue": "Continuar sessão"
+          }
+        },
+        "protocols": {
+          "title": "Protocolos / Formulários",
+          "empty": "Nenhum protocolo adicionado.",
+          "contentPlaceholder": "Adicione observações deste formulário...",
+          "noContent": "Sem conteúdo preenchido.",
+          "options": {
+            "speech-assessment": "Avaliação fonoaudiológica",
+            "motor-coordination": "Coordenação motora",
+            "school-follow-up": "Acompanhamento escolar"
+          },
+          "actions": {
+            "add": "Adicionar protocolo",
+            "edit": "Editar",
+            "view": "Visualizar",
+            "remove": "Remover"
+          },
+          "viewModal": {
+            "title": "Visualizar protocolo",
+            "description": "Conteúdo do protocolo selecionado",
+            "close": "Fechar"
+          }
+        },
+        "notes": {
+          "title": "Anotações",
+          "placeholder": "Escreva as anotações da sessão..."
+        },
+        "files": {
+          "title": "Arquivos",
+          "empty": "Nenhum arquivo adicionado.",
+          "size": "{size} KB",
+          "categories": {
+            "anamnesis": "Anamnese",
+            "report": "Laudo",
+            "protocol": "Protocolo",
+            "other": "Outro"
+          },
+          "actions": {
+            "add": "Adicionar arquivos",
+            "remove": "Remover arquivo"
+          }
+        },
+        "evolution": {
+          "title": "Evolução",
+          "actions": {
+            "add": "Adicionar evolução"
+          },
+          "progress": {
+            "label": "Progresso"
+          },
+          "status": {
+            "label": "Status da evolução",
+            "options": {
+              "not_started": "Não iniciada",
+              "in_progress": "Em progresso",
+              "achieved": "Atingida"
+            }
+          }
+        }
+      },
       "details": {
         "title": "Detalhes do paciente",
         "description": "Visualize todas as informações cadastradas deste paciente.",
@@ -604,6 +700,7 @@
         "users": "Usuários",
         "add": "Adicionar",
         "summary": "Resumo",
+        "sessions": "Sessões",
         "schedule": "Agendamento",
         "professionals": "Profissionais",
         "accounts-payable": "Contas a Pagar",
