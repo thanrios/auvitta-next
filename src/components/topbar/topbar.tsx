@@ -52,7 +52,7 @@ export function Topbar() {
   }
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 px-4 mb-3">
+    <header className="sticky top-0 z-40 mb-3 flex h-16 shrink-0 items-center gap-2 bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="flex items-center gap-2 flex-1">
         <SidebarTrigger className="-ml-1 rounded-full" />
         <Separator orientation="vertical" className="mr-2 h-4" />

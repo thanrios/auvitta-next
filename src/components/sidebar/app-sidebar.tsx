@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl'
 import {
   Users,
   UserCog,
-  Lock,
   Building2,
+  ClipboardList,
   ChevronDown,
   Stethoscope,
   LifeBuoy,
@@ -52,6 +52,7 @@ export function AppSidebar() {
       items: [
         // { title: t('items.schedule'), icon: Calendar, href: '/schedule' },
         { title: t('items.patients'), icon: Users, href: '/patients' },
+        { title: t('items.protocols'), icon: ClipboardList, href: '/protocols' },
         { title: t('items.professionals'), icon: UserCog, href: '/professionals' },
       ],
     },

@@ -637,6 +637,143 @@
         "save": "Salvar alterações"
       }
     },
+    "protocols": {
+      "heading": "Protocolos",
+      "newProtocol": "Novo Protocolo",
+      "listTitle": "Lista de Protocolos",
+      "table": {
+        "name": "Protocolo",
+        "version": "Versão",
+        "versionValue": "v{version}",
+        "blocks": "Blocos",
+        "status": "Status",
+        "updatedAt": "Atualizado em",
+        "actions": "Ações",
+        "loading": "Carregando protocolos...",
+        "empty": "Nenhum protocolo encontrado.",
+        "actionsMenuAriaLabel": "Abrir ações do protocolo",
+        "view": "Visualizar",
+        "edit": "Editar (nova versão)",
+        "activate": "Ativar",
+        "deactivate": "Desativar",
+        "statusActive": "Ativo",
+        "statusInactive": "Inativo",
+        "count": "{count} protocolos",
+        "rowsPerPage": "Linhas por página"
+      },
+      "filters": {
+        "title": "Filtros",
+        "openAriaLabel": "Abrir filtros",
+        "searchLabel": "Buscar protocolo",
+        "searchPlaceholder": "Buscar por nome do protocolo",
+        "status": "Status"
+      }
+    },
+    "protocolsForm": {
+      "headingCreate": "Novo Protocolo",
+      "headingEdit": "Editar Protocolo",
+      "headingView": "Visualizar Protocolo",
+      "loading": "Carregando protocolo...",
+      "cardTitleCreate": "Construtor de Protocolo",
+      "cardTitleEdit": "Editar e Criar Nova Versão",
+      "cardTitleView": "Detalhes do Protocolo",
+      "notFound": "Protocolo não encontrado.",
+      "availableBlocksTitle": "Blocos Disponíveis",
+      "canvasTitle": "Canvas do Protocolo",
+      "canvasEmpty": "Adicione blocos pelo painel lateral para começar a montar o formulário.",
+      "canvasCount": "{count} blocos",
+      "fields": {
+        "name": "Nome do protocolo",
+        "notes": "Observações",
+        "initialStatus": "Status inicial",
+        "blockType": "Tipo do bloco",
+        "blockLabel": "Título do bloco",
+        "blockHelper": "Texto de ajuda",
+        "sectionDescription": "Descrição da sessão",
+        "required": "Campo obrigatório",
+        "options": "Opções",
+        "clickToEdit": "Clique no bloco para editar propriedades",
+        "separatorSummary": "Separador visual",
+        "singleSelectSummary": "{count} opções configuradas",
+        "checkboxOptionsSummary": "{count} opções de checkbox configuradas"
+      },
+      "placeholders": {
+        "name": "Digite o nome do protocolo",
+        "notes": "Digite observações sobre este protocolo",
+        "options": "Uma opção por linha",
+        "optionValue": "Opção {index}"
+      },
+      "validation": {
+        "nameRequired": "Nome do protocolo é obrigatório"
+      },
+      "status": {
+        "active": "Ativo",
+        "inactive": "Inativo"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "close": "Fechar",
+        "preview": "Visualizar",
+        "create": "Criar protocolo",
+        "saveVersion": "Salvar versão",
+        "editBlock": "Propriedades do campo",
+        "addOption": "Adicionar opção",
+        "removeOption": "Remover opção",
+        "removeBlock": "Remover bloco",
+        "moveUp": "Mover bloco para cima",
+        "moveDown": "Mover bloco para baixo"
+      },
+      "blockType": {
+        "section-title": "Título de Seção",
+        "separator": "Separador",
+        "text": "Campo de Texto",
+        "textarea": "Área de Texto",
+        "number": "Campo Numérico",
+        "single-select": "Seleção Única",
+        "checkbox": "Checkbox"
+      },
+      "availableBlocks": {
+        "sectionTitle": {
+          "title": "Título de seção",
+          "description": "Título da seção"
+        },
+        "separator": {
+          "title": "Separador",
+          "description": "Divisão visual"
+        },
+        "text": {
+          "title": "Campo de Texto",
+          "description": "Entrada de texto simples"
+        },
+        "textarea": {
+          "title": "Área de Texto",
+          "description": "Entrada de texto em múltiplas linhas"
+        },
+        "number": {
+          "title": "Campo Numérico",
+          "description": "Entrada de números"
+        },
+        "singleSelect": {
+          "title": "Seleção Única",
+          "description": "Lista de opções (uma escolha)"
+        },
+        "checkbox": {
+          "title": "Checkbox",
+          "description": "Campo de confirmação"
+        }
+      },
+      "preview": {
+        "title": "Visualização do protocolo",
+        "empty": "Nenhum bloco adicionado ainda.",
+        "close": "Fechar"
+      },
+      "versioning": {
+        "title": "Criar nova versão",
+        "description": "Editar este protocolo criará uma nova versão e desativará a versão anterior. Escolha como a nova versão deve ser salva.",
+        "saveActive": "Salvar como ativa",
+        "saveInactive": "Salvar como inativa"
+      }
+    },
     "notFound": {
       "title": "Página não encontrada",
       "description": "Desculpe, a página que você está procurando não existe ou foi movida.",
@@ -666,6 +803,7 @@
       "items": {
         "schedule": "Agendamento",
         "patients": "Pacientes",
+        "protocols": "Protocolos",
         "users": "Usuários",
         "professionals": "Profissionais",
         "accountsPayable": "Contas a Pagar",
@@ -697,6 +835,7 @@
       "segments": {
         "dashboard": "Início",
         "patients": "Pacientes",
+        "protocols": "Protocolos",
         "users": "Usuários",
         "add": "Adicionar",
         "summary": "Resumo",

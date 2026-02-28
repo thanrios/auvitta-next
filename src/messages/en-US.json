@@ -637,6 +637,143 @@
         "save": "Save changes"
       }
     },
+    "protocols": {
+      "heading": "Protocols",
+      "newProtocol": "New Protocol",
+      "listTitle": "Protocol List",
+      "table": {
+        "name": "Protocol",
+        "version": "Version",
+        "versionValue": "v{version}",
+        "blocks": "Blocks",
+        "status": "Status",
+        "updatedAt": "Updated at",
+        "actions": "Actions",
+        "loading": "Loading protocols...",
+        "empty": "No protocols found.",
+        "actionsMenuAriaLabel": "Open protocol actions",
+        "view": "View",
+        "edit": "Edit (new version)",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "statusActive": "Active",
+        "statusInactive": "Inactive",
+        "count": "{count} protocols",
+        "rowsPerPage": "Rows per page"
+      },
+      "filters": {
+        "title": "Filters",
+        "openAriaLabel": "Open filters",
+        "searchLabel": "Search protocol",
+        "searchPlaceholder": "Search by protocol name",
+        "status": "Status"
+      }
+    },
+    "protocolsForm": {
+      "headingCreate": "New Protocol",
+      "headingEdit": "Edit Protocol",
+      "headingView": "View Protocol",
+      "loading": "Loading protocol...",
+      "cardTitleCreate": "Protocol Builder",
+      "cardTitleEdit": "Edit and Create New Version",
+      "cardTitleView": "Protocol Details",
+      "notFound": "Protocol not found.",
+      "availableBlocksTitle": "Available Blocks",
+      "canvasTitle": "Protocol Canvas",
+      "canvasEmpty": "Add blocks from the left panel to start building the form.",
+      "canvasCount": "{count} blocks",
+      "fields": {
+        "name": "Protocol name",
+        "notes": "Notes",
+        "initialStatus": "Initial status",
+        "blockType": "Block type",
+        "blockLabel": "Block label",
+        "blockHelper": "Helper text",
+        "sectionDescription": "Section description",
+        "required": "Required field",
+        "options": "Options",
+        "clickToEdit": "Click a block to edit properties",
+        "separatorSummary": "Visual separator",
+        "singleSelectSummary": "{count} options configured",
+        "checkboxOptionsSummary": "{count} checkbox options configured"
+      },
+      "placeholders": {
+        "name": "Type protocol name",
+        "notes": "Type notes about this protocol",
+        "options": "One option per line",
+        "optionValue": "Option {index}"
+      },
+      "validation": {
+        "nameRequired": "Protocol name is required"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "close": "Close",
+        "preview": "Preview",
+        "create": "Create protocol",
+        "saveVersion": "Save version",
+        "editBlock": "Block properties",
+        "addOption": "Add option",
+        "removeOption": "Remove option",
+        "removeBlock": "Remove block",
+        "moveUp": "Move block up",
+        "moveDown": "Move block down"
+      },
+      "blockType": {
+        "section-title": "Section Title",
+        "separator": "Separator",
+        "text": "Text Field",
+        "textarea": "Textarea",
+        "number": "Number Field",
+        "single-select": "Single Select",
+        "checkbox": "Checkbox"
+      },
+      "availableBlocks": {
+        "sectionTitle": {
+          "title": "Section Title",
+          "description": "Section heading"
+        },
+        "separator": {
+          "title": "Separator",
+          "description": "Visual divider"
+        },
+        "text": {
+          "title": "Text Field",
+          "description": "Single line text input"
+        },
+        "textarea": {
+          "title": "Textarea",
+          "description": "Multi-line text input"
+        },
+        "number": {
+          "title": "Number Field",
+          "description": "Numeric input"
+        },
+        "singleSelect": {
+          "title": "Single Select",
+          "description": "Choose one option"
+        },
+        "checkbox": {
+          "title": "Checkbox",
+          "description": "Confirmation field"
+        }
+      },
+      "preview": {
+        "title": "Protocol preview",
+        "empty": "No blocks added yet.",
+        "close": "Close"
+      },
+      "versioning": {
+        "title": "Create new version",
+        "description": "Editing this protocol will create a new version and deactivate the previous one. Choose how the new version should be saved.",
+        "saveActive": "Save as active",
+        "saveInactive": "Save as inactive"
+      }
+    },
     "notFound": {
       "title": "Page not found",
       "description": "Sorry, the page you are looking for does not exist or has been moved.",
@@ -666,6 +803,7 @@
       "items": {
         "schedule": "Scheduling",
         "patients": "Patients",
+        "protocols": "Protocols",
         "users": "Users",
         "professionals": "Professionals",
         "accountsPayable": "Accounts Payable",
@@ -697,6 +835,7 @@
       "segments": {
         "dashboard": "Home",
         "patients": "Patients",
+        "protocols": "Protocols",
         "users": "Users",
         "add": "Add",
         "summary": "Summary",
