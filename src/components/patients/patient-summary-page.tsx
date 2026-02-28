@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { CalendarDays, Eye, FilePenLine } from 'lucide-react'
 import { usePatient } from '@/hooks/use-api-patients'
 import { formatIsoDate } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -11,6 +12,25 @@ type SummaryTab = 'data' | 'anamnesis' | 'sessions' | 'documents'
 
 interface PatientSummaryPageProps {
   patientId: string
+}
+
+interface MockTimelineItem {
+  id: string
+  date: string
+  professional: string
+  observations: string
+  evolution: string
+}
+
+interface TimelineCardsProps {
+  items: MockTimelineItem[]
+  showEvolution?: boolean
+  labels: {
+    edit: string
+    observations: string
+    evolution: string
+    viewDetails: string
+  }
 }
 
 function getInitials(fullName?: string): string {
@@ -31,6 +51,63 @@ function getInitials(fullName?: string): string {
   const last = parts[parts.length - 1][0] ?? ''
 
   return `${first}${last}`.toUpperCase()
+}
+
+function TimelineCards({ items, labels, showEvolution = true }: TimelineCardsProps) {
+  return (
+    <div className="space-y-3">
+      {items.map((item) => (
+        <Card key={item.id} className="shadow-lg">
+          <CardContent className="py-2">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="self-center rounded-md bg-muted p-1.5 text-muted-foreground">
+                  <CalendarDays className="size-5" />
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-base font-semibold leading-tight">{formatIsoDate(item.date)}</p>
+                  <p className="text-xs text-muted-foreground">{item.professional}</p>
+                </div>
+              </div>
+
+              <Button type="button" variant="ghost" size="sm" className="text-primary">
+                <FilePenLine className="size-4" />
+                {labels.edit}
+              </Button>
+            </div>
+
+            <div className="mt-3 border-l pl-3 text-sm">
+              <div className="space-y-3">
+                <div>
+                  <p className="text-xs font-bold uppercase text-muted-foreground">
+                    {labels.observations}
+                  </p>
+                  <p className="line-clamp-2 text-muted-foreground">{item.observations}</p>
+                </div>
+
+                {showEvolution && (
+                  <div>
+                    <p className="text-xs font-bold uppercase text-muted-foreground">
+                      {labels.evolution}
+                    </p>
+                    <p className="line-clamp-2 text-muted-foreground">{item.evolution}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-center">
+              <Button type="button" variant="ghost" size="sm" className="text-primary">
+                <Eye className="size-4" />
+                {labels.viewDetails}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  )
 }
 
 export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
@@ -57,13 +134,59 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
   const patientAge = patient?.age ?? '-'
   const patientSex = patient?.biological_sex_display || t('sex.notInformed')
 
+  const mockAnamnesis = useMemo<MockTimelineItem[]>(() => [
+    {
+      id: 'anamnesis-1',
+      date: '2025-02-10',
+      professional: 'Aline Silva (Fonoaudióloga)',
+      observations: 'Paciente chegou agitado e apresentou dificuldade inicial para manter foco nas atividades propostas.',
+      evolution: 'Trabalhamos consciência fonológica com boa resposta aos estímulos visuais e melhora progressiva na participação.',
+    },
+    {
+      id: 'anamnesis-2',
+      date: '2025-02-03',
+      professional: 'Carla Mendes (Psicopedagoga)',
+      observations: 'Família relata avanço na organização da rotina escolar e redução de episódios de frustração.',
+      evolution: 'Foram aplicadas estratégias de autorregulação e planejamento, com adesão satisfatória durante a sessão.',
+    },
+  ], [])
+
+  const mockSessions = useMemo<MockTimelineItem[]>(() => [
+    {
+      id: 'session-1',
+      date: '2025-02-12',
+      professional: 'Aline Silva (Fonoaudióloga)',
+      observations: 'Sessão iniciada com exercício de aquecimento articulatório e revisão das atividades propostas na semana anterior.',
+      evolution: 'Paciente apresentou boa adesão às tarefas, com melhora em organização de fala espontânea e manutenção de atenção.',
+    },
+    {
+      id: 'session-2',
+      date: '2025-02-05',
+      professional: 'Carla Mendes (Psicopedagoga)',
+      observations: 'Foram trabalhadas estratégias de leitura e compreensão textual com apoio visual e instruções graduais.',
+      evolution: 'Evoluiu com menor necessidade de mediação ao final da sessão e maior autonomia na execução das atividades.',
+    },
+  ], [])
+
+  const timelineLabels = useMemo(
+    () => ({
+      edit: t('summary.anamnesis.edit'),
+      observations: t('summary.anamnesis.observations'),
+      evolution: t('summary.anamnesis.evolution'),
+      viewDetails: t('summary.anamnesis.viewDetails'),
+    }),
+    [t]
+  )
+
   return (
     <div className="flex-1 space-y-4 p-4">
       <Card className="shadow-md">
-        <CardContent className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <CardContent className="flex flex-col gap-3 py-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex size-14 items-center justify-center rounded-full bg-muted text-lg font-semibold">
-              {getInitials(patient?.full_name)}
+            <div className="rounded-full border-4 border-primary p-0.5">
+              <div className="flex size-12 items-center justify-center rounded-full bg-muted text-lg font-semibold">
+                {getInitials(patient?.full_name)}
+              </div>
             </div>
 
             <div>
@@ -115,10 +238,10 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
       {!isLoading && !isError && patient && activeTab === 'data' && (
         <div className="space-y-4 pb-4">
           <Card className="shadow-md">
-            <CardHeader>
+            <CardHeader className="py-3">
               <CardTitle className="text-base">{t('details.sections.identification')}</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
+            <CardContent className="grid grid-cols-1 gap-2 text-sm md:grid-cols-2">
               <div>
                 <p className="text-muted-foreground">{t('table.name')}</p>
                 <p className="font-medium">{patient.full_name}</p>
@@ -143,10 +266,10 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
           </Card>
 
           <Card className="shadow-md">
-            <CardHeader>
+            <CardHeader className="py-3">
               <CardTitle className="text-base">{t('details.sections.documents')}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-1.5 text-sm">
               {patient.documents.length === 0 ? (
                 <p className="text-muted-foreground">{t('details.empty')}</p>
               ) : (
@@ -161,10 +284,10 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
           </Card>
 
           <Card className="shadow-md">
-            <CardHeader>
+            <CardHeader className="py-3">
               <CardTitle className="text-base">{t('details.sections.phones')}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-1.5 text-sm">
               {patient.phones.length === 0 ? (
                 <p className="text-muted-foreground">{t('details.empty')}</p>
               ) : (
@@ -179,10 +302,10 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
           </Card>
 
           <Card className="shadow-md">
-            <CardHeader>
+            <CardHeader className="py-3">
               <CardTitle className="text-base">{t('details.sections.addresses')}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-1.5 text-sm">
               {patient.addresses.length === 0 ? (
                 <p className="text-muted-foreground">{t('details.empty')}</p>
               ) : (
@@ -203,10 +326,10 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
           </Card>
 
           <Card className="shadow-md">
-            <CardHeader>
+            <CardHeader className="py-3">
               <CardTitle className="text-base">{t('details.sections.guardians')}</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
+            <CardContent className="space-y-1.5 text-sm">
               {patient.guardians.length === 0 ? (
                 <p className="text-muted-foreground">{t('details.empty')}</p>
               ) : (
@@ -219,6 +342,16 @@ export function PatientSummaryPage({ patientId }: PatientSummaryPageProps) {
               )}
             </CardContent>
           </Card>
+        </div>
+      )}
+
+      {(activeTab === 'anamnesis' || activeTab === 'sessions') && (
+        <div className="space-y-4 pb-4">
+          <TimelineCards
+            items={activeTab === 'anamnesis' ? mockAnamnesis : mockSessions}
+            labels={timelineLabels}
+            showEvolution={activeTab === 'sessions'}
+          />
         </div>
       )}
     </div>

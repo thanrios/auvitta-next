@@ -143,80 +143,78 @@ export default function PatientsPage() {
 
   return (
     <div className="flex-1 space-y-4 p-4">
-      <div className="flex items-center justify-between gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">{t('heading')}</h1>
-        <div className="flex items-center justify-end gap-2">
-          <Button asChild>
-            <Link href="/patients/add">{t('newPatient')}</Link>
-          </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon-sm" aria-label={t('filters.openAriaLabel')}>
-                <Filter className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-72">
-              <DropdownMenuLabel>{t('filters.title')}</DropdownMenuLabel>
-              <div className="px-2 pb-2">
-                <Input
-                  value={search}
-                  onChange={(event) => {
-                    setSearch(event.target.value)
-                    setPage(1)
-                  }}
-                  placeholder={t('filters.searchPlaceholder')}
-                  aria-label={t('filters.searchLabel')}
-                />
-              </div>
-
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>{t('filters.status')}</DropdownMenuLabel>
-              <DropdownMenuCheckboxItem
-                checked={statusFilter === 'active'}
-                onCheckedChange={() => setStatusFilter((value) => (value === 'active' ? 'all' : 'active'))}
-              >
-                {t('table.statusActive')}
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={statusFilter === 'inactive'}
-                onCheckedChange={() =>
-                  setStatusFilter((value) => (value === 'inactive' ? 'all' : 'inactive'))
-                }
-              >
-                {t('table.statusInactive')}
-              </DropdownMenuCheckboxItem>
-
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>{t('filters.sex')}</DropdownMenuLabel>
-              <DropdownMenuCheckboxItem
-                checked={sexFilter === 'male'}
-                onCheckedChange={() => setSexFilter((value) => (value === 'male' ? 'all' : 'male'))}
-              >
-                {t('sex.male')}
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={sexFilter === 'female'}
-                onCheckedChange={() => setSexFilter((value) => (value === 'female' ? 'all' : 'female'))}
-              >
-                {t('sex.female')}
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={sexFilter === 'notInformed'}
-                onCheckedChange={() =>
-                  setSexFilter((value) => (value === 'notInformed' ? 'all' : 'notInformed'))
-                }
-              >
-                {t('sex.notInformed')}
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+      <h1 className="text-3xl font-bold tracking-tight text-primary">{t('heading')}</h1>
 
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between gap-2">
           <CardTitle>{t('listTitle')}</CardTitle>
+          <div className="flex items-center justify-end gap-2">
+            <Button asChild>
+              <Link href="/patients/add">{t('newPatient')}</Link>
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon-sm" aria-label={t('filters.openAriaLabel')}>
+                  <Filter className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-72">
+                <DropdownMenuLabel>{t('filters.title')}</DropdownMenuLabel>
+                <div className="px-2 pb-2">
+                  <Input
+                    value={search}
+                    onChange={(event) => {
+                      setSearch(event.target.value)
+                      setPage(1)
+                    }}
+                    placeholder={t('filters.searchPlaceholder')}
+                    aria-label={t('filters.searchLabel')}
+                  />
+                </div>
+
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>{t('filters.status')}</DropdownMenuLabel>
+                <DropdownMenuCheckboxItem
+                  checked={statusFilter === 'active'}
+                  onCheckedChange={() => setStatusFilter((value) => (value === 'active' ? 'all' : 'active'))}
+                >
+                  {t('table.statusActive')}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={statusFilter === 'inactive'}
+                  onCheckedChange={() =>
+                    setStatusFilter((value) => (value === 'inactive' ? 'all' : 'inactive'))
+                  }
+                >
+                  {t('table.statusInactive')}
+                </DropdownMenuCheckboxItem>
+
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>{t('filters.sex')}</DropdownMenuLabel>
+                <DropdownMenuCheckboxItem
+                  checked={sexFilter === 'male'}
+                  onCheckedChange={() => setSexFilter((value) => (value === 'male' ? 'all' : 'male'))}
+                >
+                  {t('sex.male')}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={sexFilter === 'female'}
+                  onCheckedChange={() => setSexFilter((value) => (value === 'female' ? 'all' : 'female'))}
+                >
+                  {t('sex.female')}
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={sexFilter === 'notInformed'}
+                  onCheckedChange={() =>
+                    setSexFilter((value) => (value === 'notInformed' ? 'all' : 'notInformed'))
+                  }
+                >
+                  {t('sex.notInformed')}
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           {isLoading && <p className="text-center text-sm text-muted-foreground">{t('table.loading')}</p>}

@@ -6,7 +6,6 @@ import { useTranslations } from 'next-intl'
 import {
   Users,
   UserCog,
-  Settings,
   Lock,
   Building2,
   ChevronDown,
@@ -56,6 +55,12 @@ export function AppSidebar() {
         { title: t('items.professionals'), icon: UserCog, href: '/professionals' },
       ],
     },
+    {
+      label: t('sections.administration'),
+      items: [
+        { title: t('items.users'), icon: Users, href: '/users' },
+      ],
+    },
     // {
     //   label: t('sections.finance'),
     //   items: [
@@ -68,9 +73,8 @@ export function AppSidebar() {
     {
       label: t('sections.settings'),
       items: [
-        { title: t('items.permissions'), icon: Lock, href: '/permissions' },
-        { title: t('items.clinicSettings'), icon: Settings, href: '/settings' },
-        { title: t('items.companies'), icon: Lock, href: '/companies' },
+        // { title: t('items.permissions'), icon: Lock, href: '/permissions' },
+        { title: t('items.companies'), icon: Building2, href: '/companies' },
       ],
     },
   ]
@@ -81,7 +85,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
+              <Link href="/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                   <Stethoscope className="size-4" />
                 </div>
@@ -93,44 +97,6 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         <Separator />
-
-        <SidebarMenu className="mt-3 mb-2">
-          <SidebarMenuItem className="bg-sidebar-accent rounded border border-sidebar-border p-1 text-sidebar-foreground shadow-xl group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  size="lg"
-                  tooltip={clinicData.name}
-                  className="text-sidebar-foreground data-[state=open]:bg-surface-hover data-[state=open]:text-sidebar-foreground group-data-[collapsible=icon]:justify-center"
-                >
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-foreground/15 text-sidebar-foreground group-data-[collapsible=icon]:mx-auto">
-                    <Building2 className="size-4" />
-                  </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                    <span className="truncate font-semibold">{clinicData.name}</span>
-                    <span className="truncate text-xs text-sidebar-foreground/80">
-                      {clinicData.location}
-                    </span>
-                  </div>
-                  <ChevronDown className="ml-auto text-sidebar-foreground/90 group-data-[collapsible=icon]:hidden" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                align="start"
-                side="bottom"
-                sideOffset={4}
-              >
-                <DropdownMenuItem>
-                  <span>{t('switchClinic')}</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>{t('settings')}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -172,6 +138,44 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
       <SidebarFooter>
+        <SidebarMenu className="mb-2">
+          <SidebarMenuItem className="bg-sidebar-accent rounded border border-sidebar-border p-1 text-sidebar-foreground shadow-xl group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:p-0">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  tooltip={clinicData.name}
+                  className="text-sidebar-foreground data-[state=open]:bg-surface-hover data-[state=open]:text-sidebar-foreground group-data-[collapsible=icon]:justify-center"
+                >
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg border border-sidebar-border bg-sidebar-foreground/15 text-sidebar-foreground group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:border-0">
+                    <Building2 className="size-4" />
+                  </div>
+                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                    <span className="truncate font-semibold">{clinicData.name}</span>
+                    <span className="truncate text-xs text-sidebar-foreground/80">
+                      {clinicData.location}
+                    </span>
+                  </div>
+                  <ChevronDown className="ml-auto text-sidebar-foreground/90 group-data-[collapsible=icon]:hidden" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                align="start"
+                side="bottom"
+                sideOffset={4}
+              >
+                <DropdownMenuItem>
+                  <span>{t('switchClinic')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>{t('settings')}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="justify-center" tooltip={t('support')}>

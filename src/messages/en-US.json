@@ -126,6 +126,13 @@
           "anamnesis": "Anamnesis",
           "sessions": "Sessions",
           "documents": "Documents"
+        },
+        "anamnesis": {
+          "addNew": "Add new anamnesis",
+          "edit": "Edit",
+          "observations": "Observations",
+          "evolution": "Evolution",
+          "viewDetails": "View more details"
         }
       },
       "details": {
@@ -408,6 +415,124 @@
         }
       }
     },
+    "users": {
+      "heading": "Users",
+      "newUser": "New User",
+      "listTitle": "User List",
+      "table": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "actions": "Actions",
+        "empty": "No users found.",
+        "actionsMenuAriaLabel": "Open user actions",
+        "actionView": "View",
+        "actionEdit": "Edit",
+        "statusActive": "Active",
+        "statusInactive": "Inactive"
+      },
+      "filters": {
+        "title": "Filters",
+        "openAriaLabel": "Open filters",
+        "searchLabel": "Search user",
+        "searchPlaceholder": "Search by name or email",
+        "status": "Status"
+      },
+      "pagination": {
+        "rowsPerPage": "Users per page",
+        "showing": "Showing {start} to {end} of {total} records"
+      }
+    },
+    "usersForm": {
+      "headingCreate": "New User",
+      "headingEdit": "Edit User",
+      "cardTitleCreate": "User Details",
+      "cardTitleEdit": "Edit User Details",
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status"
+      },
+      "placeholders": {
+        "name": "Type name",
+        "email": "Type email",
+        "role": "Select role"
+      },
+      "roles": {
+        "admin": "Administrator",
+        "manager": "Manager",
+        "professional": "Professional",
+        "reception": "Reception"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "create": "Create user",
+        "save": "Save changes"
+      }
+    },
+    "companies": {
+      "heading": "Companies",
+      "newCompany": "New Company",
+      "listTitle": "Company List",
+      "table": {
+        "tradeName": "Trade Name",
+        "legalName": "Legal Name",
+        "taxId": "Tax ID",
+        "status": "Status",
+        "actions": "Actions",
+        "empty": "No companies found.",
+        "actionsMenuAriaLabel": "Open company actions",
+        "actionView": "View",
+        "actionEdit": "Edit",
+        "statusActive": "Active",
+        "statusInactive": "Inactive"
+      },
+      "filters": {
+        "title": "Filters",
+        "openAriaLabel": "Open filters",
+        "searchLabel": "Search company",
+        "searchPlaceholder": "Search by trade name, legal name or tax ID",
+        "status": "Status"
+      },
+      "pagination": {
+        "rowsPerPage": "Companies per page",
+        "showing": "Showing {start} to {end} of {total} records"
+      }
+    },
+    "companiesForm": {
+      "headingCreate": "New Company",
+      "headingEdit": "Edit Company",
+      "cardTitleCreate": "Company Details",
+      "cardTitleEdit": "Edit Company Details",
+      "fields": {
+        "tradeName": "Trade Name",
+        "legalName": "Legal Name",
+        "taxId": "Tax ID",
+        "status": "Status",
+        "notes": "Notes"
+      },
+      "placeholders": {
+        "tradeName": "Type trade name",
+        "legalName": "Type legal name",
+        "taxId": "Type tax ID",
+        "notes": "Type internal notes"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "create": "Create company",
+        "save": "Save changes"
+      }
+    },
     "notFound": {
       "title": "Page not found",
       "description": "Sorry, the page you are looking for does not exist or has been moved.",
@@ -430,20 +555,21 @@
       },
       "sections": {
         "clinic": "CLINIC",
+        "administration": "ADMINISTRATION",
         "finance": "FINANCE",
         "settings": "SETTINGS"
       },
       "items": {
         "schedule": "Scheduling",
         "patients": "Patients",
+        "users": "Users",
         "professionals": "Professionals",
         "accountsPayable": "Accounts Payable",
         "accountsReceivable": "Accounts Receivable",
         "billing": "Billing",
         "insurance": "Insurance",
         "permissions": "Permissions",
-        "clinicSettings": "Clinic Settings",
-        "companies": "Empresas"
+        "companies": "Companies"
       },
       "dashboard": "Dashboard",
       "switchClinic": "Switch clinic",
@@ -467,6 +593,7 @@
       "segments": {
         "dashboard": "Home",
         "patients": "Patients",
+        "users": "Users",
         "add": "Add",
         "summary": "Summary",
         "schedule": "Scheduling",

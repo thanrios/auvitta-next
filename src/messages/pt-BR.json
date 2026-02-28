@@ -125,6 +125,13 @@
           "anamnesis": "Anamnese",
           "sessions": "Sessões",
           "documents": "Documentos"
+        },
+        "anamnesis": {
+          "addNew": "Adicionar nova anamnese",
+          "edit": "Editar",
+          "observations": "Observações",
+          "evolution": "Evolução",
+          "viewDetails": "Ver mais detalhes"
         }
       },
       "details": {
@@ -408,6 +415,124 @@
         }
       }
     },
+    "users": {
+      "heading": "Usuários",
+      "newUser": "Novo Usuário",
+      "listTitle": "Lista de Usuários",
+      "table": {
+        "name": "Nome",
+        "email": "E-mail",
+        "role": "Perfil",
+        "status": "Status",
+        "actions": "Ações",
+        "empty": "Nenhum usuário encontrado.",
+        "actionsMenuAriaLabel": "Abrir ações do usuário",
+        "actionView": "Ver",
+        "actionEdit": "Editar",
+        "statusActive": "Ativo",
+        "statusInactive": "Inativo"
+      },
+      "filters": {
+        "title": "Filtros",
+        "openAriaLabel": "Abrir filtros",
+        "searchLabel": "Buscar usuário",
+        "searchPlaceholder": "Buscar por nome ou e-mail",
+        "status": "Status"
+      },
+      "pagination": {
+        "rowsPerPage": "Usuários por página",
+        "showing": "Mostrando {start} a {end} de {total} registros"
+      }
+    },
+    "usersForm": {
+      "headingCreate": "Novo Usuário",
+      "headingEdit": "Editar Usuário",
+      "cardTitleCreate": "Dados do Usuário",
+      "cardTitleEdit": "Editar Dados do Usuário",
+      "fields": {
+        "name": "Nome",
+        "email": "E-mail",
+        "role": "Perfil",
+        "status": "Status"
+      },
+      "placeholders": {
+        "name": "Digite o nome",
+        "email": "Digite o e-mail",
+        "role": "Selecione o perfil"
+      },
+      "roles": {
+        "admin": "Administradora",
+        "manager": "Gestora",
+        "professional": "Profissional",
+        "reception": "Recepção"
+      },
+      "status": {
+        "active": "Ativo",
+        "inactive": "Inativo"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "create": "Criar usuário",
+        "save": "Salvar alterações"
+      }
+    },
+    "companies": {
+      "heading": "Empresas",
+      "newCompany": "Nova Empresa",
+      "listTitle": "Lista de Empresas",
+      "table": {
+        "tradeName": "Nome Fantasia",
+        "legalName": "Razão Social",
+        "taxId": "CNPJ",
+        "status": "Status",
+        "actions": "Ações",
+        "empty": "Nenhuma empresa encontrada.",
+        "actionsMenuAriaLabel": "Abrir ações da empresa",
+        "actionView": "Ver",
+        "actionEdit": "Editar",
+        "statusActive": "Ativa",
+        "statusInactive": "Inativa"
+      },
+      "filters": {
+        "title": "Filtros",
+        "openAriaLabel": "Abrir filtros",
+        "searchLabel": "Buscar empresa",
+        "searchPlaceholder": "Buscar por nome fantasia, razão social ou CNPJ",
+        "status": "Status"
+      },
+      "pagination": {
+        "rowsPerPage": "Empresas por página",
+        "showing": "Mostrando {start} a {end} de {total} registros"
+      }
+    },
+    "companiesForm": {
+      "headingCreate": "Nova Empresa",
+      "headingEdit": "Editar Empresa",
+      "cardTitleCreate": "Dados da Empresa",
+      "cardTitleEdit": "Editar Dados da Empresa",
+      "fields": {
+        "tradeName": "Nome Fantasia",
+        "legalName": "Razão Social",
+        "taxId": "CNPJ",
+        "status": "Status",
+        "notes": "Observações"
+      },
+      "placeholders": {
+        "tradeName": "Digite o nome fantasia",
+        "legalName": "Digite a razão social",
+        "taxId": "Digite o CNPJ",
+        "notes": "Digite observações internas"
+      },
+      "status": {
+        "active": "Ativa",
+        "inactive": "Inativa"
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "create": "Criar empresa",
+        "save": "Salvar alterações"
+      }
+    },
     "notFound": {
       "title": "Página não encontrada",
       "description": "Desculpe, a página que você está procurando não existe ou foi movida.",
@@ -430,19 +555,20 @@
       },
       "sections": {
         "clinic": "CLÍNICA",
+        "administration": "ADMINISTRAÇÃO",
         "finance": "FINANCEIRO",
         "settings": "CONFIGURAÇÕES"
       },
       "items": {
         "schedule": "Agendamento",
         "patients": "Pacientes",
+        "users": "Usuários",
         "professionals": "Profissionais",
         "accountsPayable": "Contas a Pagar",
         "accountsReceivable": "Contas a Receber",
         "billing": "Faturamento",
         "insurance": "Convênio",
         "permissions": "Permissões",
-        "clinicSettings": "Configurações da Clínica",
         "companies": "Empresas"
       },
       "dashboard": "Dashboard",
@@ -467,6 +593,7 @@
       "segments": {
         "dashboard": "Início",
         "patients": "Pacientes",
+        "users": "Usuários",
         "add": "Adicionar",
         "summary": "Resumo",
         "schedule": "Agendamento",
