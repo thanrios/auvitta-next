@@ -132,6 +132,14 @@
           "observations": "Observações",
           "evolution": "Evolução",
           "viewDetails": "Ver mais detalhes"
+        },
+        "documents": {
+          "title": "Documentos anexados",
+          "actions": {
+            "view": "Ver",
+            "download": "Baixar",
+            "delete": "Deletar"
+          }
         }
       },
       "details": {

@@ -133,6 +133,14 @@
           "observations": "Observations",
           "evolution": "Evolution",
           "viewDetails": "View more details"
+        },
+        "documents": {
+          "title": "Attached documents",
+          "actions": {
+            "view": "View",
+            "download": "Download",
+            "delete": "Delete"
+          }
         }
       },
       "details": {
