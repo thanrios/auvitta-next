@@ -9,6 +9,7 @@ import { type ReactNode } from 'react'
 import { QueryProvider } from './query-provider'
 import { AuthProvider } from './auth-provider'
 import { ThemeProvider } from '@/components/theme-provider'
+import { LoadingOverlayProvider } from './loading-overlay-provider'
 
 interface ProvidersProps {
   children: ReactNode
@@ -24,7 +25,7 @@ export function Providers({ children }: ProvidersProps) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <LoadingOverlayProvider>{children}</LoadingOverlayProvider>
         </ThemeProvider>
       </AuthProvider>
     </QueryProvider>

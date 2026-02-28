@@ -721,6 +721,11 @@
       "subtitle": "Prontuário Eletrônico"
     }
   },
+  "ui": {
+    "loading": {
+      "label": "Carregando"
+    }
+  },
   "app": {
     "name": "Auvitta",
     "description": "Plataforma de gestão clínica moderna com prontuário eletrônico e operação centralizada."

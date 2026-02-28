@@ -721,6 +721,11 @@
       "subtitle": "Electronic Health Record"
     }
   },
+  "ui": {
+    "loading": {
+      "label": "Loading"
+    }
+  },
   "app": {
     "name": "Auvitta",
     "description": "Modern clinic management platform with electronic records and centralized operations."
