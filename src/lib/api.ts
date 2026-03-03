@@ -40,7 +40,7 @@ const processQueue = (error: Error | null = null, token: string | null = null) =
   failedQueue = []
 }
 
-// Request interceptor - add JWT token to headers
+// Request interceptor - add JWT token and locale to headers
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // Get token from localStorage (only in browser)
@@ -49,6 +49,13 @@ apiClient.interceptors.request.use(
 
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`
+      }
+
+      const locale = getCurrentLocale()
+
+      const acceptLanguage = locale === 'pt-BR' ? 'pt-br' : 'en'
+      if (config.headers) {
+        config.headers['Accept-Language'] = acceptLanguage
       }
     }
 
