@@ -155,7 +155,7 @@ export default function UserAddPage() {
                 {fields.map((field, idx) => (
                   <div key={field.id} className="flex items-center gap-3">
                     <div className="shrink-0 w-24 space-y-2">
-                      <Label htmlFor={`phones.${idx}.country_code`}>{t('fields.country_code')}</Label>
+                      <Label htmlFor={`phones.${idx}.country_code`}>DDI</Label>
                       <Input id={`phones.${idx}.country_code`} {...form.register(`phones.${idx}.country_code` as const)} placeholder="55" />
                     </div>
 
@@ -184,8 +184,15 @@ export default function UserAddPage() {
                     </div>
 
                     {idx > 0 && (
-                      <Button type="button" variant="ghost" onClick={() => remove(idx)} aria-label={t('actions.removePhone') as string}>
-                        <Trash2 className="w-4 h-4" />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon-lg"
+                        className="self-center h-9 w-9 translate-y-2"
+                        onClick={() => remove(idx)}
+                        aria-label={t('actions.removePhone') as string}
+                      >
+                        <Trash2 className="size-4" />
                       </Button>
                     )}
                   </div>
