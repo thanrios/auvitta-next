@@ -31,6 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Select } from '@/components/ui/select'
 
 type CompanyStatus = 'active' | 'inactive'
 type SortDirection = 'asc' | 'desc'
@@ -302,7 +303,7 @@ export default function CompaniesPage() {
 
             <label className="flex items-center gap-2 text-muted-foreground" htmlFor="companies-rows-per-page">
               {t('pagination.rowsPerPage')}
-              <select
+              <Select
                 id="companies-rows-per-page"
                 className="h-9 rounded-md border border-input bg-background px-2 text-foreground"
                 value={rowsPerPage}
@@ -313,7 +314,7 @@ export default function CompaniesPage() {
                     {option}
                   </option>
                 ))}
-              </select>
+              </Select>
             </label>
           </div>
         </CardContent>

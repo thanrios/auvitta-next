@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 
 import type {
   ProtocolBlock,
@@ -570,14 +571,14 @@ export function ProtocolEditorPage() {
                   {!isEditMode && !isViewMode && (
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="protocol-status">{t('fields.initialStatus')}</Label>
-                      <select
+                      <Select
                         id="protocol-status"
                         className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
                         {...form.register('status')}
                       >
                         <option value="active">{t('status.active')}</option>
                         <option value="inactive">{t('status.inactive')}</option>
-                      </select>
+                      </Select>
                     </div>
                   )}
                 </div>

@@ -553,16 +553,28 @@
       "headingEdit": "Edit User",
       "cardTitleCreate": "User Details",
       "cardTitleEdit": "Edit User Details",
+      "sections": {
+        "account": "Account",
+        "person": "Person",
+        "primaryContact": "Contact"
+      },
       "fields": {
         "name": "Name",
         "email": "Email",
         "role": "Role",
-        "status": "Status"
+        "status": "Status",
+        "country_code": "Country code",
+        "phone_number": "Phone number",
+        "phone_type": "Phone type",
+        "is_whatsapp": "Is WhatsApp",
+        "biological_sex": "Biological sex",
+        "gender": "Gender"
       },
       "placeholders": {
         "name": "Type name",
         "email": "Type email",
-        "role": "Select role"
+        "role": "Select role",
+        "select": "Select"
       },
       "roles": {
         "admin": "Administrator",
@@ -570,14 +582,25 @@
         "professional": "Professional",
         "reception": "Reception"
       },
+      "phoneTypes": {
+        "mobile": "Mobile",
+        "landline": "Landline"
+      },
       "status": {
         "active": "Active",
         "inactive": "Inactive"
       },
+
       "actions": {
         "cancel": "Cancel",
         "create": "Create user",
-        "save": "Save changes"
+        "save": "Save changes",
+        "addPhone": "Add phone",
+        "removePhone": "Remove"
+      },
+      "toasts": {
+        "createSuccess": "User created successfully!",
+        "createError": "Failed to create user"
       }
     },
     "companies": {

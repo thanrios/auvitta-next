@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 import {
   Sheet,
   SheetContent,
@@ -263,7 +264,7 @@ export function NewSessionPage({ patientId }: NewSessionPageProps) {
 
           <div className="space-y-2">
             <Label htmlFor="session-type">{t('sessionType.label')}</Label>
-            <select
+            <Select
               id="session-type"
               value={draft.sessionType}
               onChange={(event) => updateDraft(patientId, { sessionType: event.target.value as SessionType })}
@@ -274,7 +275,7 @@ export function NewSessionPage({ patientId }: NewSessionPageProps) {
                   {sessionTypeLabels[type]}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
           {draft.lastSavedAt && (
@@ -310,7 +311,7 @@ export function NewSessionPage({ patientId }: NewSessionPageProps) {
         </CardHeader>
         <CardContent className="space-y-3 pt-0">
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto]">
-            <select
+            <Select
               value={selectedProtocolType}
               onChange={(event) => setSelectedProtocolType(event.target.value as SessionProtocolType)}
               className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
@@ -320,7 +321,7 @@ export function NewSessionPage({ patientId }: NewSessionPageProps) {
                   {protocolTypeLabels[protocolType]}
                 </option>
               ))}
-            </select>
+            </Select>
 
             <Button type="button" onClick={handleAddProtocol}>
               <Plus className="size-4" />

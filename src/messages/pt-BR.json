@@ -553,16 +553,28 @@
       "headingEdit": "Editar Usuário",
       "cardTitleCreate": "Dados do Usuário",
       "cardTitleEdit": "Editar Dados do Usuário",
+      "sections": {
+        "account": "Conta",
+        "person": "Pessoa",
+        "primaryContact": "Contato"
+      },
       "fields": {
         "name": "Nome",
         "email": "E-mail",
         "role": "Perfil",
-        "status": "Status"
+        "status": "Status",
+        "country_code": "Código do país",
+        "phone_number": "Telefone",
+        "phone_type": "Tipo de telefone",
+        "is_whatsapp": "É WhatsApp",
+        "biological_sex": "Sexo biológico",
+        "gender": "Gênero"
       },
       "placeholders": {
         "name": "Digite o nome",
         "email": "Digite o e-mail",
-        "role": "Selecione o perfil"
+        "role": "Selecione o perfil",
+        "select": "Selecione"
       },
       "roles": {
         "admin": "Administradora",
@@ -570,14 +582,25 @@
         "professional": "Profissional",
         "reception": "Recepção"
       },
+      "phoneTypes": {
+        "mobile": "Celular",
+        "landline": "Fixo"
+      },
       "status": {
         "active": "Ativo",
         "inactive": "Inativo"
       },
+
       "actions": {
         "cancel": "Cancelar",
         "create": "Criar usuário",
-        "save": "Salvar alterações"
+        "save": "Salvar alterações",
+        "addPhone": "Adicionar telefone",
+        "removePhone": "Remover"
+      },
+      "toasts": {
+        "createSuccess": "Usuário criado com sucesso!",
+        "createError": "Falha ao criar usuário"
       }
     },
     "companies": {

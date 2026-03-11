@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Select } from '@/components/ui/select'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -345,7 +346,7 @@ export default function PatientsPage() {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <label className="flex items-center gap-2 text-muted-foreground" htmlFor="rows-per-page">
                     {t('pagination.rowsPerPage')}
-                    <select
+                    <Select
                       id="rows-per-page"
                       className="h-9 rounded-md border border-input bg-background px-2 text-foreground"
                       value={rowsPerPage}
@@ -356,7 +357,7 @@ export default function PatientsPage() {
                           {option}
                         </option>
                       ))}
-                    </select>
+                    </Select>
                   </label>
 
                   <div className="flex items-center gap-1">

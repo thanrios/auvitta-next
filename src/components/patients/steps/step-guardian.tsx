@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 import { ToggleSwitch } from '@/components/ui/toggle-switch'
 import { documentTypeOptions, guardianTypeOptions } from '@/lib/constants/patient-form-options'
 import type { PatientFormData } from '@/lib/validations/patient'
@@ -211,7 +212,7 @@ export function StepGuardian({ isMinor }: StepGuardianProps) {
                   <Label htmlFor={`guardians.${index}.type`} className="font-bold">
                     {t('steps.guardian.fields.type.label')} <span className="text-destructive">*</span>
                   </Label>
-                  <select
+                  <Select
                     id={`guardians.${index}.type`}
                     className={selectClassName}
                     {...register(`guardians.${index}.type`)}
@@ -224,7 +225,21 @@ export function StepGuardian({ isMinor }: StepGuardianProps) {
                         {t(option.labelKey.replace('pages.patients.newForm.', ''))}
                       </option>
                     ))}
-                  </select>
+                  </Select>
+                    <Select
+                      id={`guardians.${index}.type`}
+                      className={selectClassName}
+                      {...register(`guardians.${index}.type`)}
+                      defaultValue=""
+                      aria-invalid={errors.guardians?.[index]?.type ? 'true' : 'false'}
+                    >
+                      <option value="">{t('steps.guardian.fields.type.placeholder')}</option>
+                      {guardianTypeOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {t(option.labelKey.replace('pages.patients.newForm.', ''))}
+                        </option>
+                      ))}
+                    </Select>
                   {errors.guardians?.[index]?.type && (
                     <p className="text-sm text-destructive">{errors.guardians[index]?.type?.message}</p>
                   )}

@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 import { ToggleSwitch } from '@/components/ui/toggle-switch'
 
 const inputClassName =
@@ -234,7 +235,7 @@ export function StepIdentification() {
               <Label htmlFor="identification.sex" className="font-bold">
                 {t('steps.identification.fields.sex.label')} <span className="text-destructive">*</span>
               </Label>
-              <select
+              <Select
                 id="identification.sex"
                 className={selectClassName}
                 {...register('identification.sex')}
@@ -245,7 +246,7 @@ export function StepIdentification() {
                     {t(option.labelKey.replace('pages.patients.newForm.', ''))}
                   </option>
                 ))}
-              </select>
+              </Select>
               {errors.identification?.sex && (
                 <p className="text-sm text-destructive">{errors.identification.sex.message}</p>
               )}
@@ -273,7 +274,7 @@ export function StepIdentification() {
                     <Label htmlFor={`identification.documents.${index}.type`} className="font-bold">
                       {t('steps.identification.fields.documents.typeLabel')} <span className="text-destructive">*</span>
                     </Label>
-                    <select
+                    <Select
                       id={`identification.documents.${index}.type`}
                       className={selectClassName}
                       {...register(`identification.documents.${index}.type`, {
@@ -296,7 +297,7 @@ export function StepIdentification() {
                           {t(option.labelKey.replace('pages.patients.newForm.', ''))}
                         </option>
                       ))}
-                    </select>
+                    </Select>
                     {errors.identification?.documents?.[index]?.type && (
                       <p className="text-sm text-destructive">
                         {errors.identification.documents[index]?.type?.message}

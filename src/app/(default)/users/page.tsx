@@ -31,6 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Select } from '@/components/ui/select'
 
 type UserStatus = 'active' | 'inactive'
 type SortDirection = 'asc' | 'desc'
@@ -286,7 +287,7 @@ export default function UsersPage() {
 
             <label className="flex items-center gap-2 text-muted-foreground" htmlFor="users-rows-per-page">
               {t('pagination.rowsPerPage')}
-              <select
+              <Select
                 id="users-rows-per-page"
                 className="h-9 rounded-md border border-input bg-background px-2 text-foreground"
                 value={rowsPerPage}
@@ -297,7 +298,7 @@ export default function UsersPage() {
                     {option}
                   </option>
                 ))}
-              </select>
+              </Select>
             </label>
           </div>
         </CardContent>

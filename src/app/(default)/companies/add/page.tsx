@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 
 export default function CompanyAddPage() {
   const t = useTranslations('pages.companiesForm')
@@ -45,14 +46,10 @@ export default function CompanyAddPage() {
 
             <div className="space-y-2">
               <Label htmlFor="company-status">{t('fields.status')}</Label>
-              <select
-                id="company-status"
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                defaultValue="active"
-              >
+              <Select id="company-status" className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" defaultValue="active">
                 <option value="active">{t('status.active')}</option>
                 <option value="inactive">{t('status.inactive')}</option>
-              </select>
+              </Select>
             </div>
           </div>
 

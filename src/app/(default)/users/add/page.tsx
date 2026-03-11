@@ -1,19 +1,104 @@
 "use client"
 
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useFieldArray, useForm, Controller as FormController } from 'react-hook-form'
+import { AxiosError } from 'axios'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Trash2 } from 'lucide-react'
+import { ToggleSwitch } from '@/components/ui/toggle-switch'
+import { Select } from '@/components/ui/select'
+
+import { createUserSchema, CreateUserForm } from '@/lib/validations/user'
+import api from '@/lib/api-client'
+import { API_ROUTES } from '@/lib/api-routes'
+import { getErrorMessage } from '@/lib/api'
+import { toast } from 'sonner'
+
+const FIXED_PROFILE_ID = 'f2966320-6e6a-4954-b2ff-ecc07fdd7584'
 
 export default function UserAddPage() {
   const t = useTranslations('pages.usersForm')
+  const tp = useTranslations('pages.patients')
+  const router = useRouter()
   const searchParams = useSearchParams()
   const editId = searchParams.get('editId')
   const isEditMode = Boolean(editId)
+
+  const [loading, setLoading] = useState(false)
+
+  const form = useForm<CreateUserForm>({
+    resolver: zodResolver(createUserSchema),
+    defaultValues: {
+      username: '',
+      full_name: '',
+      biological_sex: undefined,
+      phones: [
+        { country_code: '55', phone_number: '', phone_type: 1, is_whatsapp: false, is_primary: true }
+      ]
+    }
+  })
+
+  const { fields, append, remove } = useFieldArray({ control: form.control, name: 'phones' })
+
+  const onAddPhone = () => {
+    if (fields.length >= 2) return
+    append({ country_code: '55', phone_number: '', phone_type: 1, is_whatsapp: false, is_primary: false })
+  }
+
+  const onSubmit = async (data: CreateUserForm) => {
+    setLoading(true)
+    const payload = {
+      username: data.username,
+      person: {
+        full_name: data.full_name,
+        biological_sex: data.biological_sex ?? null
+      },
+      contacts: {
+        documents: [],
+        emails: [
+          {
+            email: data.username,
+            is_primary: true
+          }
+        ],
+        phones: data.phones.map((p) => ({
+          country_code: p.country_code,
+          phone_number: p.phone_number,
+          phone_type: p.phone_type,
+          is_whatsapp: Boolean(p.is_whatsapp),
+          is_primary: Boolean(p.is_primary)
+        }))
+      },
+      profiles: [
+        {
+          id: FIXED_PROFILE_ID,
+          is_primary: true
+        }
+      ]
+    }
+
+    try {
+      const res = await api.post(API_ROUTES.users.base, payload)
+
+      toast.success(t('toasts.createSuccess'))
+      router.push('/users')
+    } catch (err) {
+      const detail = getErrorMessage(err)
+      const status = (err as AxiosError)?.response?.status
+      toast.error(detail ? `${detail} (${status ?? 'error'})` : t('toasts.createError'))
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="flex-1 space-y-4 p-4">
@@ -21,61 +106,108 @@ export default function UserAddPage() {
         {isEditMode ? t('headingEdit') : t('headingCreate')}
       </h1>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>{isEditMode ? t('cardTitleEdit') : t('cardTitleCreate')}</CardTitle>
-        </CardHeader>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('sections.account')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="username">{t('fields.email')}</Label>
+                  <Input id="username" {...form.register('username')} placeholder={t('placeholders.email')} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="user-name">{t('fields.name')}</Label>
-              <Input id="user-name" placeholder={t('placeholders.name')} />
-            </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('sections.person')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="full_name">{t('fields.name')}</Label>
+                  <Input id="full_name" {...form.register('full_name')} placeholder={t('placeholders.name')} />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="user-email">{t('fields.email')}</Label>
-              <Input id="user-email" type="email" placeholder={t('placeholders.email')} />
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="biological_sex">{t('fields.gender') ?? t('fields.biological_sex')}</Label>
+                  <Select id="biological_sex" {...form.register('biological_sex', { valueAsNumber: true })}>
+                    <option value="">{t('placeholders.select')}</option>
+                    <option value={1}>{tp('sex.male')}</option>
+                    <option value={2}>{tp('sex.female')}</option>
+                    <option value={3}>{tp('sex.notInformed')}</option>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-            <div className="space-y-2">
-              <Label htmlFor="user-role">{t('fields.role')}</Label>
-              <select
-                id="user-role"
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  {t('placeholders.role')}
-                </option>
-                <option value="admin">{t('roles.admin')}</option>
-                <option value="manager">{t('roles.manager')}</option>
-                <option value="professional">{t('roles.professional')}</option>
-                <option value="reception">{t('roles.reception')}</option>
-              </select>
-            </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('sections.primaryContact')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-4">
+                {fields.map((field, idx) => (
+                  <div key={field.id} className="flex items-center gap-3">
+                    <div className="shrink-0 w-24 space-y-2">
+                      <Label htmlFor={`phones.${idx}.country_code`}>{t('fields.country_code')}</Label>
+                      <Input id={`phones.${idx}.country_code`} {...form.register(`phones.${idx}.country_code` as const)} placeholder="55" />
+                    </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="user-status">{t('fields.status')}</Label>
-              <select
-                id="user-status"
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                defaultValue="active"
-              >
-                <option value="active">{t('status.active')}</option>
-                <option value="inactive">{t('status.inactive')}</option>
-              </select>
-            </div>
-          </div>
+                    <div className="flex-1 space-y-2">
+                      <Label htmlFor={`phones.${idx}.phone_number`}>{t('fields.phone_number')}</Label>
+                      <Input id={`phones.${idx}.phone_number`} {...form.register(`phones.${idx}.phone_number` as const)} placeholder="11999999999" />
+                    </div>
+
+                    <div className="w-36 space-y-2">
+                      <Label htmlFor={`phones.${idx}.phone_type`}>{t('fields.phone_type')}</Label>
+                      <Select id={`phones.${idx}.phone_type`} {...form.register(`phones.${idx}.phone_type` as const)}>
+                        <option value={1}>{t('phoneTypes.mobile')}</option>
+                        <option value={2}>{t('phoneTypes.landline')}</option>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2 flex flex-col items-start">
+                      <Label htmlFor={`phones.${idx}.is_whatsapp`}>{t('fields.is_whatsapp')}</Label>
+                      <FormController
+                        control={form.control}
+                        name={`phones.${idx}.is_whatsapp` as const}
+                        render={({ field: { value, onChange } }) => (
+                          <ToggleSwitch checked={Boolean(value)} onCheckedChange={onChange} onLabel={''} offLabel={''} />
+                        )}
+                      />
+                    </div>
+
+                    {idx > 0 && (
+                      <Button type="button" variant="ghost" onClick={() => remove(idx)} aria-label={t('actions.removePhone') as string}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+
+                <div>
+                  <Button type="button" onClick={onAddPhone} disabled={fields.length >= 2}>
+                    {t('actions.addPhone')}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           <div className="flex items-center justify-end gap-2">
             <Button variant="outline" asChild>
               <Link href="/users">{t('actions.cancel')}</Link>
             </Button>
-            <Button type="button">{isEditMode ? t('actions.save') : t('actions.create')}</Button>
+            <Button type="submit" disabled={loading}>{isEditMode ? t('actions.save') : t('actions.create')}</Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </form>
     </div>
   )
 }

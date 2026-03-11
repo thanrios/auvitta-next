@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
+import { Select } from '@/components/ui/select'
 import {
   Table,
   TableBody,
@@ -156,7 +157,7 @@ export function ProtocolsPage() {
             <span>{t('table.count', { count: protocols.length })}</span>
             <label className="flex items-center gap-2">
               <span>{t('table.rowsPerPage')}</span>
-              <select
+              <Select
                 value={rowsPerPage}
                 onChange={(event) => setRowsPerPage(Number(event.target.value))}
                 className="h-8 rounded-md border border-input bg-background px-2 text-sm"
@@ -166,7 +167,7 @@ export function ProtocolsPage() {
                     {option}
                   </option>
                 ))}
-              </select>
+              </Select>
             </label>
           </div>
         </CardContent>

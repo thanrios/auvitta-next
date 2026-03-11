@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select } from '@/components/ui/select'
 
 const selectClassName =
   'border-input h-11 w-full rounded-md border bg-background px-3 py-1 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:border-2 focus-visible:ring-ring/50 focus-visible:ring-[4px]'
@@ -63,7 +64,7 @@ export function StepAdministrative() {
           <Label htmlFor="administrative.careType" className="font-bold">
             {t('steps.administrative.fields.careType.label')} <span className="text-destructive">*</span>
           </Label>
-          <select
+          <Select
             id="administrative.careType"
             className={selectClassName}
             {...register('administrative.careType')}
@@ -74,7 +75,7 @@ export function StepAdministrative() {
                 {t(option.labelKey.replace('pages.patients.newForm.', ''))}
               </option>
             ))}
-          </select>
+          </Select>
           {errors.administrative?.careType && (
             <p className="text-sm text-destructive">{errors.administrative.careType.message}</p>
           )}
