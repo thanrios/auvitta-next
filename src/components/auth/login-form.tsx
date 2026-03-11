@@ -54,7 +54,7 @@ export function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(validationSchemas.loginSchema),
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
   })
@@ -85,12 +85,12 @@ export function LoginForm() {
           id="email"
           type="email"
           placeholder={t('emailPlaceholder')}
-          {...register('email')}
+          {...register('username')}
           disabled={isLoggingIn}
-          aria-invalid={errors.email ? 'true' : 'false'}
+          aria-invalid={errors.username ? 'true' : 'false'}
         />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email.message}</p>
+        {errors.username && (
+          <p className="text-sm text-destructive">{errors.username.message}</p>
         )}
       </div>
 

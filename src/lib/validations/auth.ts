@@ -39,7 +39,7 @@ const defaultMessages: AuthValidationMessages = {
 
 export function createAuthValidationSchemas(messages: AuthValidationMessages = defaultMessages) {
   const loginSchema = z.object({
-    email: z
+    username: z
       .string()
       .min(1, messages.emailRequired)
       .email(messages.emailInvalid),
@@ -50,7 +50,7 @@ export function createAuthValidationSchemas(messages: AuthValidationMessages = d
   })
 
   const forgotPasswordSchema = z.object({
-    email: z
+    username: z
       .string()
       .min(1, messages.emailRequired)
       .email(messages.emailInvalid),

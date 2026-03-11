@@ -1,7 +1,7 @@
 # GitHub Copilot Instructions — Auvitta Frontend
 
-@version: 1.0
-Last updated: February 20, 2026
+@version: 1.1
+Last updated: March 09, 2026
 
 ## 1) Project Context
 
@@ -126,3 +126,25 @@ When generating new code, Copilot must:
 3. Separate data logic (hooks/lib) from presentation (components).
 4. Include full typing for props and API contracts.
 5. Include accessibility attributes by default.
+
+## 🌐 Localização (i18n) — Obrigatório
+
+- **Ao gerar ou adicionar qualquer texto de UI** (labels, placeholders, validações, mensagens, tooltips), adicione também uma chave correspondente em `src/messages/` para as línguas suportadas (`pt-BR`, `en-US`) e use `next-intl` para renderizar as mensagens — **não** deixe strings hardcoded.
+- Arquivo de mensagens: mantenha `src/messages/pt-BR.json` e `src/messages/en-US.json` sincronizados. Para cada nova chave, inclua traduções nas duas línguas antes do merge.
+- Exemplo mínimo:
+
+```json
+// src/messages/en-US.json
+{
+  "auth.login.button": "Sign in"
+}
+
+// src/messages/pt-BR.json
+{
+  "auth.login.button": "Entrar"
+}
+```
+
+- Use `useTranslations()` ou componentes `next-intl` no React para acessar as chaves.
+- Nos PRs, inclua as alterações nos arquivos `src/messages/*` e certifique-se de que os testes localizados/verificações de copy não quebrem. Se houver uma ferramenta de extração automática configurada, documente o comando no PR; caso contrário, faça a atualização manualmente.
+

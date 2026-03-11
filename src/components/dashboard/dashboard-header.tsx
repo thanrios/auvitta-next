@@ -14,7 +14,7 @@ export function DashboardHeader({ greeting }: DashboardHeaderProps) {
   return (
     <div className="flex flex-col items-start justify-between">
       <h3 className="text-xl font-semibold tracking-tight mb-3">{greeting},</h3>
-      <h1 className="text-4xl font-bold tracking-tight text-primary">{user?.full_name}</h1>
+      <h1 className="text-4xl font-bold tracking-tight text-primary">{user?.person.full_name}</h1>
     </div>
   )
 }

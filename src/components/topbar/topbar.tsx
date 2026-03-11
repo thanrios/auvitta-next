@@ -110,13 +110,13 @@ export function Topbar() {
               className="h-auto gap-2 rounded-xl border border-border bg-card px-5 py-2"
             >
               <Avatar className="h-9 w-9 border">
-                <AvatarImage src="" alt={user?.full_name || t('user')} />
-                <AvatarFallback>{getUserInitials(user?.full_name)}</AvatarFallback>
+                <AvatarImage src="" alt={user?.person.full_name || t('user')} />
+                <AvatarFallback>{getUserInitials(user?.person.full_name)}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start leading-none">
-                <span className="text-sm font-medium">{user?.full_name || t('user')}</span>
+                <span className="text-sm font-medium">{user?.person.full_name || t('user')}</span>
                 <span className="text-xs text-muted-foreground">
-                  {user?.role || t('userEmailFallback')}
+                  {user?.profiles[0]?.label || t('userEmailFallback')}
                 </span>
               </div>
               <ChevronDown className="ml-1 h-4 w-4 text-muted-foreground" />
@@ -126,10 +126,10 @@ export function Topbar() {
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.full_name || t('user')}
+                  {user?.person.full_name || t('user')}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
-                  {user?.role || t('userEmailFallback')}
+                  {user?.username || t('userEmailFallback')}
                 </p>
               </div>
             </DropdownMenuLabel>
