@@ -4,13 +4,17 @@
  */
 
 import apiClient from './api'
+import { getCurrentLocale } from '@/i18n/locale'
 import { AxiosRequestConfig } from 'axios'
 
 /**
  * Generic GET request
  */
 export async function get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-  const response = await apiClient.get<T>(url, config)
+  const locale = getCurrentLocale()
+  const acceptLanguage = locale === 'pt-BR' ? 'pt-br' : 'en'
+  const mergedConfig = { ...config, headers: { ...(config?.headers ?? {}), 'Accept-Language': acceptLanguage } }
+  const response = await apiClient.get<T>(url, mergedConfig)
   return response.data
 }
 
@@ -22,7 +26,10 @@ export async function post<T, D = unknown>(
   data?: D,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await apiClient.post<T>(url, data, config)
+  const locale = getCurrentLocale()
+  const acceptLanguage = locale === 'pt-BR' ? 'pt-br' : 'en'
+  const mergedConfig = { ...config, headers: { ...(config?.headers ?? {}), 'Accept-Language': acceptLanguage } }
+  const response = await apiClient.post<T>(url, data, mergedConfig)
   return response.data
 }
 
@@ -34,7 +41,10 @@ export async function put<T, D = unknown>(
   data?: D,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await apiClient.put<T>(url, data, config)
+  const locale = getCurrentLocale()
+  const acceptLanguage = locale === 'pt-BR' ? 'pt-br' : 'en'
+  const mergedConfig = { ...config, headers: { ...(config?.headers ?? {}), 'Accept-Language': acceptLanguage } }
+  const response = await apiClient.put<T>(url, data, mergedConfig)
   return response.data
 }
 
@@ -46,7 +56,10 @@ export async function patch<T, D = unknown>(
   data?: D,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await apiClient.patch<T>(url, data, config)
+  const locale = getCurrentLocale()
+  const acceptLanguage = locale === 'pt-BR' ? 'pt-br' : 'en'
+  const mergedConfig = { ...config, headers: { ...(config?.headers ?? {}), 'Accept-Language': acceptLanguage } }
+  const response = await apiClient.patch<T>(url, data, mergedConfig)
   return response.data
 }
 
@@ -54,7 +67,10 @@ export async function patch<T, D = unknown>(
  * Generic DELETE request
  */
 export async function del<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-  const response = await apiClient.delete<T>(url, config)
+  const locale = getCurrentLocale()
+  const acceptLanguage = locale === 'pt-BR' ? 'pt-br' : 'en'
+  const mergedConfig = { ...config, headers: { ...(config?.headers ?? {}), 'Accept-Language': acceptLanguage } }
+  const response = await apiClient.delete<T>(url, mergedConfig)
   return response.data
 }
 

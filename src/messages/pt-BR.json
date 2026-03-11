@@ -545,6 +545,7 @@
       },
       "pagination": {
         "rowsPerPage": "Usuários por página",
+        "page": "Página {current} de {total}",
         "showing": "Mostrando {start} a {end} de {total} registros"
       }
     },

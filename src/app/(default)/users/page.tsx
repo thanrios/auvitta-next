@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import {
@@ -32,18 +32,12 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Select } from '@/components/ui/select'
+import { useUsers } from '@/hooks/use-api-users'
+import type { UserListItem } from '@/types/user.types'
 
 type UserStatus = 'active' | 'inactive'
 type SortDirection = 'asc' | 'desc'
 type SortField = 'name' | 'email' | 'role' | 'status'
-
-interface MockUser {
-  id: string
-  name: string
-  email: string
-  role: string
-  status: UserStatus
-}
 
 interface SortState {
   field: SortField
@@ -52,57 +46,61 @@ interface SortState {
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50]
 
-const MOCK_USERS: MockUser[] = [
-  { id: '1', name: 'Amanda Silveira', email: 'amanda@auvitta.com', role: 'Administradora', status: 'active' },
-  { id: '2', name: 'Carlos Neves', email: 'carlos@auvitta.com', role: 'Recepção', status: 'active' },
-  { id: '3', name: 'Fernanda Lima', email: 'fernanda@auvitta.com', role: 'Gestora', status: 'active' },
-  { id: '4', name: 'Gustavo Neri', email: 'gustavo@auvitta.com', role: 'Recepção', status: 'inactive' },
-  { id: '5', name: 'Helena Rocha', email: 'helena@auvitta.com', role: 'Profissional', status: 'active' },
-  { id: '6', name: 'Igor Batista', email: 'igor@auvitta.com', role: 'Profissional', status: 'inactive' },
-]
-
 export default function UsersPage() {
   const t = useTranslations('pages.users')
 
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | UserStatus>('all')
   const [rowsPerPage, setRowsPerPage] = useState(20)
+  const [page, setPage] = useState(1)
   const [sort, setSort] = useState<SortState>({
     field: 'name',
     direction: 'asc',
   })
 
-  const filteredUsers = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase()
+  // map statusFilter to API param
+  const isActiveParam: boolean | null = statusFilter === 'all' ? null : statusFilter === 'active'
 
-    return MOCK_USERS.filter((user) => {
-      const matchesSearch =
-        normalizedSearch.length === 0 ||
-        user.name.toLowerCase().includes(normalizedSearch) ||
-        user.email.toLowerCase().includes(normalizedSearch)
+  const orderingParam = `${sort.direction === 'desc' ? '-' : ''}${
+    sort.field === 'name' ? 'full_name' : sort.field === 'email' ? 'email' : sort.field === 'role' ? 'role' : 'is_active'
+  }`
 
-      const matchesStatus = statusFilter === 'all' || user.status === statusFilter
+  const { data, isLoading, error } = useUsers(page, rowsPerPage, search, isActiveParam, orderingParam)
 
-      return matchesSearch && matchesStatus
-    })
-  }, [search, statusFilter])
+  // Reset to first page when filters change
+  useEffect(() => {
+    setPage(1)
+  }, [search, statusFilter, rowsPerPage])
+
+  const usersFromApi: UserListItem[] = data?.results ?? []
 
   const sortedUsers = useMemo(() => {
     const directionMultiplier = sort.direction === 'asc' ? 1 : -1
-    const users = [...filteredUsers]
+    const users = [...usersFromApi]
 
-    users.sort((userA, userB) => {
-      const valueA = userA[sort.field].toString().toLowerCase()
-      const valueB = userB[sort.field].toString().toLowerCase()
+    users.sort((a, b) => {
+      const getField = (u: UserListItem) => {
+        switch (sort.field) {
+          case 'name':
+            return (u.full_name ?? '').toString().toLowerCase()
+          case 'email':
+            return (u.email ?? '').toString().toLowerCase()
+          case 'role':
+            return (u.role ?? '').toString().toLowerCase()
+          case 'status':
+            return (u.is_active ? '1' : '0')
+          default:
+            return ''
+        }
+      }
+
+      const valueA = getField(a)
+      const valueB = getField(b)
       return valueA.localeCompare(valueB) * directionMultiplier
     })
 
     return users
-  }, [filteredUsers, sort])
-
-  const visibleUsers = useMemo(() => {
-    return sortedUsers.slice(0, rowsPerPage)
-  }, [rowsPerPage, sortedUsers])
+  }, [usersFromApi, sort])
 
   const getAriaSort = (field: SortField): 'ascending' | 'descending' | 'none' => {
     if (sort.field !== field) {
@@ -135,6 +133,20 @@ export default function UsersPage() {
 
     return sort.direction === 'asc' ? <ArrowUp className="size-4" /> : <ArrowDown className="size-4" />
   }
+
+  const formatDateTime = (iso?: string | null) => {
+    if (!iso) return '-'
+    const d = new Date(iso)
+    const pad = (n: number) => n.toString().padStart(2, '0')
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(
+      d.getHours()
+    )}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+  }
+
+  const totalPages = data ? Math.max(1, Math.ceil((data.count ?? 0) / rowsPerPage)) : 1
+
+  const goPrev = () => setPage((p) => Math.max(1, p - 1))
+  const goNext = () => setPage((p) => Math.min(totalPages, p + 1))
 
   return (
     <div className="flex-1 space-y-4 p-4">
@@ -185,7 +197,7 @@ export default function UsersPage() {
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {visibleUsers.length === 0 ? (
+          {sortedUsers.length === 0 ? (
             <p className="text-center text-sm text-muted-foreground">{t('table.empty')}</p>
           ) : (
             <Table>
@@ -243,14 +255,15 @@ export default function UsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {visibleUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell className="font-medium">{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
+                {sortedUsers.map((user) => (
+                  <TableRow key={user.uuid}>
+                    <TableCell className="font-medium">{user.full_name ?? '-'}</TableCell>
+                    <TableCell>{user.email ?? '-'}</TableCell>
+                    <TableCell>{user.role ?? '-'}</TableCell>
                     <TableCell>
-                      {user.status === 'active' ? t('table.statusActive') : t('table.statusInactive')}
+                      {user.is_active ? t('table.statusActive') : t('table.statusInactive')}
                     </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">{formatDateTime(user.created_at)}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -265,7 +278,7 @@ export default function UsersPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>{t('table.actionView')}</DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <Link href={`/users/add?editId=${user.id}`}>{t('table.actionEdit')}</Link>
+                            <Link href={`/users/add?editId=${user.uuid}`}>{t('table.actionEdit')}</Link>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -279,27 +292,42 @@ export default function UsersPage() {
           <div className="flex flex-col gap-3 text-sm md:flex-row md:items-center md:justify-between">
             <div className="text-muted-foreground">
               {t('pagination.showing', {
-                start: visibleUsers.length === 0 ? 0 : 1,
-                end: visibleUsers.length,
-                total: filteredUsers.length,
+                start: data && data.results.length > 0 ? (page - 1) * rowsPerPage + 1 : 0,
+                end: data ? (page - 1) * rowsPerPage + data.results.length : 0,
+                total: data?.count ?? 0,
               })}
             </div>
+              <div className="flex items-center justify-center md:col-span-1">
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={goPrev} disabled={page <= 1}>
+                    ‹
+                  </Button>
+                  <div className="text-sm">
+                    {t('pagination.page', { current: page, total: totalPages })}
+                  </div>
+                  <Button variant="outline" size="sm" onClick={goNext} disabled={page >= totalPages}>
+                    ›
+                  </Button>
+                </div>
+              </div>
 
-            <label className="flex items-center gap-2 text-muted-foreground" htmlFor="users-rows-per-page">
-              {t('pagination.rowsPerPage')}
-              <Select
-                id="users-rows-per-page"
-                className="h-9 rounded-md border border-input bg-background px-2 text-foreground"
-                value={rowsPerPage}
-                onChange={(event) => setRowsPerPage(Number(event.target.value))}
-              >
-                {PAGE_SIZE_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </Select>
-            </label>
+              <div className="flex items-center justify-end md:col-span-1">
+                <label className="flex items-center gap-2 text-muted-foreground whitespace-nowrap" htmlFor="users-rows-per-page">
+                  {t('pagination.rowsPerPage')}
+                  <Select
+                    id="users-rows-per-page"
+                    className="h-9 rounded-md border border-input bg-background px-2 text-foreground"
+                    value={rowsPerPage}
+                    onChange={(event) => setRowsPerPage(Number(event.target.value))}
+                  >
+                    {PAGE_SIZE_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </Select>
+                </label>
+              </div>
           </div>
         </CardContent>
       </Card>

@@ -2,6 +2,7 @@ export const QUERY_KEYS = {
   users: {
     all: ['users'] as const,
     me: () => ['users', 'me'] as const,
+    list: (page: number, params?: { page_size?: number; search?: string | null; is_active?: boolean | null }) => ['users', 'list', page, params ?? null] as const,
   },
   patients: {
     all: ['patients'] as const,
