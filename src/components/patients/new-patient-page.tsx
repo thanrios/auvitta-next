@@ -3,30 +3,28 @@
 import { useEffect, useMemo, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslations } from 'next-intl'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import { createPatientValidationSchemaWithMessages } from '@/lib/patient-validation-factory'
+import type { PatientFormData } from '@/lib/validations/patient'
 import {
-  createPatientValidationSchema,
-  type PatientFormData,
-} from '@/lib/validations/patient'
+  PATIENT_FORM_DEFAULT_VALUES,
+  STEP_KEYS,
+  STEP_LABEL_KEYS,
+  STEP_SUPPORT_KEYS,
+} from '@/lib/patient-form-defaults'
+import { mapPatientDetailToFormValues } from '@/lib/patient-form-mapper'
+import { usePatientRegistration } from '@/hooks/use-patient-registration'
 import type {
-  DocumentType,
-  PatientDetail,
-  RelationshipType,
+  PersonLookupResult,
 } from '@/types/patient.types'
 import { usePatient } from '@/hooks/use-api-patients'
 import { Button } from '@/components/ui/button'
+import { PatientSuggestionsPanel } from '@/components/patients/patient-suggestions-panel'
 import { StepAdministrative } from '@/components/patients/steps/step-administrative'
 import { StepGuardian } from '@/components/patients/steps/step-guardian'
 import { StepIdentification } from '@/components/patients/steps/step-identification'
-
-const STEP_KEYS = ['identification', 'guardian', 'administrative'] as const
-
-type StepKey = (typeof STEP_KEYS)[number]
-
-function onlyDigits(value: string): string {
-  return value.replace(/\D/g, '')
-}
+import { toast } from 'sonner'
 
 function isMinorByBirthDate(birthDate: string): boolean {
   if (!birthDate) {
@@ -50,252 +48,77 @@ function isMinorByBirthDate(birthDate: string): boolean {
   return age < 18
 }
 
-function mapSexToFormValue(value?: number): 'masculino' | 'feminino' | 'outro' {
-  if (value === 1) {
-    return 'masculino'
-  }
-
-  if (value === 2) {
-    return 'feminino'
-  }
-
-  return 'outro'
-}
-
-function mapDocumentTypeToFormValue(value?: DocumentType): 'cpf' | 'rg' | 'passaporte' | 'cnh' | 'outro' {
-  if (value === 1) {
-    return 'cpf'
-  }
-
-  if (value === 2) {
-    return 'rg'
-  }
-
-  if (value === 3) {
-    return 'passaporte'
-  }
-
-  return 'outro'
-}
-
-function mapRelationshipTypeToFormValue(value?: RelationshipType): 'pai' | 'mae' | 'tutor' | 'outro' {
-  if (value === 1) {
-    return 'mae'
-  }
-
-  if (value === 2) {
-    return 'pai'
-  }
-
-  if (value === 3) {
-    return 'tutor'
-  }
-
-  return 'outro'
-}
-
-function mapPatientDetailToFormValues(patient: PatientDetail): PatientFormData {
-  const firstAddress = patient.addresses[0]
-  const mappedDocuments = patient.documents.length > 0
-    ? patient.documents.map((document) => ({
-        type: mapDocumentTypeToFormValue(document.document_type),
-        number: document.document_number ?? '',
-      }))
-    : [{ type: 'cpf' as const, number: '' }]
-
-  return {
-    identification: {
-      fullName: patient.full_name ?? '',
-      socialName: '',
-      birthDate: patient.birth_date ?? '',
-      sex: mapSexToFormValue(patient.biological_sex),
-      documents: mappedDocuments,
-      contact: {
-        email: '',
-        phones: patient.phones.map((phone) => ({
-          countryCode: phone.ddi ? `+${phone.ddi}` : '+55',
-          number: phone.ddd && phone.phone_number
-            ? `(${phone.ddd}) ${phone.phone_number}`
-            : phone.phone_number ?? '',
-          isWhatsapp: phone.is_whatsapp,
-          isPrimary: phone.is_primary,
-        })),
-        address: {
-          postalCode: firstAddress?.postal_code ?? '',
-          street: firstAddress?.street ?? '',
-          number: firstAddress?.number ?? '',
-          complement: firstAddress?.complement ?? '',
-          city: firstAddress?.city ?? '',
-          state: firstAddress?.state ?? '',
-        },
-      },
-    },
-    guardians: patient.guardians.map((guardian) => {
-      const guardianDocument = guardian.documents?.[0]
-      const guardianPhone = guardian.phones?.[0]
-      const guardianAddress = guardian.addresses?.[0]
-
-      return {
-        name: guardian.full_name ?? '',
-        type: mapRelationshipTypeToFormValue(guardian.relationship_type),
-        isPrimary: guardian.is_primary_responsible,
-        document: {
-          type: guardianDocument ? mapDocumentTypeToFormValue(guardianDocument.document_type) : undefined,
-          number: guardianDocument?.document_number ?? '',
-        },
-        contact: {
-          email: '',
-          phones: [
-            {
-              countryCode: guardianPhone?.ddi ? `+${guardianPhone.ddi}` : '+55',
-              number: guardianPhone?.ddd && guardianPhone?.phone_number
-                ? `(${guardianPhone.ddd}) ${guardianPhone.phone_number}`
-                : guardianPhone?.phone_number ?? '',
-              isWhatsapp: guardianPhone?.is_whatsapp ?? false,
-              isPrimary: guardianPhone?.is_primary ?? true,
-            },
-          ],
-          address: {
-            postalCode: guardianAddress?.postal_code ?? '',
-            street: guardianAddress?.street ?? '',
-            number: guardianAddress?.number ?? '',
-            complement: guardianAddress?.complement ?? '',
-            city: guardianAddress?.city ?? '',
-            state: guardianAddress?.state ?? '',
-          },
-        },
-      }
-    }),
-    contact: {
-      email: '',
-      phones: [],
-      address: {
-        postalCode: '',
-        street: '',
-        number: '',
-        complement: '',
-        city: '',
-        state: '',
-      },
-    },
-    administrative: {
-      careType: 'particular',
-      insuranceName: '',
-      insuranceCardNumber: '',
-      insurancePlan: '',
-      specialties: ['fonoaudiologia'],
-      referralSource: 'indicacao_amigo_familiar',
-      observations: '',
-    },
-  }
-}
-
 export function NewPatientPage() {
   const t = useTranslations('pages.patients.newForm')
   const tValidation = useTranslations('validation.patient')
+  const router = useRouter()
   const searchParams = useSearchParams()
+  
   const [currentStep, setCurrentStep] = useState(0)
+  const [personSuggestions, setPersonSuggestions] = useState<PersonLookupResult[]>([])
+  const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false)
+  const [selectedSuggestedPerson, setSelectedSuggestedPerson] =
+    useState<PersonLookupResult | null>(null)
+  
   const editId = searchParams.get('editId')
   const isEditMode = Boolean(editId)
+  
+  const { submitPatientRegistration, isSubmitting } = usePatientRegistration()
 
-  const validationSchema = useMemo(
-    () =>
-      createPatientValidationSchema({
-        fullNameRequired: tValidation('fullNameRequired'),
-        fullNameMin: tValidation('fullNameMin'),
-        birthDateRequired: tValidation('birthDateRequired'),
-        birthDateInvalid: tValidation('birthDateInvalid'),
-        birthDateFuture: tValidation('birthDateFuture'),
-        sexRequired: tValidation('sexRequired'),
-        documentTypeRequired: tValidation('documentTypeRequired'),
-        documentNumberRequired: tValidation('documentNumberRequired'),
-        documentCpfInvalid: tValidation('documentCpfInvalid'),
-        guardianNameRequired: tValidation('guardianNameRequired'),
-        guardianNameMin: tValidation('guardianNameMin'),
-        guardianTypeRequired: tValidation('guardianTypeRequired'),
-        guardianPrimaryRequired: tValidation('guardianPrimaryRequired'),
-        guardianRequiredForMinor: tValidation('guardianRequiredForMinor'),
-        guardianCpfRequiredWhenMinorWithoutPatientCpf: tValidation('guardianCpfRequiredWhenMinorWithoutPatientCpf'),
-        patientCpfRequiredWhenAdultWithoutGuardian: tValidation('patientCpfRequiredWhenAdultWithoutGuardian'),
-        phoneMinItems: tValidation('phoneMinItems'),
-        phoneCountryCodeRequired: tValidation('phoneCountryCodeRequired'),
-        phoneNumberRequired: tValidation('phoneNumberRequired'),
-        phoneNumberInvalid: tValidation('phoneNumberInvalid'),
-        phonePrimaryRequired: tValidation('phonePrimaryRequired'),
-        emailInvalid: tValidation('emailInvalid'),
-        addressStreetRequired: tValidation('addressStreetRequired'),
-        addressNumberRequired: tValidation('addressNumberRequired'),
-        addressCityRequired: tValidation('addressCityRequired'),
-        addressStateRequired: tValidation('addressStateRequired'),
-        addressPostalCodeRequired: tValidation('addressPostalCodeRequired'),
-        careTypeRequired: tValidation('careTypeRequired'),
-        insuranceNameRequired: tValidation('insuranceNameRequired'),
-        insuranceCardNumberRequired: tValidation('insuranceCardNumberRequired'),
-        insurancePlanRequired: tValidation('insurancePlanRequired'),
-        specialtyRequired: tValidation('specialtyRequired'),
-        referralSourceRequired: tValidation('referralSourceRequired'),
-        observationsMax: tValidation('observationsMax'),
-      }),
-    [tValidation]
-  )
+  const validationSchema = useMemo(() => {
+    return createPatientValidationSchemaWithMessages({
+      fullNameRequired: tValidation('fullNameRequired'),
+      fullNameMin: tValidation('fullNameMin'),
+      birthDateRequired: tValidation('birthDateRequired'),
+      birthDateInvalid: tValidation('birthDateInvalid'),
+      birthDateFuture: tValidation('birthDateFuture'),
+      sexRequired: tValidation('sexRequired'),
+      documentTypeRequired: tValidation('documentTypeRequired'),
+      documentNumberRequired: tValidation('documentNumberRequired'),
+      documentCpfInvalid: tValidation('documentCpfInvalid'),
+      guardianNameRequired: tValidation('guardianNameRequired'),
+      guardianNameMin: tValidation('guardianNameMin'),
+      guardianTypeRequired: tValidation('guardianTypeRequired'),
+      guardianPrimaryRequired: tValidation('guardianPrimaryRequired'),
+      guardianRequiredForMinor: tValidation('guardianRequiredForMinor'),
+      guardianCpfRequiredWhenMinorWithoutPatientCpf: tValidation(
+        'guardianCpfRequiredWhenMinorWithoutPatientCpf'
+      ),
+      patientCpfRequiredWhenAdultWithoutGuardian: tValidation(
+        'patientCpfRequiredWhenAdultWithoutGuardian'
+      ),
+      phoneMinItems: tValidation('phoneMinItems'),
+      phoneCountryCodeRequired: tValidation('phoneCountryCodeRequired'),
+      phoneNumberRequired: tValidation('phoneNumberRequired'),
+      phoneNumberInvalid: tValidation('phoneNumberInvalid'),
+      phonePrimaryRequired: tValidation('phonePrimaryRequired'),
+      emailInvalid: tValidation('emailInvalid'),
+      addressStreetRequired: tValidation('addressStreetRequired'),
+      addressNumberRequired: tValidation('addressNumberRequired'),
+      addressNeighborhoodRequired: tValidation('addressNeighborhoodRequired'),
+      addressCityRequired: tValidation('addressCityRequired'),
+      addressStateRequired: tValidation('addressStateRequired'),
+      addressPostalCodeRequired: tValidation('addressPostalCodeRequired'),
+      careTypeRequired: tValidation('careTypeRequired'),
+      insuranceNameRequired: tValidation('insuranceNameRequired'),
+      insuranceCardNumberRequired: tValidation('insuranceCardNumberRequired'),
+      insurancePlanRequired: tValidation('insurancePlanRequired'),
+      specialtyRequired: tValidation('specialtyRequired'),
+      referralSourceRequired: tValidation('referralSourceRequired'),
+      observationsMax: tValidation('observationsMax'),
+    })
+  }, [tValidation])
 
   const methods = useForm<PatientFormData>({
-    resolver: zodResolver(validationSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(validationSchema) as any,
     mode: 'onBlur',
-    defaultValues: {
-      identification: {
-        fullName: '',
-        socialName: '',
-        birthDate: '',
-        sex: 'masculino',
-        documents: [
-          {
-            type: 'cpf',
-            number: '',
-          },
-        ],
-        contact: {
-          email: '',
-          phones: [],
-          address: {
-            postalCode: '',
-            street: '',
-            number: '',
-            complement: '',
-            city: '',
-            state: '',
-          },
-        },
-      },
-      guardians: [],
-      contact: {
-        email: '',
-        phones: [],
-        address: {
-          postalCode: '',
-          street: '',
-          number: '',
-          complement: '',
-          city: '',
-          state: '',
-        },
-      },
-      administrative: {
-        careType: 'particular',
-        insuranceName: '',
-        insuranceCardNumber: '',
-        insurancePlan: '',
-        specialties: ['fonoaudiologia'],
-        referralSource: 'indicacao_amigo_familiar',
-        observations: '',
-      },
-    },
+    defaultValues: PATIENT_FORM_DEFAULT_VALUES,
   })
 
-  const {
-    data: patientToEdit,
-    isLoading: isLoadingPatientToEdit,
-  } = usePatient(editId ?? '')
+  const { data: patientToEdit, isLoading: isLoadingPatientToEdit } = usePatient(
+    editId ?? ''
+  )
 
   useEffect(() => {
     if (!patientToEdit || !isEditMode) {
@@ -309,206 +132,178 @@ export function NewPatientPage() {
     control: methods.control,
     name: 'identification.birthDate',
   })
-  const guardians = useWatch({
+  const fullName = useWatch({
     control: methods.control,
-    name: 'guardians',
-  }) ?? []
+    name: 'identification.fullName',
+  })
 
   const isMinor = isMinorByBirthDate(birthDate)
 
-  const stepLabels: Record<StepKey, string> = {
-    identification: t('steps.identification.title'),
-    guardian: t('steps.guardian.title'),
-    administrative: t('steps.administrative.title'),
-  }
-
-  const validateCurrentStep = async (): Promise<boolean> => {
-    const stepKey = STEP_KEYS[currentStep]
-
-    if (stepKey === 'identification') {
-      return methods.trigger('identification')
-    }
-
-    if (stepKey === 'guardian') {
-      if (!isMinor && guardians.length === 0) {
-        return true
+  // Load person suggestions when full name changes (debounced)
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      if (!fullName || fullName.trim().length < 3 || isEditMode) {
+        setPersonSuggestions([])
+        return
       }
 
-      return methods.trigger('guardians')
+      setIsSuggestionsLoading(true)
+      try {
+        setPersonSuggestions([])
+        const response = await submitPatientRegistration(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { identification: { fullName } } as any,
+          undefined,
+          'lookup'
+        )
+        setPersonSuggestions(response?.suggestions ?? [])
+      } catch {
+        setPersonSuggestions([])
+      } finally {
+        setIsSuggestionsLoading(false)
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [fullName, isEditMode, submitPatientRegistration])
+
+  // Clear suggestions if name changes after selection
+  useEffect(() => {
+    if (selectedSuggestedPerson && selectedSuggestedPerson.full_name !== fullName) {
+      setSelectedSuggestedPerson(null)
+    }
+  }, [fullName, selectedSuggestedPerson])
+
+  const validateCurrentStep = (): boolean => {
+    const stepKey = STEP_KEYS[currentStep]
+    if (!stepKey) {
+      return true
     }
 
-    return methods.trigger('administrative')
+    switch (stepKey) {
+      case 'identification':
+        return methods.trigger(['identification.fullName', 'identification.birthDate', 'identification.sex', 'identification.documentType', 'identification.documentNumber'])
+      case 'guardian':
+        return methods.trigger('guardians')
+      case 'administrative':
+        return methods.trigger(['phones', 'email', 'address', 'careType', 'insurances', 'specialties', 'referralSource'])
+      default:
+        return true
+    }
   }
 
-  const handleNextStep = async () => {
-    const isValid = await validateCurrentStep()
-
-    if (!isValid) {
+  const handleNextStep = () => {
+    if (!validateCurrentStep()) {
       return
     }
-
-    setCurrentStep((previousStep) => Math.min(previousStep + 1, STEP_KEYS.length - 1))
+    if (currentStep < STEP_KEYS.length - 1) {
+      setCurrentStep(currentStep + 1)
+    }
   }
 
   const handlePreviousStep = () => {
-    setCurrentStep((previousStep) => Math.max(previousStep - 1, 0))
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
   }
 
-  const buildPayload = (values: PatientFormData) => ({
-    patient: {
-      fullName: values.identification.fullName,
-      socialName: values.identification.socialName || null,
-      birthDate: values.identification.birthDate,
-      sex: values.identification.sex,
-      documents: values.identification.documents.map((document) => ({
-        type: document.type,
-        number: document.number ? onlyDigits(document.number) : null,
-      })),
-      isMinor: isMinorByBirthDate(values.identification.birthDate),
-      contact: {
-        email: values.identification.contact.email || null,
-        phones: values.identification.contact.phones.map((phone) => ({
-          countryCode: phone.countryCode || null,
-          number: phone.number ? onlyDigits(phone.number) : null,
-          isWhatsapp: phone.isWhatsapp,
-          isPrimary: phone.isPrimary,
-        })),
-        address: {
-          postalCode: values.identification.contact.address.postalCode
-            ? onlyDigits(values.identification.contact.address.postalCode)
-            : null,
-          street: values.identification.contact.address.street || null,
-          number: values.identification.contact.address.number || null,
-          complement: values.identification.contact.address.complement || null,
-          city: values.identification.contact.address.city || null,
-          state: values.identification.contact.address.state || null,
-        },
-      },
-    },
-    guardians: values.guardians.map((guardian) => ({
-      name: guardian.name,
-      type: guardian.type,
-      isPrimary: guardian.isPrimary,
-      document: {
-        type: guardian.document.type ?? null,
-        number: guardian.document.number ? onlyDigits(guardian.document.number) : null,
-      },
-      contact: {
-        email: guardian.contact.email || null,
-        phones: guardian.contact.phones.map((phone) => ({
-          countryCode: phone.countryCode || null,
-          number: phone.number ? onlyDigits(phone.number) : null,
-          isWhatsapp: phone.isWhatsapp,
-          isPrimary: phone.isPrimary,
-        })),
-        address: {
-          postalCode: guardian.contact.address.postalCode
-            ? onlyDigits(guardian.contact.address.postalCode)
-            : null,
-          street: guardian.contact.address.street || null,
-          number: guardian.contact.address.number || null,
-          complement: guardian.contact.address.complement || null,
-          city: guardian.contact.address.city || null,
-          state: guardian.contact.address.state || null,
-        },
-      },
-    })),
-    administrative: {
-      careType: values.administrative.careType,
-      insurance: values.administrative.careType === 'convenio'
-        ? {
-            name: values.administrative.insuranceName || null,
-            cardNumber: values.administrative.insuranceCardNumber || null,
-            plan: values.administrative.insurancePlan || null,
-          }
-        : null,
-      specialties: values.administrative.specialties,
-      referralSource: values.administrative.referralSource,
-      observations: values.administrative.observations || null,
-    },
-  })
+  const onSubmit = async (values: PatientFormData) => {
+    try {
+      let personId: number | undefined
 
-  const onSubmit = methods.handleSubmit((values) => {
-    const payload = buildPayload(values)
+      if (selectedSuggestedPerson) {
+        personId = selectedSuggestedPerson.id
+      }
 
-    console.log('newPatientPayload', payload)
-  })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await submitPatientRegistration(values as any, personId)
+
+      toast.success(t('patientCreatedSuccess'))
+      router.push('/dashboard/patients')
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : t('errorSubmitting')
+      toast.error(errorMessage)
+    }
+  }
+
+  const isLoading = isSubmitting || isLoadingPatientToEdit
 
   return (
-    <div className="flex-1 space-y-4 p-4">
-      <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight">
-          {isEditMode ? t('edit.heading') : t('heading')}
-        </h1>
-        <p className="text-sm text-muted-foreground">{t('subtitle')}</p>
-      </div>
-
-      {isEditMode && isLoadingPatientToEdit && (
-        <p className="text-sm text-muted-foreground">{t('edit.loading')}</p>
-      )}
-
-      <div className="mt-6 grid w-full grid-cols-1 gap-6 md:mt-8 md:grid-cols-3 md:gap-x-3">
-        {STEP_KEYS.map((stepKey, index) => {
-          const isActive = index === currentStep
-          const isVisited = index <= currentStep
-          const isLast = index === STEP_KEYS.length - 1
-
-          return (
-            <button
-              key={stepKey}
-              type="button"
-              onClick={() => setCurrentStep(index)}
-              className="group relative flex w-full flex-col items-center text-center"
-            >
-              {!isLast && (
-                <span
-                  className={`absolute left-[calc(50%+1.25rem)] top-5 hidden h-0.5 w-[calc(100%-2rem)] md:block ${
-                    isVisited ? 'bg-primary/50' : 'bg-border'
-                  }`}
-                />
-              )}
-
-              <span
-                className={`z-10 inline-flex size-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition ${
-                  isActive
-                    ? 'border-primary bg-primary text-primary-foreground'
-                    : isVisited
-                      ? 'border-primary/60 bg-primary/15 text-primary'
-                      : 'border-muted-foreground/40 bg-background text-muted-foreground'
-                }`}
-              >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-
-              <p className={`mt-2 text-sm font-medium ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {stepLabels[stepKey]}
-              </p>
-              <p className="text-sm text-muted-foreground/90">{t(`steps.${stepKey}.support`)}</p>
-            </button>
-          )
-        })}
+    <div className="w-full max-w-4xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
       </div>
 
       <FormProvider {...methods}>
-        <form onSubmit={onSubmit} className="space-y-4" noValidate>
-          {currentStep === 0 && <StepIdentification />}
-          {currentStep === 1 && <StepGuardian isMinor={isMinor} />}
-          {currentStep === 2 && <StepAdministrative />}
+        <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
+          {currentStep === 0 && (
+            <>
+              <StepIdentification />
+              {!isEditMode && (
+                <PatientSuggestionsPanel
+                  suggestions={personSuggestions}
+                  isLoading={isSuggestionsLoading}
+                  selectedPerson={selectedSuggestedPerson}
+                  fullNameLength={fullName?.length ?? 0}
+                  onSelectPerson={setSelectedSuggestedPerson}
+                  onClearSelection={() => setSelectedSuggestedPerson(null)}
+                />
+              )}
+            </>
+          )}
+          {currentStep === 1 && isMinor && <StepGuardian />}
+          {currentStep === (isMinor ? 2 : 1) && <StepAdministrative />}
 
-          <div className="flex flex-wrap justify-end gap-2">
-            {currentStep > 0 && (
-              <Button type="button" variant="outline" onClick={handlePreviousStep}>
-                {t('actions.previous')}
-              </Button>
-            )}
+          <div className="flex justify-between gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handlePreviousStep}
+              disabled={currentStep === 0 || isLoading}
+            >
+              {t('previousButton')}
+            </Button>
 
-            {currentStep < STEP_KEYS.length - 1 ? (
-              <Button type="button" onClick={handleNextStep}>
-                {currentStep === 1 && !isMinor ? t('actions.skipOrContinue') : t('actions.next')}
+            {currentStep < (isMinor ? 2 : 1) ? (
+              <Button
+                type="button"
+                onClick={handleNextStep}
+                disabled={isLoading}
+              >
+                {t('nextButton')}
               </Button>
             ) : (
-              <Button type="submit">{isEditMode ? t('edit.submit') : t('actions.submit')}</Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? t('submitting') : t('submitButton')}
+              </Button>
             )}
+          </div>
+
+          {/* Step labels and support text */}
+          <div className="mt-8 border-t pt-6">
+            <div className="grid gap-2">
+              {STEP_KEYS.map((stepKey, index) => {
+                const isCurrentStep = index === currentStep
+
+                return (
+                  <div
+                    key={stepKey}
+                    className={`p-3 rounded-lg flex items-start gap-3 ${
+                      isCurrentStep ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50'
+                    }`}
+                  >
+                    <div className="text-sm">
+                      <div className="font-medium">
+                        {t(STEP_LABEL_KEYS[stepKey as keyof typeof STEP_LABEL_KEYS])}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        {t(STEP_SUPPORT_KEYS[stepKey as keyof typeof STEP_SUPPORT_KEYS])}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </form>
       </FormProvider>
