@@ -164,6 +164,7 @@ export function StepIdentification() {
       const response = await fetch(`https://viacep.com.br/ws/${postalCodeDigits}/json/`)
       const data = (await response.json()) as {
         logradouro?: string
+        bairro?: string
         localidade?: string
         uf?: string
         erro?: boolean
@@ -174,6 +175,7 @@ export function StepIdentification() {
       }
 
       setValue('identification.contact.address.street', data.logradouro ?? '', { shouldDirty: true })
+      setValue('identification.contact.address.neighborhood', data.bairro ?? '', { shouldDirty: true })
       setValue('identification.contact.address.city', data.localidade ?? '', { shouldDirty: true })
       setValue('identification.contact.address.state', data.uf ?? '', { shouldDirty: true })
     } catch {
@@ -536,6 +538,24 @@ export function StepIdentification() {
                 placeholder={t('steps.contact.fields.address.complementPlaceholder')}
                 {...register('identification.contact.address.complement')}
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="identification.contact.address.neighborhood">
+                {t('steps.contact.fields.address.neighborhoodLabel')}
+              </Label>
+              <Input
+                id="identification.contact.address.neighborhood"
+                className={inputClassName}
+                placeholder={t('steps.contact.fields.address.neighborhoodPlaceholder')}
+                {...register('identification.contact.address.neighborhood')}
+                aria-invalid={errors.identification?.contact?.address?.neighborhood ? 'true' : 'false'}
+              />
+              {errors.identification?.contact?.address?.neighborhood && (
+                <p className="text-sm text-destructive">
+                  {errors.identification.contact.address.neighborhood.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">

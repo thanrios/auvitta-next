@@ -53,16 +53,16 @@ export function NewPatientPage() {
   const tValidation = useTranslations('validation.patient')
   const router = useRouter()
   const searchParams = useSearchParams()
-  
+
   const [currentStep, setCurrentStep] = useState(0)
   const [personSuggestions, setPersonSuggestions] = useState<PersonLookupResult[]>([])
   const [isSuggestionsLoading, setIsSuggestionsLoading] = useState(false)
   const [selectedSuggestedPerson, setSelectedSuggestedPerson] =
     useState<PersonLookupResult | null>(null)
-  
+
   const editId = searchParams.get('editId')
   const isEditMode = Boolean(editId)
-  
+
   const { submitPatientRegistration, isSubmitting } = usePatientRegistration()
 
   const validationSchema = useMemo(() => {

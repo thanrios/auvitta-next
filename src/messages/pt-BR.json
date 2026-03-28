@@ -76,6 +76,7 @@
       "emailInvalid": "Email inválido",
       "addressStreetRequired": "Rua é obrigatória",
       "addressNumberRequired": "Número é obrigatório",
+      "addressNeighborhoodRequired": "Bairro é obrigatório",
       "addressCityRequired": "Cidade é obrigatória",
       "addressStateRequired": "Estado é obrigatório",
       "addressPostalCodeRequired": "CEP é obrigatório",
@@ -312,8 +313,15 @@
           "title": "Novo Paciente - Auvitta",
           "description": "Cadastro de novo paciente"
         },
+        "title": "Cadastro de Paciente",
         "heading": "Cadastro de Paciente",
         "subtitle": "Preencha as etapas para concluir o cadastro.",
+        "previousButton": "Voltar",
+        "nextButton": "Próxima etapa",
+        "submitButton": "Finalizar cadastro",
+        "submitting": "Finalizando cadastro...",
+        "patientCreatedSuccess": "Paciente cadastrado com sucesso.",
+        "errorSubmitting": "Não foi possível concluir o cadastro do paciente.",
         "edit": {
           "heading": "Editar Paciente",
           "loading": "Carregando dados do paciente...",
@@ -325,6 +333,22 @@
           "skipOrContinue": "Pular etapa",
           "next": "Próxima etapa",
           "submit": "Finalizar cadastro"
+        },
+        "submission": {
+          "createSuccess": "Paciente cadastrado com sucesso.",
+          "createError": "Não foi possível concluir o cadastro do paciente.",
+          "patientAlreadyExists": "Já existe um paciente cadastrado para o documento informado.",
+          "guardianDocumentRequired": "Todo responsável precisa ter um documento válido para continuar.",
+          "editNotImplemented": "A edição completa deste fluxo ainda não foi implementada."
+        },
+        "suggestions": {
+          "title": "Sugestões de pessoas existentes",
+          "loading": "Buscando...",
+          "typeToSearch": "Digite pelo menos 3 caracteres no nome para buscar sugestões.",
+          "noResults": "Nenhuma pessoa encontrada com esses critérios.",
+          "selectedHelper": "Pessoa selecionada para reaproveitamento (ID: {personId})",
+          "clearSelection": "Limpar seleção",
+          "matchScore": "Similaridade: {score}"
         },
         "steps": {
           "identification": {
@@ -440,6 +464,8 @@
                 "complementPlaceholder": "Opcional",
                 "cityLabel": "Cidade",
                 "cityPlaceholder": "Digite a cidade",
+                "neighborhoodLabel": "Bairro",
+                "neighborhoodPlaceholder": "Digite o bairro",
                 "stateLabel": "Estado",
                 "statePlaceholder": "Digite o estado",
                 "postalCodeLabel": "CEP",

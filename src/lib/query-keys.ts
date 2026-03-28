@@ -11,6 +11,7 @@ export const QUERY_KEYS = {
     phones: (patientId: string) => ['patients', patientId, 'phones'] as const,
     addresses: (patientId: string) => ['patients', patientId, 'addresses'] as const,
     documents: (patientId: string) => ['patients', patientId, 'documents'] as const,
+    emails: (patientId: string) => ['patients', patientId, 'emails'] as const,
     guardians: (patientId: string) => ['patients', patientId, 'guardians'] as const,
   },
   guardians: {
@@ -20,6 +21,7 @@ export const QUERY_KEYS = {
     phones: (guardianId: string) => ['guardians', guardianId, 'phones'] as const,
     addresses: (guardianId: string) => ['guardians', guardianId, 'addresses'] as const,
     documents: (guardianId: string) => ['guardians', guardianId, 'documents'] as const,
+    emails: (guardianId: string) => ['guardians', guardianId, 'emails'] as const,
     patients: (guardianId: string) => ['guardians', guardianId, 'patients'] as const,
   },
   appointments: {

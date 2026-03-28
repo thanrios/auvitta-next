@@ -33,6 +33,7 @@ export interface PatientValidationMessages {
   emailInvalid: string
   addressStreetRequired: string
   addressNumberRequired: string
+  addressNeighborhoodRequired: string
   addressCityRequired: string
   addressStateRequired: string
   addressPostalCodeRequired: string
@@ -70,6 +71,7 @@ const defaultMessages: PatientValidationMessages = {
   emailInvalid: 'Email inválido',
   addressStreetRequired: 'Rua é obrigatória',
   addressNumberRequired: 'Número é obrigatório',
+  addressNeighborhoodRequired: 'Bairro é obrigatório',
   addressCityRequired: 'Cidade é obrigatória',
   addressStateRequired: 'Estado é obrigatório',
   addressPostalCodeRequired: 'CEP é obrigatório',
@@ -172,6 +174,7 @@ export function createPatientValidationSchema(messages: PatientValidationMessage
       street: z.string().trim().optional(),
       number: z.string().trim().optional(),
       complement: z.string().trim().optional(),
+      neighborhood: z.string().trim().optional(),
       city: z.string().trim().optional(),
       state: z.string().trim().optional(),
     }),
@@ -245,6 +248,22 @@ export function createPatientValidationSchema(messages: PatientValidationMessage
       data.guardians.forEach((guardian, guardianIndex) => {
         const guardianDocumentType = guardian.document.type
         const guardianDocumentNumber = guardian.document.number?.trim()
+
+        if (!guardianDocumentType) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['guardians', guardianIndex, 'document', 'type'],
+            message: messages.documentTypeRequired,
+          })
+        }
+
+        if (!guardianDocumentNumber) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['guardians', guardianIndex, 'document', 'number'],
+            message: messages.documentNumberRequired,
+          })
+        }
 
         if (guardianDocumentNumber && !guardianDocumentType) {
           context.addIssue({
@@ -346,7 +365,129 @@ export function createPatientValidationSchema(messages: PatientValidationMessage
             })
           }
         })
+
+        const guardianAddress = guardian.contact.address
+        const hasGuardianAddressData = [
+          guardianAddress.postalCode,
+          guardianAddress.street,
+          guardianAddress.number,
+          guardianAddress.complement,
+          guardianAddress.neighborhood,
+          guardianAddress.city,
+          guardianAddress.state,
+        ].some((value) => Boolean(value?.trim()))
+
+        if (hasGuardianAddressData) {
+          if (!guardianAddress.postalCode?.trim()) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['guardians', guardianIndex, 'contact', 'address', 'postalCode'],
+              message: messages.addressPostalCodeRequired,
+            })
+          }
+
+          if (!guardianAddress.street?.trim()) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['guardians', guardianIndex, 'contact', 'address', 'street'],
+              message: messages.addressStreetRequired,
+            })
+          }
+
+          if (!guardianAddress.number?.trim()) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['guardians', guardianIndex, 'contact', 'address', 'number'],
+              message: messages.addressNumberRequired,
+            })
+          }
+
+          if (!guardianAddress.neighborhood?.trim()) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['guardians', guardianIndex, 'contact', 'address', 'neighborhood'],
+              message: messages.addressNeighborhoodRequired,
+            })
+          }
+
+          if (!guardianAddress.city?.trim()) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['guardians', guardianIndex, 'contact', 'address', 'city'],
+              message: messages.addressCityRequired,
+            })
+          }
+
+          if (!guardianAddress.state?.trim()) {
+            context.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ['guardians', guardianIndex, 'contact', 'address', 'state'],
+              message: messages.addressStateRequired,
+            })
+          }
+        }
       })
+
+      const patientAddress = data.identification.contact.address
+      const hasPatientAddressData = [
+        patientAddress.postalCode,
+        patientAddress.street,
+        patientAddress.number,
+        patientAddress.complement,
+        patientAddress.neighborhood,
+        patientAddress.city,
+        patientAddress.state,
+      ].some((value) => Boolean(value?.trim()))
+
+      if (hasPatientAddressData) {
+        if (!patientAddress.postalCode?.trim()) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['identification', 'contact', 'address', 'postalCode'],
+            message: messages.addressPostalCodeRequired,
+          })
+        }
+
+        if (!patientAddress.street?.trim()) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['identification', 'contact', 'address', 'street'],
+            message: messages.addressStreetRequired,
+          })
+        }
+
+        if (!patientAddress.number?.trim()) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['identification', 'contact', 'address', 'number'],
+            message: messages.addressNumberRequired,
+          })
+        }
+
+        if (!patientAddress.neighborhood?.trim()) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['identification', 'contact', 'address', 'neighborhood'],
+            message: messages.addressNeighborhoodRequired,
+          })
+        }
+
+        if (!patientAddress.city?.trim()) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['identification', 'contact', 'address', 'city'],
+            message: messages.addressCityRequired,
+          })
+        }
+
+        if (!patientAddress.state?.trim()) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['identification', 'contact', 'address', 'state'],
+            message: messages.addressStateRequired,
+          })
+        }
+      }
 
       if (data.administrative.careType === 'convenio') {
         if (!data.administrative.insuranceName?.trim()) {

@@ -102,6 +102,7 @@ export function StepGuardian({ isMinor }: StepGuardianProps) {
       const response = await fetch(`https://viacep.com.br/ws/${postalCodeDigits}/json/`)
       const data = (await response.json()) as {
         logradouro?: string
+        bairro?: string
         localidade?: string
         uf?: string
         erro?: boolean
@@ -112,6 +113,7 @@ export function StepGuardian({ isMinor }: StepGuardianProps) {
       }
 
       setValue(`guardians.${guardianIndex}.contact.address.street`, data.logradouro ?? '', { shouldDirty: true })
+      setValue(`guardians.${guardianIndex}.contact.address.neighborhood`, data.bairro ?? '', { shouldDirty: true })
       setValue(`guardians.${guardianIndex}.contact.address.city`, data.localidade ?? '', { shouldDirty: true })
       setValue(`guardians.${guardianIndex}.contact.address.state`, data.uf ?? '', { shouldDirty: true })
     } catch {
@@ -156,6 +158,7 @@ export function StepGuardian({ isMinor }: StepGuardianProps) {
           street: '',
           number: '',
           complement: '',
+          neighborhood: '',
           city: '',
           state: '',
         },
@@ -463,6 +466,24 @@ export function StepGuardian({ isMinor }: StepGuardianProps) {
                       placeholder={t('steps.contact.fields.address.complementPlaceholder')}
                       {...register(`guardians.${index}.contact.address.complement`)}
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor={`guardians.${index}.contact.address.neighborhood`}>
+                      {t('steps.contact.fields.address.neighborhoodLabel')}
+                    </Label>
+                    <Input
+                      id={`guardians.${index}.contact.address.neighborhood`}
+                      className={inputClassName}
+                      placeholder={t('steps.contact.fields.address.neighborhoodPlaceholder')}
+                      {...register(`guardians.${index}.contact.address.neighborhood`)}
+                      aria-invalid={errors.guardians?.[index]?.contact?.address?.neighborhood ? 'true' : 'false'}
+                    />
+                    {errors.guardians?.[index]?.contact?.address?.neighborhood && (
+                      <p className="text-sm text-destructive">
+                        {errors.guardians[index]?.contact?.address?.neighborhood?.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-2">

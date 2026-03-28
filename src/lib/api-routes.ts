@@ -22,6 +22,9 @@ export const API_ROUTES = {
     setPassword: withTrailingSlash('/users/set-password'),
     byId: (id: string | number) => withTrailingSlash(`/users/${id}`),
   },
+  persons: {
+    lookup: withTrailingSlash('/persons/lookup'),
+  },
   patients: {
     base: withTrailingSlash('/patients'),
     byId: (id: string) => withTrailingSlash(`/patients/${id}`),
@@ -34,6 +37,9 @@ export const API_ROUTES = {
     documents: (patientId: string) => withTrailingSlash(`/patients/${patientId}/documents`),
     documentById: (patientId: string, documentId: string) =>
       withTrailingSlash(`/patients/${patientId}/documents/${documentId}`),
+    emails: (patientId: string) => withTrailingSlash(`/patients/${patientId}/emails`),
+    emailById: (patientId: string, emailId: string) =>
+      withTrailingSlash(`/patients/${patientId}/emails/${emailId}`),
     guardians: (patientId: string) => withTrailingSlash(`/patients/${patientId}/guardians`),
     linkGuardian: (patientId: string) => withTrailingSlash(`/patients/${patientId}/guardians/link`),
     guardianById: (patientId: string, guardianId: string) =>
@@ -43,8 +49,17 @@ export const API_ROUTES = {
     base: withTrailingSlash('/guardians'),
     byId: (id: string) => withTrailingSlash(`/guardians/${id}`),
     phones: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/phones`),
+    phoneById: (guardianId: string, phoneId: string) =>
+      withTrailingSlash(`/guardians/${guardianId}/phones/${phoneId}`),
     addresses: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/addresses`),
+    addressById: (guardianId: string, addressId: string) =>
+      withTrailingSlash(`/guardians/${guardianId}/addresses/${addressId}`),
     documents: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/documents`),
+    documentById: (guardianId: string, documentId: string) =>
+      withTrailingSlash(`/guardians/${guardianId}/documents/${documentId}`),
+    emails: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/emails`),
+    emailById: (guardianId: string, emailId: string) =>
+      withTrailingSlash(`/guardians/${guardianId}/emails/${emailId}`),
     patients: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/patients`),
     linkPatient: (guardianId: string) => withTrailingSlash(`/guardians/${guardianId}/patients/link`),
     patientById: (guardianId: string, patientId: string) =>

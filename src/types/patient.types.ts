@@ -13,21 +13,23 @@ export enum BiologicalSex {
   OTHER = 3,
 }
 
+export type ApiBiologicalSex = BiologicalSex.MALE | BiologicalSex.FEMALE
+
 export enum PatientStatus {
   ACTIVE = 1,
-  INACTIVE = 2,
-  ARCHIVED = 3,
+  INACTIVE = 0,
+  ARCHIVED = 2,
 }
 
 export enum PhoneType {
   MOBILE = 1,
-  HOME = 2,
-  WORK = 3,
+  LANDLINE = 2,
+  EMERGENCY = 3,
 }
 
 export enum AddressType {
-  HOME = 1,
-  WORK = 2,
+  RESIDENTIAL = 1,
+  COMMERCIAL = 2,
   OTHER = 3,
 }
 
@@ -35,12 +37,14 @@ export enum DocumentType {
   CPF = 1,
   RG = 2,
   PASSPORT = 3,
+  PROFESSIONAL_LICENSE_CRP = 11,
+  PROFESSIONAL_LICENSE_OTHER = 19,
 }
 
 export enum RelationshipType {
   MOTHER = 1,
   FATHER = 2,
-  GUARDIAN = 3,
+  LEGAL_GUARDIAN = 3,
   OTHER = 4,
 }
 
@@ -50,10 +54,8 @@ export enum RelationshipType {
 
 export interface PersonPhone {
   id: string
-  person?: string
-  person_name?: string
-  ddi: string
-  ddd: string
+  party?: string
+  country_code: string
   phone_number: string
   formatted_phone?: string
   phone_type: PhoneType
@@ -65,8 +67,7 @@ export interface PersonPhone {
 }
 
 export interface PersonPhoneCreateRequest {
-  ddi: string
-  ddd: string
+  country_code: string
   phone_number: string
   phone_type: PhoneType
   is_whatsapp?: boolean
@@ -74,8 +75,7 @@ export interface PersonPhoneCreateRequest {
 }
 
 export interface PersonPhoneUpdateRequest {
-  ddi?: string
-  ddd?: string
+  country_code?: string
   phone_number?: string
   phone_type?: PhoneType
   is_whatsapp?: boolean
@@ -84,8 +84,7 @@ export interface PersonPhoneUpdateRequest {
 
 export interface PersonAddress {
   id: string
-  person?: string
-  person_name?: string
+  party?: string
   address_type: AddressType
   address_type_display?: string
   street: string
@@ -126,14 +125,32 @@ export interface PersonAddressUpdateRequest {
 
 export interface PersonDocument {
   id: string
-  person?: string
-  person_name?: string
+  party?: string
   document_type: DocumentType
   document_type_display?: string
   document_number: string
   is_main: boolean
   created_at?: string
   updated_at?: string
+}
+
+export interface PersonEmail {
+  id: string
+  party?: string
+  email: string
+  is_primary: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+export interface PersonEmailCreateRequest {
+  email: string
+  is_primary?: boolean
+}
+
+export interface PersonEmailUpdateRequest {
+  email?: string
+  is_primary?: boolean
 }
 
 export interface PersonDocumentCreateRequest {
@@ -154,7 +171,8 @@ export interface PersonDocumentUpdateRequest {
 
 export interface Guardian {
   id: string
-  person: string
+  person?: string
+  person_id?: string
   full_name: string
   full_name_normalized?: string
   birth_date?: string
@@ -170,6 +188,7 @@ export interface GuardianDetail extends Guardian {
   documents: PersonDocument[]
   phones: PersonPhone[]
   addresses: PersonAddress[]
+  emails: PersonEmail[]
   patients: PatientGuardianRelationship[]
 }
 
@@ -179,8 +198,12 @@ export interface GuardianDetail extends Guardian {
 
 export interface PatientGuardianRelationship {
   id: string
+  patient?: string
   guardian_id: string
+  guardian?: string
+  guardian_name?: string
   patient_id?: string
+  patient_name?: string
   person_id: string
   full_name: string
   full_name_normalized?: string
@@ -200,8 +223,9 @@ export interface PatientGuardianRelationship {
 
 export interface Patient {
   id: string
-  age: number
-  person: string
+  age: number | null
+  person?: string
+  person_id?: string
   full_name: string
   full_name_normalized?: string
   birth_date?: string
@@ -217,6 +241,7 @@ export interface PatientDetail extends Patient {
   documents: PersonDocument[]
   phones: PersonPhone[]
   addresses: PersonAddress[]
+  emails: PersonEmail[]
   guardians: PatientGuardianRelationship[]
 }
 
@@ -224,33 +249,73 @@ export interface PatientDetail extends Patient {
 // Request/Response Types
 // ============================================================================
 
-export interface PatientCreateRequest {
-  person: {
-    full_name: string
-    birth_date?: string
-    biological_sex?: BiologicalSex
+export interface PersonLookupByDocumentRequest {
+  document_type: DocumentType
+  document_number: string
+}
+
+export interface PersonLookupByNameRequest {
+  name: string
+  birth_date?: string
+  biological_sex?: ApiBiologicalSex
+}
+
+export interface PersonLookupRole {
+  exists: boolean
+  id: string | null
+  status?: number | null
+}
+
+export interface PersonLookupResult {
+  person_id: string
+  full_name: string
+  social_name: string | null
+  birth_date: string | null
+  biological_sex: ApiBiologicalSex | null
+  match_score: number
+  roles: {
+    patient: PersonLookupRole
+    guardian: PersonLookupRole
+    professional: PersonLookupRole
+    user: PersonLookupRole
   }
-  status?: PatientStatus
+}
+
+export interface PersonLookupResponse {
+  results: PersonLookupResult[]
+  total: number
+}
+
+export interface PatientPersonReference {
+  id: string
+}
+
+export interface PatientPersonCreatePayload {
+  full_name: string
+  birth_date?: string
+  biological_sex?: ApiBiologicalSex
+  documents?: PersonDocumentCreateRequest[]
+}
+
+export interface PatientCreateRequest {
+  person: PatientPersonReference | PatientPersonCreatePayload
 }
 
 export interface PatientUpdateRequest {
   person?: {
     full_name?: string
     birth_date?: string
-    biological_sex?: BiologicalSex
+    biological_sex?: ApiBiologicalSex
     phones?: Array<Partial<PersonPhone> & { id?: string }>
     addresses?: Array<Partial<PersonAddress> & { id?: string }>
     documents?: Array<Partial<PersonDocument> & { id?: string }>
+    emails?: Array<Partial<PersonEmail> & { id?: string }>
   }
   status?: PatientStatus
 }
 
 export interface GuardianCreateRequest {
-  person: {
-    full_name: string
-    birth_date?: string
-    biological_sex?: BiologicalSex
-  }
+  person: PatientPersonReference | PatientPersonCreatePayload
   status?: number
 }
 
@@ -258,10 +323,11 @@ export interface GuardianUpdateRequest {
   person?: {
     full_name?: string
     birth_date?: string
-    biological_sex?: BiologicalSex
+    biological_sex?: ApiBiologicalSex
     phones?: Array<Partial<PersonPhone> & { id?: string }>
     addresses?: Array<Partial<PersonAddress> & { id?: string }>
     documents?: Array<Partial<PersonDocument> & { id?: string }>
+    emails?: Array<Partial<PersonEmail> & { id?: string }>
   }
   status?: number
 }

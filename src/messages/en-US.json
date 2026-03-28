@@ -76,6 +76,7 @@
       "emailInvalid": "Invalid email",
       "addressStreetRequired": "Street is required",
       "addressNumberRequired": "Number is required",
+      "addressNeighborhoodRequired": "Neighborhood is required",
       "addressCityRequired": "City is required",
       "addressStateRequired": "State is required",
       "addressPostalCodeRequired": "Postal code is required",
@@ -312,8 +313,15 @@
           "title": "New Patient - Auvitta",
           "description": "New patient registration"
         },
+        "title": "Patient Registration",
         "heading": "Patient Registration",
         "subtitle": "Complete the steps to finish registration.",
+        "previousButton": "Back",
+        "nextButton": "Next step",
+        "submitButton": "Finish registration",
+        "submitting": "Finishing registration...",
+        "patientCreatedSuccess": "Patient created successfully.",
+        "errorSubmitting": "Unable to complete patient registration.",
         "edit": {
           "heading": "Edit Patient",
           "loading": "Loading patient data...",
@@ -325,6 +333,22 @@
           "skipOrContinue": "Skip step",
           "next": "Next step",
           "submit": "Finish registration"
+        },
+        "submission": {
+          "createSuccess": "Patient created successfully.",
+          "createError": "Unable to complete patient registration.",
+          "patientAlreadyExists": "A patient already exists for the informed document.",
+          "guardianDocumentRequired": "Each guardian needs a valid document to continue.",
+          "editNotImplemented": "Full edit support for this flow has not been implemented yet."
+        },
+        "suggestions": {
+          "title": "Existing people suggestions",
+          "loading": "Searching...",
+          "typeToSearch": "Type at least 3 characters in the name to fetch suggestions.",
+          "noResults": "No person found with these filters.",
+          "selectedHelper": "Selected person for reuse (ID: {personId})",
+          "clearSelection": "Clear selection",
+          "matchScore": "Match score: {score}"
         },
         "steps": {
           "identification": {
@@ -440,6 +464,8 @@
                 "complementPlaceholder": "Optional",
                 "cityLabel": "City",
                 "cityPlaceholder": "Type city",
+                "neighborhoodLabel": "Neighborhood",
+                "neighborhoodPlaceholder": "Type neighborhood",
                 "stateLabel": "State",
                 "statePlaceholder": "Type state",
                 "postalCodeLabel": "Postal code",
